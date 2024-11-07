@@ -1,9 +1,12 @@
+import ManagerNavBar from "../components/managerNavBar"
+
 export const Manager = () => {
 
     return (
         <>
         <div className="managerPage">
-            This is the Manager page
+            <ManagerNavBar />
+            <h1>Manager Page</h1>
         </div>
         </>
     )
