@@ -1,0 +1,43 @@
+/* Container styling */
+#container {
+  display: flex;
+  gap: 15px; /* Increased space between boxes */
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+/* Individual box styling */
+.box {
+  width: 150px; /* Increased width for longer IDs */
+  height: 150px; /* Increased height to accommodate button placement */
+  display: flex;
+  flex-direction: column; /* Arrange content vertically */
+  align-items: center;
+  justify-content: space-between; /* Space between ID and button */
+  background-color: lightblue;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px; /* Adds padding for inner spacing */
+  box-sizing: border-box; /* Ensures padding doesn't affect box size */
+}
+
+/* ID styling */
+.box span {
+  font-size: 1em;
+  text-align: center;
+}
+
+/* Button styling */
+.box button {
+  align-self: center; /* Center the button horizontally */
+  padding: 5px 10px; /* Adds padding for a better appearance */
+  background-color: #ff6666;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+}
+
+.box button:hover {
+  background-color: #ff3333;
+}

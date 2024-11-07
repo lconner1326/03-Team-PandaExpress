@@ -4,6 +4,7 @@ const cors = require('cors');
 const app = express();
 const PORT = 5001;
 
+const cors = require('cors');
 app.use(cors());
 
 app.get('/api/data', (req, res) => {
