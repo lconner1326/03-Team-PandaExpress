@@ -53,6 +53,27 @@ app.get('/api/kitchen', async (req, res) => {
   }
 });
 
+// Deleting from xreport, SHOULD MAKE NEW TABLE SO REPORT FUNCTIONALITY STILL WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+app.delete('/api/kitchen/:id', async (req, res) => {
+  const { id } = req.params;  // Get the ID from the URL parameter
+  try {
+    // Execute the DELETE query
+    const result = await pool.query('DELETE FROM xreport WHERE ID = $1 RETURNING *', [id]);
+    
+    if (result.rowCount === 0) {  // No rows were deleted
+      return res.status(404).json({ error: 'Item not found' });
+    }
+
+    // Successfully deleted the item
+    res.status(200).json({ message: 'Item deleted successfully' });
+  } catch (err) {
+    console.error('Error executing delete query', err.stack);
+    res.status(500).json({ error: 'Failed to delete item' });
+  }
+});
+
+
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
