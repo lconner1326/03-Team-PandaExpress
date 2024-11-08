@@ -6,18 +6,21 @@ import { Manager } from "./pages/manager";
 import { Kiosk } from "./pages/kiosk";
 import { Menu } from "./pages/menu";
 import { Kitchen } from "./pages/kitchen";
+import './App.css';
 
 function App() {
 //cashier, manager, kitchen, kiosk, menu
   return (
       <div className="App">
       <Router>
+        <div className="nav">
           <Link to="/">HOME</Link>
           <Link to="/cashier">CASHIER</Link>
           <Link to="/manager">Manager</Link>
           <Link to="/Kitchen">Kitchen</Link>
           <Link to="/Kiosk">Kiosk</Link>
           <Link to="/Menu">Menu</Link>
+        </div>
         <Routes >
           <Route path="/" element={<MenuItems/>} />
           <Route path="/cashier" element={<Cashier/>} />
