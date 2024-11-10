@@ -1,6 +1,7 @@
 import ManagerNavBar from "../components/managerNavBar"
 import { Route, Routes } from "react-router-dom"
 import SalesReport from "../components/sales-report"
+import StaffTable from "../components/staffTable"
 
 export const Manager = () => {
 
@@ -11,6 +12,7 @@ export const Manager = () => {
                 <ManagerNavBar />
                 <Routes>
                     <Route path="sales-report" element={<SalesReport/>} />
+                    <Route path="staff-table" element={<StaffTable/>}/>
                 </Routes>
         </div>
         </>

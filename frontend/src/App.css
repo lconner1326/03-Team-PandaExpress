@@ -37,3 +37,9 @@
   margin: 10px;
   cursor: pointer;
 }
+
+.staff-table-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
