@@ -20,11 +20,11 @@ const pool = new Pool({
 });
 
 // Middleware to parse JSON bodies
-// app.use(cors({
-//   origin: 'http://localhost:3001'  // Allow only your React app
-// }));
+app.use(cors({
+  origin: 'http://localhost:3001'  // Allow only your React app
+}));
 
-app.use(cors());
+// app.use(cors());
 
 // Test database connection
 pool.connect()
@@ -75,7 +75,6 @@ app.delete('/api/kitchen/:id', async (req, res) => {
 });
 
 app.post('/api/SalesData', async (req, res) => {
-  console.log('Sales Report Data:', req.body);
   const startCompositeTime = req.body.startCompositeTime;
   const endCompositeTime = req.body.endCompositeTime;
   try {
@@ -112,7 +111,7 @@ app.post('/api/SalesData', async (req, res) => {
         "ORDER BY total_sales DESC;",
         [startCompositeTime, endCompositeTime]
       );
-      res.status(200).json({request: result.rows});
+      res.status(200).json(result.rows);
   } catch (error) {
       console.error('Error executing query', error.stack);
       res.status(500).json({ error: 'Error fetching sales data' });

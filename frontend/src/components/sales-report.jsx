@@ -22,23 +22,22 @@ function SalesReport() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Sales Report Data:', formData);
         const startCompositeTime = (formData.startWeek * 10000) + (formData.startDay * 100) + formData.startHour;
         const endCompositeTime = (formData.endWeek * 10000) + (formData.endDay * 100) + formData.endHour;
-
+        console.log({startCompositeTime, endCompositeTime});
         
         fetch('http://localhost:3000/api/SalesData', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             },
-            body: {startCompositeTime,endCompositeTime},
+            body: JSON.stringify({ startCompositeTime, endCompositeTime }),
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
             })
             .then(fetchedData => setSalesData(fetchedData))
             .catch(err => setError(err.message));
@@ -84,7 +83,7 @@ function SalesReport() {
                 <div>
                     <h2>Sales Data:</h2>
                     {salesData.map((item, index) => (
-                        <div key={index}>{JSON.stringify(item)}</div>
+                        <div key={index}>{item.item_name} {item.total_sales}</div>
                     ))}
                 </div>
             )}
