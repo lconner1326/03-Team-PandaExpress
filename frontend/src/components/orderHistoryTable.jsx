@@ -1,13 +1,12 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import ItemTable from "./table";
-import '../App.css';
 
-function RestockTable(){
+function OrderHistoryTable(){
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      fetch('http://localhost:3000/api/RestockData')
+      fetch('http://localhost:3000/api/OrderHistoryData')
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -25,14 +24,12 @@ function RestockTable(){
 
     return (
         <div>
-            <h1>Restock Table</h1>
+            <h1>Order History Table</h1>
             <div className="staff-table-wrapper">
-                <ItemTable columns={["ingredientid", "ingredient_name", "restock_level","units"]} rows={data.filter(item => item.units < item.restock_level)} />
-
+                <ItemTable columns={["id","week","day","hour","priceditem","side","entree1","entree2","entree3","cost","premium",'item_id']} rows={data} />
             </div>
         </div>
     )
 }
 
-export default RestockTable;
-
+export default OrderHistoryTable;

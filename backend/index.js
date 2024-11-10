@@ -48,7 +48,6 @@ app.get('/api/kitchen', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM xreport');
     res.status(200).json(result.rows); // This exports result.rows
-    console.log(result.rows);
   } catch (err) {
     console.error('Error executing query', err.stack);
     res.status(500).json({ error: 'Failed to fetch data' });
@@ -137,8 +136,19 @@ app.get('/api/RestockData', async(req,res) =>{
     console.error('Error executing query', err.stack);
     res.status(500).json({ error: 'Failed to fetch data' });
   }
-})
+});
 
+app.get('/api/OrderHistoryData', async(req,res) =>{
+  try{
+    const result = await pool.query("SELECT * FROM neworderhistory");
+    console.log(result.rows);
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
 
 
 

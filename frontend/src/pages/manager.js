@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom"
 import SalesReport from "../components/sales-report"
 import StaffTable from "../components/staffTable"
 import RestockTable from "../components/restock-table"
+import OrderHistoryTable from "../components/orderHistoryTable"
 
 export const Manager = () => {
 
@@ -15,6 +16,7 @@ export const Manager = () => {
                     <Route path="sales-report" element={<SalesReport/>} />
                     <Route path="staff-table" element={<StaffTable/>}/>
                     <Route path="restock-report" element={<RestockTable/>}/>
+                    <Route path="order-history-table" element={<OrderHistoryTable/>}/>
                 </Routes>
         </div>
         </>
