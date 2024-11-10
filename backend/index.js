@@ -128,6 +128,17 @@ app.get('/api/StaffData', async (req, res) => {
   }
 });
 
+app.get('/api/RestockData', async(req,res) =>{
+  try{
+    const result = await pool.query("SELECT * FROM ingredients ORDER BY units ASC");
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+})
+
 
 
 
