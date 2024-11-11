@@ -1,0 +1,65 @@
+/* Table Container */
+table {
+    width: 100%;
+    max-width: 250px;
+    border-collapse: collapse;
+    font-family: "Courier New", Courier, monospace;
+    background-color: rgb(44, 44, 44);
+    border-radius: 12px 12px 4px 4px;
+    overflow: hidden;
+}
+
+/* Table Header */
+thead {
+    background-color: rgb(44, 44, 44);
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+th {
+    padding: 5px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgb(167, 159, 159);
+}
+
+/* Table Body */
+tbody {
+    font-size: 0.8rem;
+}
+
+tr {
+    display: flex;
+    justify-content: space-between;
+    border-left: 1px solid rgb(203, 203, 203);
+    border-right: 1px solid rgb(203, 203, 203);
+}
+
+tr:not(:last-child) {
+    border-bottom: 1px solid rgb(203, 203, 203);
+}
+
+/* Table Cells */
+td {
+    flex: 1;
+    padding: 3px 8px;
+    width: 80%; /* Adjust width to fit 80% of its parent */
+    background-color: white;
+    width: 100px; /* Fixed width */
+    height: 40px; /* Fixed height */
+    border-left: 1px solid rgb(203, 203, 203); /* Add left border to separate columns */
+}
+
+tr:nth-child(even) td {
+    background-color: rgb(234, 235, 234);
+}
+
+td:first-child {
+    text-align: left;
+    border-left: none; /* Remove left border from the first cell */
+}
+
+td:last-child {
+    text-align: right;
+    border-left: 1px solid rgb(203, 203, 203);
+}
