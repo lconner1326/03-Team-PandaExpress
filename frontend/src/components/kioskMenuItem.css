@@ -1,0 +1,66 @@
+/* kiosk.css */
+.kiosk-page {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Keeps three items per row */
+    gap: 20px;
+    max-width: 1000px;
+    padding: 20px;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+.kiosk-page a {
+    text-decoration: none;
+}
+
+.kiosk-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 180px;  /* Set a fixed width */
+    height: 220px; /* Set a fixed height */
+    transition: transform 0.2s;
+}
+
+
+/* kioskMenuItem.css */
+.kiosk-menu-item img {
+    width: 150px; /* Increase width */
+    height: 150px; /* Increase height */
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+
+.kiosk-menu-item h3 {
+    font-size: 1rem;
+    margin: 0;
+    color: #333;
+}
+
+.kiosk-menu-item:hover {
+    transform: scale(1.05);
+}
+
+/* Adjust to two columns on medium screens */
+@media (max-width: 768px) {
+    .kiosk-page {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 10px;
+    }
+}
+
+/* Adjust to single column on small screens */
+@media (max-width: 480px) {
+    .kiosk-page {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
