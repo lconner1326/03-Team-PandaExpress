@@ -28,7 +28,7 @@ function StaffTable(){
         <div>
             <h1>Staff Table</h1>
             <div className="staff-table-wrapper">
-                <ItemTable columns={["employee_id", "staff_name"]} rows={data} />
+                <ItemTable columns={["employee_id", "staff_name","position","active"]} rows={data} />
             </div>
         </div>
     )
