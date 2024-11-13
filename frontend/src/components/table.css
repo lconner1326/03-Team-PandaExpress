@@ -21,6 +21,7 @@ th {
     padding: 5px 10px;
     text-align: left;
     border-bottom: 1px solid rgb(167, 159, 159);
+    width: 100px; /* Fixed width to match td */
 }
 
 /* Table Body */
@@ -29,8 +30,6 @@ tbody {
 }
 
 tr {
-    display: flex;
-    justify-content: space-between;
     border-left: 1px solid rgb(203, 203, 203);
     border-right: 1px solid rgb(203, 203, 203);
 }
@@ -41,12 +40,10 @@ tr:not(:last-child) {
 
 /* Table Cells */
 td {
-    flex: 1;
     padding: 3px 8px;
-    width: 80%; /* Adjust width to fit 80% of its parent */
-    background-color: white;
     width: 100px; /* Fixed width */
     height: 40px; /* Fixed height */
+    background-color: white;
     border-left: 1px solid rgb(203, 203, 203); /* Add left border to separate columns */
 }
 
