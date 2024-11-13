@@ -1,0 +1,223 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container for the menu sections */
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1250px;
+    margin: auto;
+}
+
+/* Section Styling */
+.section {
+    background-color: #fff;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 1 300px;
+    max-width: 100%;
+}
+
+.section h3 {
+    background-color: #ff6f4a;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin-bottom:10px;
+}
+
+/* Meal Option Styling */
+.meal-option {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ff6f4a;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 1em;
+    position: relative;
+    text-align: left;
+}
+
+.meal-header{
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom:5px;
+}
+
+.meal-name {
+    margin-left: 10px; /* Indent the name slightly */
+}
+
+.meal-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.meal-option span {
+    background-color: #ccc;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.meal-option img.meal-image{
+
+    width: 140px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+/* Side and Entree Grid */
+.grid-container {
+    display: grid;
+    gap: 10px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+
+.section.entrees-section{
+    max-width:100%;
+}
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.grid-item {
+    text-align: center;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    width: 240px;
+    height: 160px;
+}
+
+.grid-item img {
+    width: 120px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* A La Carte and Drink Options */
+.option-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    text-align: center;
+}
+
+.option {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.option h4 {
+    font-size: 1em;
+    margin: 0;
+}
+
+.price {
+    font-weight: bold;
+    color: #ff6f4a;
+}
+
+.appetizers{
+    flex: 1;
+    max-width: 50%;
+}
+.right-sections{
+    display: flex;
+    flex-direction:row;
+    gap: 20px;
+    flex: 1;
+    max-width: 50%;
+}
+.ala-carte,  .drinks {
+    flex: 1;
+    flex-direction:column;
+    max-width: 50%;
+}
+
+.ala-carte{
+    margin-bottom: 20px;
+    
+}
+
+/* Specific styling for the Sides section */
+.sides-section .grid-item img {
+    width: 235px;  
+    height: 160px;  
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.sides-section .grid-item {
+    text-align: center;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    width: 260px; 
+    height: 260px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .menu-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .section {
+        max-width: 100%;
+    }
+    .appetizers, .ala-carte, .drinks{
+        max-width:100%;
+    }
+
+    .grid-2, .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-2{
+        grid-template-columns: 1fr;
+    }
+
+    .meal-option img.meal-image {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;      /* Centers the image horizontally */
+        display: block;
+        border-radius: 5px;
+        object-fit: cover;
+
+    }
+}
