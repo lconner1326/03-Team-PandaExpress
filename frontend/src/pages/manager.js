@@ -4,6 +4,8 @@ import SalesReport from "../components/sales-report"
 import StaffTable from "../components/staffTable"
 import RestockTable from "../components/restock-table"
 import OrderHistoryTable from "../components/orderHistoryTable"
+import XReport from "../components/x-report"
+import ZReport from "../components/z-report"
 
 export const Manager = () => {
 
@@ -17,6 +19,8 @@ export const Manager = () => {
                     <Route path="staff-table" element={<StaffTable/>}/>
                     <Route path="restock-report" element={<RestockTable/>}/>
                     <Route path="order-history-table" element={<OrderHistoryTable/>}/>
+                    <Route path="x-report" element={<XReport/>} />
+                    <Route path="z-report" element={<ZReport/>}></Route>
                 </Routes>
         </div>
         </>
