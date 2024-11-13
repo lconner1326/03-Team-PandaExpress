@@ -46,7 +46,27 @@ app.get('/api/data', async (req, res) => {
 // Define another route for kitchenpage that frontend can call
 app.get('/api/kitchen', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM xreport');
+    const result = await pool.query('SELECT * FROM kitchentable');
+    res.status(200).json(result.rows); // This exports result.rows
+    console.log(result.rows);
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+app.get('/api/priceditems', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM priceditems');
+    res.status(200).json(result.rows); // This exports result.rows
+    console.log(result.rows);
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+app.get('/api/menuitems', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM menuitems');
     res.status(200).json(result.rows); // This exports result.rows
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -54,12 +74,13 @@ app.get('/api/kitchen', async (req, res) => {
   }
 });
 
-// Deleting from xreport, SHOULD MAKE NEW TABLE SO REPORT FUNCTIONALITY STILL WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 app.delete('/api/kitchen/:id', async (req, res) => {
   const { id } = req.params;  // Get the ID from the URL parameter
   try {
     // Execute the DELETE query
-    const result = await pool.query('DELETE FROM xreport WHERE ID = $1 RETURNING *', [id]);
+    const result = await pool.query('DELETE FROM kitchentable WHERE ID = $1 RETURNING *', [id]);
     
     if (result.rowCount === 0) {  // No rows were deleted
       return res.status(404).json({ error: 'Item not found' });
