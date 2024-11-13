@@ -8,8 +8,8 @@
 
 /* Individual box styling */
 .box {
-  width: 150px; /* Increased width for longer IDs */
-  height: 150px; /* Increased height to accommodate button placement */
+  width: 300px; /* Increased width for longer IDs */
+  height: 325px; /* Increased height to accommodate button placement */
   display: flex;
   flex-direction: column; /* Arrange content vertically */
   align-items: center;
