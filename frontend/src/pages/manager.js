@@ -1,5 +1,4 @@
 import ManagerNavBar from "../components/managerNavBar"
-
 export const Manager = () => {
 
     return (
