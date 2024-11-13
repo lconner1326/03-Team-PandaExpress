@@ -23,7 +23,7 @@ function MenuItems() {
   return (
     <div>
       <h1>Menu Items</h1>
-      <p>{data.map(item => item.item_name).join(', ')}</p> {/* Display items as plain text */}
+      <p>{data.map(item => item.item_name)}</p> {/* Display items as plain text */}
     </div>
   );
 }

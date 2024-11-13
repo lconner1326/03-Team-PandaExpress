@@ -1,7 +1,8 @@
 .App {
   text-align: center;
-  height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: #e4d2ba;
 }
 
 .nav{
@@ -36,4 +37,14 @@
   border-radius: 5px;
   margin: 10px;
   cursor: pointer;
+  text-decoration: none;
 }
+
+.staff-table-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+
