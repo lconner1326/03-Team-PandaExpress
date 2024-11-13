@@ -150,6 +150,47 @@ app.get('/api/OrderHistoryData', async(req,res) =>{
   }
 });
 
+app.get('/api/XReportData/', async(req,res) =>{
+  try{
+    const result = await pool.query("SELECT * FROM xreport");
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+
+app.get('/api/ZReportData/generate', async(req,res) =>{
+  try{
+    await pool.query(`TRUNCATE TABLE zreport;
+    INSERT INTO zreport (hour, cost, order_id)
+    SELECT hour, cost, id
+    FROM xreport;
+
+    DELETE FROM xreport;`);
+
+    const result = await pool.query("SELECT * FROM zreport")
+    console.log(result.rows)
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+
+app.get('/api/ZReportData/request', async(req,res) =>{
+  try{
+    const result = await pool.query("SELECT * FROM zreport");
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+
 
 
 // Start the server

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ItemTable from './table';
 
 function SalesReport() {
     const [salesData, setSalesData] = useState([]);
@@ -48,9 +49,11 @@ function SalesReport() {
     }
 
     return (
+        <>
+        <h1>Sales Report</h1>
         <div className="sales-report">
-            <h1>Sales Report</h1>
-            <form onSubmit={handleSubmit}>
+        {salesData.length === 0 && (
+            <form onSubmit={handleSubmit} className='form'>
                 <div>
                     <label htmlFor="startWeek">Start Week:</label>
                     <input type="text" id="startWeek" name="startWeek" value={formData.startWeek} onChange={handleChange} />
@@ -75,19 +78,21 @@ function SalesReport() {
                     <label htmlFor="endDay">End Day:</label>
                     <input type="text" id="endDay" name="endDay" value={formData.endDay} onChange={handleChange} />
                 </div>
-                <button type="submit">Run Sales Report</button>
-            </form>
+                <button type="submit" className='manager-nav-bar-button'>Run Sales Report</button>
+            </form>)}
             
             {/* Display sales data after form submission */}
             {salesData.length > 0 && (
-                <div>
-                    <h2>Sales Data:</h2>
-                    {salesData.map((item, index) => (
-                        <div key={index}>{item.item_name} {item.total_sales}</div>
-                    ))}
-                </div>
+            <div>
+                <h2>Sales Data:</h2>
+                <ItemTable columns={["item_name", "total_sales"]} rows={salesData} />
+                {/* {salesData.map((item, index) => (
+                    <div key={index}>{item.item_name} {item.total_sales}</div>
+                ))} */}
+            </div>
             )}
         </div>
+        </>
     );
 }
 

@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import ItemTable from './table';
-import '../App.css';
+import { useState,useEffect } from "react";
+import ItemTable from "./table";
 
-function StaffTable(){
-
+function XReport(){
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      fetch('http://localhost:3000/api/StaffData')
+      fetch('http://localhost:3000/api/XReportData')
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -26,12 +24,13 @@ function StaffTable(){
 
     return (
         <div>
-            <h1>Staff Table</h1>
+            <h1>X Report</h1>
             <div className="staff-table-wrapper">
-                <ItemTable columns={["employee_id", "staff_name","position","active"]} rows={data} />
+                <ItemTable columns={["hour", "id", "cost"]} rows={data} />
             </div>
         </div>
     )
 }
 
-export default StaffTable;
+
+export default XReport;

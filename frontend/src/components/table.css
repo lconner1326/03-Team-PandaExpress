@@ -63,3 +63,64 @@ td:last-child {
     text-align: right;
     border-left: 1px solid rgb(203, 203, 203);
 }
+
+/* Form Container */
+.form {
+    width: 100%;
+    max-width: 250px;
+    font-family: "Courier New", Courier, monospace;
+    background-color: white;
+    border-radius: 12px 12px 4px 4px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Form Header */
+.form-header {
+    background-color: rgb(44, 44, 44);
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 5px 10px;
+    border-bottom: 1px solid rgb(167, 159, 159);
+}
+
+/* Form Body */
+.form-body {
+    font-size: 0.8rem;
+    padding: 10px;
+}
+
+/* Form Fields */
+.form-field {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-left: 1px solid rgb(203, 203, 203);
+    border-right: 1px solid rgb(203, 203, 203);
+    padding: 3px 8px;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.form-field:nth-child(even) {
+    background-color: rgb(234, 235, 234);
+}
+
+.form-field label {
+    flex: 1;
+    text-align: left;
+}
+
+.form-field input {
+    flex: 2;
+    padding: 3px;
+    border: 1px solid rgb(203, 203, 203);
+    border-radius: 4px;
+}
+
+.sales-report{
+    display: flex;
+    align-items: space-between;
+    justify-content: center;
+}

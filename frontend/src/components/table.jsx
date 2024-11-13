@@ -15,7 +15,9 @@ const ItemTable = ({ columns, rows }) => {
                 {rows.map((row, rowIndex) => (
                     <tr key={rowIndex}>
                         {columns.map((column, colIndex) => (
-                            <td key={colIndex}>{row[column]}</td>
+                            <td key={colIndex}>
+                                {typeof row[column] === 'boolean' ? row[column].toString() : row[column]}
+                            </td>
                         ))}
                     </tr>
                 ))}
