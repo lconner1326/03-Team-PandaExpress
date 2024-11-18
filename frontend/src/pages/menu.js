@@ -36,9 +36,9 @@ import biggerPlateImg from '../components/images/biggerPlate.png';
 export const Menu = () => {
     const [displayedSection, setDisplayedSection] = useState('meals');
     const meals = [
-        { name: 'Bowl', description: 'Serving of 1 of our Entrees and 1 side', price: '$', image: bowlImg},
-        { name: 'Plate', description: 'Serving of 2 of our Entrees and 1 side', price: '$$', image: plateImg},
-        { name: 'Bigger Plate', description: 'Serving of 3 of our Entrees and 1 side', price: '$$$', image: biggerPlateImg},
+        { name: 'Bowl', description: 'Serving of 1 of our Entrees and 1 side', price: '$8.3', image: bowlImg},
+        { name: 'Plate', description: 'Serving of 2 of our Entrees and 1 side', price: '$9.8', image: plateImg},
+        { name: 'Bigger Plate', description: 'Serving of 3 of our Entrees and 1 side', price: '$11.3', image: biggerPlateImg},
     ];
 
     const sides = [
@@ -79,19 +79,18 @@ export const Menu = () => {
     ];
 
     const alaCarte = [
-        { category: 'Sides', options: [{ size: 'Small', price: '$' }, { size: 'Medium', price: '$$' }, { size: 'Large', price: '$$$' }] },
-        { category: 'Entrees', options: [{ size: 'Small', price: '$' }, { size: 'Medium', price: '$$' }, { size: 'Large', price: '$$$' }] },
+        { category: 'Premium Entrees', options: [{ size: 'Small', price: '$6.7' }, { size: 'Medium', price: '$11.5' }, { size: 'Large', price: '$15.7' }] },
+        { category: 'Entrees', options: [{ size: 'Small', price: '$5.2' }, { size: 'Medium', price: '$8.5' }, { size: 'Large', price: '$11.2' }] },
     ];
 
     const drinks = [
         { category: 'Fountain', options: 
-           [{ size: 'Small', price: '$' }, 
-            { size: 'Medium', price: '$$' }, 
-            { size: 'Large', price: '$$$' }] },
+           [{ size: 'Small', price: '$2.1' }, 
+            { size: 'Medium', price: '$2.3' }, 
+            { size: 'Large', price: '$2.5' }] },
         { category: 'Bottled', options:
-           [{ name: 'Water', price: '$' }, 
-            { name: 'Gatorade', price: '$$' }, 
-            { name: 'Large', price: '$$$' }] },
+           [{ name: 'Water', price: '$4.3' }, 
+            { name: 'Gatorade', price: '$2.7' }] },
     ];
 
     return (
@@ -201,8 +200,6 @@ export const Menu = () => {
                     </div>
                 </div>
                 
-                
-
                 {/* Drinks Section */}
                 <div className="section drinks">
                     <h3>Drinks</h3>
@@ -221,7 +218,6 @@ export const Menu = () => {
             </div>
             )}
         </div>
-        
         
 </>
     )
