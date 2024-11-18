@@ -24,17 +24,7 @@ function CheckoutPage({ isInitialized, setIsInitialized, navigate }) {
   }, []);
 
   const handleCheckout = async () => {
-    try {
-      const response = await fetch('/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const data = await response.json();
-      alert(data.message);
-      navigate('/cashier');
-    } catch (error) {
-      console.error('Error during checkout:', error);
-    }
+    navigate('/cashier');
   };
 
   const handleBack = () => {

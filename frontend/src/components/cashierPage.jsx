@@ -156,7 +156,7 @@ function CashierPage({ isInitialized, setIsInitialized, navigate }) {
                 navigate('/manager');
                 break;
             case 'Checkout':
-                navigate('/checkout');
+                navigate('/checkouts');
                 break;
             default:
                 break;

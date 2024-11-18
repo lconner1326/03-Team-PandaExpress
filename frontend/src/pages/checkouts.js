@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CheckoutPage from "../components/checkoutPage"
-export const Checkout = () => {
+export const Checkouts = () => {
     const [isInitialized, setIsInitialized] = useState(false);
     const navigate = useNavigate();
 

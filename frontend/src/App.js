@@ -10,7 +10,7 @@ import { EntreesSides } from "./pages/entreessides";
 import { ALaCarte } from "./pages/alacarte";
 import { Drinks } from "./pages/drinks";
 import { AppetizersDesserts } from "./pages/appetizersdesserts";
-import { Checkout } from "./pages/checkout";
+import { Checkouts } from "./pages/checkouts";
 import './App.css';
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
           <Route path="/alacarte" element={<ALaCarte/>} />
           <Route path="/drinks" element={<Drinks/>} />
           <Route path="/appetizersdesserts" element={<AppetizersDesserts/>} />
-          <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/checkouts" element={<Checkouts/>} />
         </Routes>
     </Router>
 
