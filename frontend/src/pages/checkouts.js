@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CashierPage from "../components/cashierPage"
-export const Cashier = () => {
+import CheckoutPage from "../components/checkoutPage"
+export const Checkouts = () => {
     const [isInitialized, setIsInitialized] = useState(false);
     const navigate = useNavigate();
 
     return (
         <>
-        <div className="cashierPage">
-            <CashierPage isInitialized={isInitialized} setIsInitialized={setIsInitialized} navigate={navigate} />
+        <div className="checkoutPage">
+            <CheckoutPage isInitialized={isInitialized} setIsInitialized={setIsInitialized} navigate={navigate} />
         </div>
         </>
     )

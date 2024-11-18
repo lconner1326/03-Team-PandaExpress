@@ -6,6 +6,11 @@ import { Manager } from "./pages/manager";
 import { Kiosk } from "./pages/kiosk";
 import { Menu } from "./pages/menu";
 import { Kitchen } from "./pages/kitchen";
+import { EntreesSides } from "./pages/entreessides";
+import { ALaCarte } from "./pages/alacarte";
+import { Drinks } from "./pages/drinks";
+import { AppetizersDesserts } from "./pages/appetizersdesserts";
+import { Checkouts } from "./pages/checkouts";
 import MenuSelection from './pages/MenuSelection';
 import Checkout from './pages/checkout';
 import { CartProvider } from './cartContext'; // Import CartProvider
@@ -37,10 +42,14 @@ function App() {
             <Route path="/menu" element={<Menu />} />
             <Route path="/item/:itemType" element={<MenuSelection />} />
             <Route path="/checkout" element={<Checkout />} /> {/* Checkout route */}
+            <Route path="/entreessides" element={<EntreesSides/>} />
+            <Route path="/alacarte" element={<ALaCarte/>} />
+            <Route path="/drinks" element={<Drinks/>} />
+            <Route path="/appetizersdesserts" element={<AppetizersDesserts/>} />
+            <Route path="/checkouts" element={<Checkouts/>} />
           </Routes>
         </div>
-      </Router>
-    </CartProvider>
+    </Router>
   );
 }
 
