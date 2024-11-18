@@ -1,8 +1,6 @@
-// Kiosk.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MenuItem from '../components/kioskMenuItem';
-import '../components/kioskMenuItem';
+import KioskMenuItem from '../components/kioskMenuItem'; // Reusing the KioskMenuItem component
 import bowlImage from '../imgs/bowl.avif';
 import plateImage from '../imgs/plate.avif';
 import biggerPlateImage from '../imgs/biggerplate.avif';
@@ -11,22 +9,27 @@ import drinksImage from '../imgs/drinks.avif';
 import aLaCarteImage from '../imgs/alacarte.avif';
 
 export const Kiosk = () => {
-    const menuItems = [
-        { name: 'Bowl', image: bowlImage },
-        { name: 'Plate', image: plateImage },
-        { name: 'Bigger Plate', image: biggerPlateImage },
-        { name: 'Appetizers and More', image: appetizerImage },
-        { name: 'Drinks', image: drinksImage },
-        { name: 'A La Carte', image: aLaCarteImage }
-    ];
+  const menuItems = [
+    { name: 'Bowl', image: bowlImage, link: '/item/Bowl' },
+    { name: 'Plate', image: plateImage, link: '/item/Plate' },
+    { name: 'Bigger Plate', image: biggerPlateImage, link: '/item/Bigger Plate' },
+    { name: 'Appetizers and More', image: appetizerImage, link: '/item/Appetizers and More' },
+    { name: 'Drinks', image: drinksImage, link: '/item/Drinks' },
+    { name: 'A La Carte', image: aLaCarteImage, link: '/item/A La Carte' },
+  ];
 
-    return (
-        <div className="kiosk-page">
-            {menuItems.map((item, index) => (
-                <Link to={`/item/${item.name}`} key={index}>
-                    <MenuItem image={item.image} name={item.name} />
-                </Link>
-            ))}
-        </div>
-    );
+  return (
+    <div className="kiosk-page">
+      {menuItems.map((item, index) => (
+        <Link to={item.link} key={index}>
+          <KioskMenuItem image={item.image} name={item.name} />
+        </Link>
+      ))}
+      <Link to="/checkout">
+        <button className="checkout-button">Go to Checkout</button>
+      </Link>
+    </div>
+  );
 };
+
+export default Kiosk;

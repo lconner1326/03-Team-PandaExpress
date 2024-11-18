@@ -1,0 +1,96 @@
+.menu-selection {
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-items: center;
+  margin-bottom: 20px;
+}
+
+.confirm-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.kiosk-page.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.selected .kiosk-menu-item {
+  border: 2px solid #f0c040; /* Highlight selected items */
+  background-color: #f9f5e9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.confirm-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons button:first-child {
+  background-color: #ccc;
+}
+
+.modal-buttons button:last-child {
+  background-color: #28a745;
+  color: white;
+}
+
