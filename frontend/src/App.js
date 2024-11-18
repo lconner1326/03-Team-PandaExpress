@@ -6,6 +6,11 @@ import { Manager } from "./pages/manager";
 import { Kiosk } from "./pages/kiosk";
 import { Menu } from "./pages/menu";
 import { Kitchen } from "./pages/kitchen";
+import { EntreesSides } from "./pages/entreessides";
+import { ALaCarte } from "./pages/alacarte";
+import { Drinks } from "./pages/drinks";
+import { AppetizersDesserts } from "./pages/appetizersdesserts";
+import { Checkout } from "./pages/checkout";
 import './App.css';
 
 function App() {
@@ -28,6 +33,11 @@ function App() {
           <Route path="/kitchen" element={<Kitchen/>} />
           <Route path="/kiosk" element={<Kiosk/>} />
           <Route path="/menu" element={<Menu/>} />
+          <Route path="/entreessides" element={<EntreesSides/>} />
+          <Route path="/alacarte" element={<ALaCarte/>} />
+          <Route path="/drinks" element={<Drinks/>} />
+          <Route path="/appetizersdesserts" element={<AppetizersDesserts/>} />
+          <Route path="/checkout" element={<Checkout/>} />
         </Routes>
     </Router>
 
