@@ -8,7 +8,7 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   const handleConfirmOrder = () => {
-    fetch('http://localhost:3000/api/OrderHistoryData', {
+    fetch('https://project-3-03-team-2xy5.onrender.com/api/OrderHistoryData', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ orders: cart }),
