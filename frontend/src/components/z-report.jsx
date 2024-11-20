@@ -6,7 +6,7 @@ function ZReport(){
     const [zreportdata, setZReportData] = useState([]);
 
     useEffect(() => {
-      fetch('http://localhost:3000/api/zreportdata/request')
+      fetch('https://project-3-03-team-2xy5.onrender.com/api/zreportdata/request')
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -22,14 +22,14 @@ function ZReport(){
     }
   
     const handleSubmit = () => {
-        fetch('http://localhost:3000/api/ZReportData/generate')
+        fetch('https://project-3-03-team-2xy5.onrender.com/api/ZReportData/generate')
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
           })
           .then(() => {
-            return fetch('http://localhost:3000/api/ZReportData/request');
+            return fetch('https://project-3-03-team-2xy5.onrender.com/api/ZReportData/request');
           })
           .then(response => {
             if (!response.ok) {

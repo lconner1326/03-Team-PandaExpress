@@ -10,7 +10,7 @@
 //   // Fetch items initially and on interval
 //   useEffect(() => {
 //     const fetchItems = () => {
-//       fetch('http://localhost:3000/api/kitchen')
+//       fetch('https://project-3-03-team-2xy5.onrender.com/api/kitchen')
 //         .then(response => {
 //           if (!response.ok) {
 //             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -30,7 +30,7 @@
 //     };
 
 //     const fetchPricedItems = () => {
-//       fetch('http://localhost:3000/api/priceditems') // New endpoint
+//       fetch('https://project-3-03-team-2xy5.onrender.com/api/priceditems') // New endpoint
 //         .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
 //         .then(names => {
 //           const namesMap = {};
@@ -134,7 +134,7 @@ function KitchenItems() {
   // Fetch kitchen items and priced item names initially and on interval
   useEffect(() => {
     const fetchItems = () => {
-      fetch('http://localhost:3000/api/kitchen')
+      fetch('https://project-3-03-team-2xy5.onrender.com/api/kitchen')
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -155,7 +155,7 @@ function KitchenItems() {
 
     // Fetch priced item names (mapping from item IDs to names)
     const fetchPricedItems = () => {
-      fetch('http://localhost:3000/api/priceditems')
+      fetch('https://project-3-03-team-2xy5.onrender.com/api/priceditems')
         .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
         .then(namesArray => {
           setPricedItemNames(namesArray); // Directly store the array of items
@@ -164,7 +164,7 @@ function KitchenItems() {
     };
     // Fetch menu item names (mapping from item IDs to names)
     const fetchMenuItems = () => {
-      fetch('http://localhost:3000/api/menuitems')
+      fetch('https://project-3-03-team-2xy5.onrender.com/api/menuitems')
         .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
         .then(menuArray => {
           setMenuItemNames(menuArray); // Directly store the array of items
@@ -181,7 +181,7 @@ function KitchenItems() {
 
   // Deletes item from the database when you click "Done"
   const deleteItem = (id) => {
-    fetch(`http://localhost:3000/api/kitchen/${id}`, { method: 'DELETE' })
+    fetch(`https://project-3-03-team-2xy5.onrender.com/api/kitchen/${id}`, { method: 'DELETE' })
       .then(response => {
         if (!response.ok) {
           throw new Error(`Failed to delete item: ${response.statusText}`);

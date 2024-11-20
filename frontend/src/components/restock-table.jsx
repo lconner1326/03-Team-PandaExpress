@@ -7,7 +7,7 @@ function RestockTable(){
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      fetch('http://localhost:3000/api/RestockData')
+      fetch('https://project-3-03-team-2xy5.onrender.com/api/RestockData')
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
