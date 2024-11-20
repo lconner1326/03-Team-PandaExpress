@@ -2,6 +2,7 @@
 import express from 'express';
 import pkg from 'pg';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 const { Pool } = pkg; 
 
@@ -11,20 +12,19 @@ app.use(express.json());
 const PORT = 3000;
 
 // Set up PostgreSQL connection
+dotenv.config();
+
 const pool = new Pool({
-  user: 'csce331_03',
-  host: 'csce-315-db.engr.tamu.edu',
-  database: 'csce331_03',
-  password: 'team3team',
-  port: 5432, // Default PostgreSQL port
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT, // Default PostgreSQL port
 });
 
 // Middleware to parse JSON bodies
-app.use(cors({
-  origin: 'http://localhost:3001'  // Allow only your React app
-}));
 
-// app.use(cors());
+app.use(cors());
 
 // Test database connection
 pool.connect()
