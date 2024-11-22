@@ -62,9 +62,12 @@ const items = {
     'Crab Rangoons': crabRangoonsImg,
   },
   Drinks: {
-    'Fountain Drink': fountainDrinkImg,
+    'Small Fountain Drink': fountainDrinkImg,
+    'Medium Fountain Drink': fountainDrinkImg,
+    'Large Fountain Drink': fountainDrinkImg,
     'Gatorade': gatoradeImg,
     'Bottled Water': bottledWaterImg,
+
   },
   'A La Carte': {
     'White Rice': whiteRiceImg,
@@ -100,18 +103,17 @@ const MenuSelection = () => {
 
   const [selectedSides, setSelectedSides] = useState([]);
   const [selectedEntrees, setSelectedEntrees] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]); // For "Drinks," "Appetizers and More," and "A La Carte"
+  const [selectedOtherItems, setSelectedOtherItems] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
 
   const maxSides = limits[itemType]?.sides || 0;
   const maxEntrees = limits[itemType]?.entrees || 0;
 
-  // Handle item selection for single-category types
-  const handleItemSelect = (item) => {
-    if (selectedItems.includes(item)) {
-      setSelectedItems(selectedItems.filter((i) => i !== item));
-    } else {
-      setSelectedItems([...selectedItems, item]);
+  const handleOtherItemSelect = (other) => {
+    if (selectedOtherItems.includes(other)){
+      setSelectedOtherItems(selectedOtherItems.filter((o) => o !== other));
+    } else{
+      setSelectedOtherItems([...selectedOtherItems, other]);
     }
   };
 
@@ -142,14 +144,15 @@ const MenuSelection = () => {
       };
       addToCart(order);
     } else {
-      const order = selectedItems.map((item) => ({
-        itemType, // Include the itemType for single-category items
-        name: item,
+      const order = selectedOtherItems.map((item) => ({
+        itemType, // Add the menu type (e.g., Drinks, A La Carte, etc.)
+        name: item, // Include the specific item selected
       }));
-      addToCart(order);
+      order.forEach((o) => addToCart(o)); // Add each item separately to the cart
     }
     setShowDialog(true);
   };
+  
 
   const handleOrderMore = () => {
     setShowDialog(false);
@@ -230,8 +233,8 @@ const MenuSelection = () => {
         {Object.entries(categoryItems).map(([name, imgPath]) => (
           <div
             key={name}
-            onClick={() => handleItemSelect(name)}
-            className={selectedItems.includes(name) ? 'selected' : ''}
+            onClick={() => handleOtherItemSelect(name)}
+            className={selectedOtherItems.includes(name) ? 'selected' : ''}
           >
             <KioskMenuItem image={imgPath} name={name} />
           </div>
@@ -239,7 +242,7 @@ const MenuSelection = () => {
       </div>
       <button
         className="confirm-button"
-        disabled={selectedItems.length === 0}
+        disabled={selectedOtherItems.length === 0}
         onClick={handleConfirmSelection}
       >
         Confirm Selection
