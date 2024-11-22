@@ -6,7 +6,7 @@ function XReport(){
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      fetch('http://localhost:3000/api/XReportData')
+      fetch('https://project-3-03-team-2xy5.onrender.com/api/XReportData')
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

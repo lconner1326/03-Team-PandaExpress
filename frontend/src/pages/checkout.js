@@ -16,8 +16,7 @@ const Checkout = () => {
     }
   
     console.log("Sending orders to /api/placeOrder:", cart);
-  
-    fetch('http://localhost:3000/api/placeOrder', {
+    fetch('https://project-3-03-team-2xy5.onrender.com/api/placeOrder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ orders: cart }),
