@@ -2,11 +2,15 @@ import React, { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]); // Ensure cart is initialized as an array
+export const useCart = () => {
+  return useContext(CartContext);
+};
 
-  const addToCart = (order) => {
-    setCart((prevCart) => [...prevCart, order]); // Append new order to the cart
+export const CartProvider = ({ children }) => {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (item) => {
+    setCart((prevCart) => [...prevCart, item]);
   };
 
   const removeFromCart = (index) => {
@@ -22,12 +26,4 @@ export const CartProvider = ({ children }) => {
       {children}
     </CartContext.Provider>
   );
-};
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
 };

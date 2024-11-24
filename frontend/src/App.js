@@ -41,7 +41,7 @@ function App() {
             <Route path="/kiosk" element={<Kiosk />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/item/:itemType" element={<MenuSelection />} />
-            <Route path="/checkout" element={<Checkout />} /> {/* Checkout route */}
+            <Route path="/checkout" element={<Checkout />} />
             <Route path="/entreessides" element={<EntreesSides/>} />
             <Route path="/alacarte" element={<ALaCarte/>} />
             <Route path="/drinks" element={<Drinks/>} />
