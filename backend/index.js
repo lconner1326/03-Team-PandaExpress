@@ -74,8 +74,6 @@ app.get('/api/menuitems', async (req, res) => {
   }
 });
 
-
-
 app.delete('/api/kitchen/:id', async (req, res) => {
   const { id } = req.params;  // Get the ID from the URL parameter
   try {
@@ -170,17 +168,6 @@ app.get('/api/OrderHistoryData', async (req, res) => {
   }
 });
 
-app.get('/api/getPrice', async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM neworderhistory ORDER BY id DESC LIMIT 100");
-    console.log(result.rows);
-    res.status(200).json(result.rows);
-  } catch (err) {
-    console.error('Error executing query', err.stack);
-    res.status(500).json({ error: 'Failed to fetch data' });
-  }
-});
-
 app.post('/api/placeOrder', async (req, res) => {
   const orders = req.body.orders; // Expecting an array of orders
   console.log("Route hit: /api/placeOrder");
@@ -190,6 +177,7 @@ app.post('/api/placeOrder', async (req, res) => {
     console.warn("Invalid orders format");
     return res.status(400).json({ error: 'Invalid orders format' });
   }
+  
 
   const priced_dictionary = { 
     "Bowl": 0, 
@@ -240,8 +228,8 @@ app.post('/api/placeOrder', async (req, res) => {
     console.log("Latest Order Query Result:", latestOrderResult.rows);
     const latestOrderId = latestOrderResult.rows[0]?.latestorder || 0; // Extract the integer value
     const newOrderId = latestOrderId + 1; // Increment the ID correctly
-
-
+    let itemId = 0;
+    
     
     console.log("New Order ID:", newOrderId);
 
@@ -279,7 +267,7 @@ app.post('/api/placeOrder', async (req, res) => {
 
         console.log(`Inserting order with itemType ${itemType}`);
         await pool.query(
-          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
           [
             newOrderId,
             priced_dictionary[itemType],
@@ -289,8 +277,22 @@ app.post('/api/placeOrder', async (req, res) => {
             entree3ID,
             price,
             premium,
+            itemId,
           ]
         );
+        await pool.query(
+          "INSERT INTO kitchentable (id, priceditem, side, entree1, entree2, entree3, itemid) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+          [
+            newOrderId,
+            priced_dictionary[itemType],
+            sideID,
+            entree1ID,
+            entree2ID,
+            entree3ID,
+            itemId,
+          ]
+        );
+        itemId += 1;
       } else if (name) {
         // Handle standalone items like drinks
         console.log("Inserting standalone item: ${name}", name);
@@ -298,7 +300,7 @@ app.post('/api/placeOrder', async (req, res) => {
         const itemCost = itemCostResult.rows[0]?.price || 0;
         console.log("Price of item: ", itemCost);
         await pool.query(
-          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
           [
             newOrderId,
             priced_dictionary[name] || -1,
@@ -307,18 +309,31 @@ app.post('/api/placeOrder', async (req, res) => {
             -1,
             -1,
             itemCost,
-            0,
+            itemId,
           ]
         );
+        await pool.query(
+          "INSERT INTO kitchentable (id, priceditem, side, entree1, entree2, entree3, itemid) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+          [
+            newOrderId,
+            priced_dictionary[name] || -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            itemCost,
+            itemId,
+          ]
+        );
+        itemId += 1;
       } else {
         console.warn("Skipping invalid order:", order);
       }
     }
-
     // Commit transaction
     await pool.query("COMMIT");
     console.log("Transaction committed successfully");
-    res.status(200).json({ success: true, message: "Orders processed successfully", orderId: newOrderId });
+    res.status(200).json({ success: true, message: "Orders processed successfully", orderId: newOrderId, itemId: 0 });
   } catch (err) {
     // Rollback transaction on error
     await pool.query("ROLLBACK");
@@ -394,181 +409,6 @@ app.get('/api/ZReportData/request', async(req,res) =>{
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
-
-app.get('/next-order-id', (req, res) => {
-  const sqlMaxId = "SELECT COALESCE(MAX(id), 0) AS max_id FROM neworderhistory";
-  
-  db.query(sqlMaxId, (err, result) => {
-    if (err) {
-      res.status(500).json({ error: 'Database error' });
-      return;
-    }
-
-    const maxId = result[0].max_id;
-    const nextOrderId = maxId + 1; // Increment the max ID by 1
-    res.json({ nextOrderId });
-  });
-});
-
-app.get('/current-order-id', (req, res) => {
-  const sqlMaxId = "SELECT COALESCE(MAX(id), 0) AS max_id FROM neworderhistory";
-  
-  db.query(sqlMaxId, (err, result) => {
-    if (err) {
-      res.status(500).json({ error: 'Database error' });
-      return;
-    }
-
-    const maxId = result[0].max_id;
-    const currentOrderId = maxId; // Increment the max ID by 1
-    res.json({ nextOrderId });
-  });
-});
-
-// app.post('/api/insertOrder', async (req, res) => {
-//   const { id, priceditem, cost, itemid } = req.body;
-//   const currentHour = new Date().getHours(); // Get current hour
-  
-//   const sqlInsert = `
-//       INSERT INTO neworderhistory (id, priceditem, cost, premium, itemid, hour)
-//       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;
-//   `;
-  
-//   try {
-//       const result = await client.query(sqlInsert, [id, priceditem, cost, 0, itemid, currentHour]);
-//       const newOrderId = result.rows[0].id;
-//       res.status(201).json({ id: newOrderId });
-//   } catch (error) {
-//       console.error('Error inserting order:', error);
-//       res.status(500).json({ error: 'Failed to insert new order' });
-//   }
-// });
-
-// app.post('/api/updateIngredient', async (req, res) => {
-//   const { ingredientId, quantity } = req.body;
-
-
-//   // Check if both ingredientId and quantity are provided
-//   if (!ingredientId || !quantity) {
-//       return res.status(400).json({ error: 'ingredientId and quantity are required' });
-//   }
-
-
-//   try {
-//       // Prepare SQL query to update the ingredient quantity
-//       const sqlUpdate = 'UPDATE ingredients SET units = units - $1 WHERE ingredientid = $2';
-
-
-//       // Execute the SQL query with parameterized values
-//       await pool.query(sqlUpdate, [quantity, ingredientId]);
-
-
-//       // Respond with success message
-//       res.status(200).json({ message: 'Ingredient quantity updated successfully' });
-//   } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: 'Error updating ingredient quantity' });
-//   }
-// });
-
-
-app.get('/getPrice/:itemid', async (req, res) => {
-  const { itemid } = req.params;
-
-  try {
-    // Query to fetch the price from the priceditems table
-    const result = await client.query('SELECT price FROM priceditems WHERE itemid = $1', [itemid]);
-
-    // Check if the item exists
-    if (result.rows.length > 0) {
-      // Return the price as JSON
-      res.json({ itemid, price: result.rows[0].price });
-    } else {
-      // Item not found
-      res.status(404).json({ error: 'Item not found' });
-    }
-  } catch (err) {
-    console.error('Error fetching price:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-/* Checkout Page */
-
-// app.get('/order-details', async (req, res) => {
-//   try {
-//     // Query to get the latest order ID
-//     const result = await pool.query('SELECT MAX(id) AS max_id FROM neworderhistory');
-//     const maxId = result.rows[0].max_id;
-
-//     if (maxId === null) {
-//       return res.json({ message: 'No orders found.' });
-//     }
-
-//     // Query to get the details for the latest order
-//     const orderDetailsResult = await pool.query(
-//       'SELECT priceditem, side, entree1, entree2, entree3, cost, premium FROM neworderhistory WHERE id = $1',
-//       [maxId]
-//     );
-
-//     const orderDetails = orderDetailsResult.rows;
-//     let totalCost = 0.0;
-//     const formattedDetails = orderDetails.map(item => {
-//       totalCost += item.cost + item.premium;
-//       return {
-//         pricedItem: item.priceditem,
-//         side: item.side,
-//         entree1: item.entree1,
-//         entree2: item.entree2,
-//         entree3: item.entree3,
-//         cost: `$${item.cost.toFixed(2)}`,
-//         premium: `$${item.premium.toFixed(2)}`,
-//       };
-//     });
-
-//     res.json({
-//       orderDetails: formattedDetails,
-//       totalCost: `$${totalCost.toFixed(2)}`,
-//     });
-//   } catch (err) {
-//     console.error('Error fetching order details:', err);
-//     res.status(500).json({ message: 'Error accessing the database.' });
-//   }
-// });
-
-// // Insert into the XReport table
-// app.post('/checkout', async (req, res) => {
-//   try {
-//     const currentHour = new Date().getHours();
-
-//     // Query to get the latest order ID and its total cost
-//     const result = await pool.query('SELECT MAX(id) AS max_id FROM neworderhistory');
-//     const maxId = result.rows[0].max_id;
-
-//     if (maxId === null) {
-//       return res.status(400).json({ message: 'No order found to checkout.' });
-//     }
-
-//     const costResult = await pool.query(
-//       'SELECT SUM(cost + premium) AS total_cost FROM neworderhistory WHERE id = $1',
-//       [maxId]
-//     );
-//     const totalCost = costResult.rows[0].total_cost;
-
-//     // Insert the checkout record into xreport
-//     await pool.query(
-//       'INSERT INTO xreport (hour, id, cost) VALUES ($1, $2, $3)',
-//       [currentHour, maxId, totalCost]
-//     );
-
-//     res.json({ message: 'Checkout successful!', totalCost: `$${totalCost.toFixed(2)}` });
-//   } catch (err) {
-//     console.error('Error processing checkout:', err);
-//     res.status(500).json({ message: 'Error processing checkout.' });
-//   }
-// });
-
-
 
 // Start the server
 app.listen(PORT, () => {
