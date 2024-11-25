@@ -19,15 +19,13 @@ export const Kiosk = () => {
   ];
 
   return (
+    
     <div className="kiosk-page">
       {menuItems.map((item, index) => (
         <Link to={item.link} key={index}>
           <KioskMenuItem image={item.image} name={item.name} />
         </Link>
       ))}
-      <Link to="/checkout">
-        <button className="checkout-button">Go to Checkout</button>
-      </Link>
     </div>
   );
 };
