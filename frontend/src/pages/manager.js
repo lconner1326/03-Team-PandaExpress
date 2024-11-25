@@ -6,6 +6,7 @@ import RestockTable from "../components/restock-table"
 import OrderHistoryTable from "../components/orderHistoryTable"
 import XReport from "../components/x-report"
 import ZReport from "../components/z-report"
+import MenuItemsTable from "../components/MenuItemsTable"
 
 export const Manager = () => {
 
@@ -21,6 +22,7 @@ export const Manager = () => {
                     <Route path="order-history-table" element={<OrderHistoryTable/>}/>
                     <Route path="x-report" element={<XReport/>} />
                     <Route path="z-report" element={<ZReport/>}></Route>
+                    <Route path="menuitems-table" element={<MenuItemsTable/>}/>
                 </Routes>
         </div>
         </>

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link, BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Cashier } from './pages/cashier';
-import MenuItems from './components/menuitems';
 import { Manager } from "./pages/manager";
 import { Kiosk } from "./pages/kiosk";
 import { Menu } from "./pages/menu";
@@ -22,7 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={
                 <div className="home-nav-bar">
-                <Link className='home-nav-button' to="/cashier">CASHIER</Link>
+                <Link className='home-nav-button' to="/kiosk">CASHIER</Link>
                 <Link className='home-nav-button' to="/manager">Manager</Link>
                 <Link className='home-nav-button' to="/kitchen">Kitchen</Link>
                 <Link className='home-nav-button' to="/kiosk">Kiosk</Link>
@@ -32,7 +30,7 @@ function App() {
                 </Link>
               </div>
               }/>
-            <Route path="/cashier" element={<Cashier />} />
+            <Route path="/kiosk" element={<Kiosk />} />
             <Route path="/manager/*" element={<Manager />} />
             <Route path="/kitchen" element={<Kitchen />} />
             <Route path="/kiosk" element={<Kiosk />} />
