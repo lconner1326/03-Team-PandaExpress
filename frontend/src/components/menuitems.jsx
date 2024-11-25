@@ -26,6 +26,7 @@ function MenuItems() {
       <p>{data.map(item => item.item_name)}</p> {/* Display items as plain text */}
     </div>
   );
+  
 }
 
 export default MenuItems;
