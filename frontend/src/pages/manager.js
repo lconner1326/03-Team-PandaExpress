@@ -7,12 +7,16 @@ import OrderHistoryTable from "../components/orderHistoryTable"
 import XReport from "../components/x-report"
 import ZReport from "../components/z-report"
 import MenuItemsTable from "../components/MenuItemsTable"
+import BackButton from "../components/backButton"
+import PricedItemsTable from "../components/pricedItemsTable"
+import IngredientsTable from "../components/ingredientsTable"
 
 export const Manager = () => {
 
     return (
         <>
         <div className="managerPage">
+        <BackButton />
                 <h1>Manager Page</h1>
                 <ManagerNavBar />
                 <Routes>
@@ -23,6 +27,8 @@ export const Manager = () => {
                     <Route path="x-report" element={<XReport/>} />
                     <Route path="z-report" element={<ZReport/>}></Route>
                     <Route path="menuitems-table" element={<MenuItemsTable/>}/>
+                    <Route path="priceditems-table" element={<PricedItemsTable/>} />
+                    <Route path="ingredients-table" element={<IngredientsTable/>} />
                 </Routes>
         </div>
         </>

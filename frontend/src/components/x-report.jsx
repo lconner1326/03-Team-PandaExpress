@@ -23,8 +23,8 @@ function XReport(){
 
 
     return (
-        <div>
-            <h1>X Report</h1>
+        <div className="page-wrapper">
+            <h1 className="page-header">X Report</h1>
             <div className="staff-table-wrapper">
                 <ItemTable columns={["hour", "id", "cost"]} rows={data} />
             </div>

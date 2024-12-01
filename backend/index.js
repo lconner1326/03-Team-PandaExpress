@@ -32,7 +32,7 @@ pool.connect()
   .catch((err) => console.error('Database connection error', err.stack));
 
 // Define a route the frontend can call
-app.get('/api/data', async (req, res) => {
+app.get('/api/menuItems', async (req, res) => {
   try {
     // Example query to get data from a table called "your_table"
     const result = await pool.query('SELECT * FROM menuitems');
@@ -48,31 +48,22 @@ app.get('/api/kitchen', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM kitchentable');
     res.status(200).json(result.rows); // This exports result.rows
-    console.log(result.rows);
   } catch (err) {
     console.error('Error executing query', err.stack);
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
+
 app.get('/api/priceditems', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM priceditems');
     res.status(200).json(result.rows); // This exports result.rows
-    console.log(result.rows);
   } catch (err) {
     console.error('Error executing query', err.stack);
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
-app.get('/api/menuitems', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM menuitems');
-    res.status(200).json(result.rows); // This exports result.rows
-  } catch (err) {
-    console.error('Error executing query', err.stack);
-    res.status(500).json({ error: 'Failed to fetch data' });
-  }
-});
+
 
 app.delete('/api/kitchen/:id', async (req, res) => {
   const { id } = req.params;  // Get the ID from the URL parameter
@@ -149,6 +140,17 @@ app.get('/api/StaffData', async (req, res) => {
 app.get('/api/RestockData', async(req,res) =>{
   try{
     const result = await pool.query("SELECT * FROM ingredients ORDER BY units ASC");
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+
+app.get('/api/ingredients', async(req,res) =>{
+  try{
+    const result = await pool.query("SELECT * FROM ingredients");
     res.status(200).json(result.rows);
   }
   catch(err){
@@ -409,6 +411,9 @@ app.get('/api/ZReportData/request', async(req,res) =>{
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
+
+
+
 
 // Start the server
 app.listen(PORT, () => {

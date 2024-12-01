@@ -50,7 +50,7 @@ function SalesReport() {
 
     return (
         <>
-        <h1>Sales Report</h1>
+        <h1 className='page-header'>Sales Report</h1>
         <div className="sales-report">
         {salesData.length === 0 && (
             <form onSubmit={handleSubmit} className='form'>
@@ -83,8 +83,8 @@ function SalesReport() {
             
             {/* Display sales data after form submission */}
             {salesData.length > 0 && (
-            <div>
-                <h2>Sales Data:</h2>
+            <div className='page-wrapper'>
+                <h2 className='page-header'>Sales Data:</h2>
                 <ItemTable columns={["item_name", "total_sales"]} rows={salesData} />
                 {/* {salesData.map((item, index) => (
                     <div key={index}>{item.item_name} {item.total_sales}</div>

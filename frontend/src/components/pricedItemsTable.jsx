@@ -2,12 +2,12 @@ import React from "react";
 import ItemTable from "./table";
 import { useState,useEffect } from "react";
 
-function MenuItemsTable () {
+function PricedItemsTable () {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://project-3-03-team-2xy5.onrender.com/api/menuItems')
+    fetch('https://project-3-03-team-2xy5.onrender.com/api/priceditems')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -25,12 +25,12 @@ function MenuItemsTable () {
 
   return (
       <div className="page-wrapper">
-          <h1 className="page-header">Menu Items Table</h1>
+          <h1 className="page-header">Priced Items Table</h1>
           <div className="staff-table-wrapper">
-              <ItemTable columns={["menuid",'item_name','category','premium' , 'ingredientsused']} rows={data} />
+              <ItemTable columns={["itemid",'item_name','category','price' ]} rows={data} />
           </div>
       </div>
   )
 }
 
-export default MenuItemsTable;
+export default PricedItemsTable;
