@@ -1,7 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './table.css';
+
 const ItemTable = ({ columns, rows }) => {
+    const formatNumber = (num) => {
+        return Number.isInteger(num) ? num : num.toFixed(2);
+    };
+
+    const formatValue = (value) => {
+        if (Array.isArray(value)) {
+            return value.join(', ');
+        } else if (typeof value === 'boolean') {
+            return value.toString();
+        } else if (typeof value === 'number') {
+            return formatNumber(value);
+        } else {
+            return value;
+        }
+    };
+
     return (
         <table>
             <thead>
@@ -16,7 +33,7 @@ const ItemTable = ({ columns, rows }) => {
                     <tr key={rowIndex}>
                         {columns.map((column, colIndex) => (
                             <td key={colIndex}>
-                                {typeof row[column] === 'boolean' ? row[column].toString() : row[column]}
+                                {formatValue(row[column])}
                             </td>
                         ))}
                     </tr>

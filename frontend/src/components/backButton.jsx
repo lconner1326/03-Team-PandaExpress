@@ -8,7 +8,7 @@ function BackButton() {
     }
   
     return (
-      <Link to="/" className="back-button">
+      <Link to="/" className="manager-nav-bar-button back-button">
         Back
       </Link>
     );

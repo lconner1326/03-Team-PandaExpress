@@ -47,8 +47,8 @@ function ZReport(){
 
 
     return (
-        <div>
-            <h1>Z Report</h1>
+        <div className="page-wrapper">
+            <h1 className="page-header">Z Report</h1>
             {console.log(zreportdata)}
             <div className="staff-table-wrapper">
                 <button onClick={handleSubmit} className="manager-nav-bar-button">Generate new Z-Report</button>

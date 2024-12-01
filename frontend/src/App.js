@@ -30,14 +30,16 @@ function App() {
                 </Link>
               </div>
               }/>
-            <Route path="/kiosk" element={<Kiosk />} />
-            <Route path="/manager/*" element={<Manager />} />
-            <Route path="/kitchen" element={<Kitchen />} />
-            <Route path="/kiosk" element={<Kiosk />} />
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/item/:itemType" element={<MenuSelection />} />
-            <Route path="/checkout" element={<Checkout />} />
-          </Routes>
+
+              <Route path="/kiosk"  element={<Kiosk />} />
+              <Route path="/manager/*" className='manager' element={<Manager />} />
+              <Route path="/kitchen" element={<Kitchen />} />
+              <Route path="/kiosk" element={<Kiosk />} />
+              <Route path="/menu" element={<Menu />} />
+              <Route path="/item/:itemType" element={<MenuSelection />} />
+              <Route path="/checkout" element={<Checkout />} />
+            
+            </Routes>
         </div>
     </Router>
     </CartProvider>
