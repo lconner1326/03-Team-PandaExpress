@@ -522,38 +522,37 @@ app.use(
     });
   });
   
-  // app.get('/auth/status', (req, res) => {
-  //   if (req.isAuthenticated()) {
-  //     res.json({ user: req.user });
-  //   } else {
-  //     res.json({ user: null });
-  //   }
-  // });
-
-  const client = new OAuth2Client('903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com'); // Replace with your Google client ID
-  
-  app.get('/auth/status', async (req, res) => {
-    const token = req.session.token;  // or use whatever method you store the token
-    console.log(req.session);
-    if (!token) {
-      return res.status(401).json({ error: 'No token provided' });
-    }
-  
-    try {
-      // Verify the token
-      const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: '903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com',  // Ensure this matches the client ID
-      });
-      
-      const payload = ticket.getPayload();
-      console.log('User data:', payload);  // Contains the user's profile information
-      
-      // Respond with user data
-      res.json({ user: payload });
-    } catch (error) {
-      console.error('Error verifying token:', error);
-      res.status(500).json({ error: 'Failed to verify token' });
+  app.get('/auth/status', (req, res) => {
+    if (req.isAuthenticated()) {
+      res.json({ user: req.user });
+    } else {
+      res.json({ user: null });
     }
   });
+
+  // const client = new OAuth2Client('903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com'); // Replace with your Google client ID
+  
+  // app.get('/auth/status', async (req, res) => {
+  //   const token = req.session.token;  // or use whatever method you store the token
+  //   if (!token) {
+  //     return res.status(401).json({ error: 'No token provided' });
+  //   }
+  
+  //   try {
+  //     // Verify the token
+  //     const ticket = await client.verifyIdToken({
+  //       idToken: token,
+  //       audience: '903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com',  // Ensure this matches the client ID
+  //     });
+      
+  //     const payload = ticket.getPayload();
+  //     console.log('User data:', payload);  // Contains the user's profile information
+      
+  //     // Respond with user data
+  //     res.json({ user: payload });
+  //   } catch (error) {
+  //     console.error('Error verifying token:', error);
+  //     res.status(500).json({ error: 'Failed to verify token' });
+  //   }
+  // });
   
