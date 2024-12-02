@@ -534,6 +534,7 @@ app.use(
   
   app.get('/auth/status', async (req, res) => {
     const token = req.session.token;  // or use whatever method you store the token
+    console.log(req.session);
     if (!token) {
       return res.status(401).json({ error: 'No token provided' });
     }
