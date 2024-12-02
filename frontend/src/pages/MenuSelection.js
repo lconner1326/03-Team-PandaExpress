@@ -90,6 +90,8 @@ const items = {
   },
 };
 
+const premiumEntrees = ['Black Pepper Sirloin Steak', 'Honey Walnut Shrimp'];
+
 const MenuSelection = () => {
   const { itemType } = useParams(); // Dynamically get item type from URL
   const navigate = useNavigate();
@@ -105,14 +107,36 @@ const MenuSelection = () => {
   const [selectedEntrees, setSelectedEntrees] = useState([]);
   const [selectedOtherItems, setSelectedOtherItems] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
 
   const maxSides = limits[itemType]?.sides || 0;
   const maxEntrees = limits[itemType]?.entrees || 0;
 
+  const handleSizeSelect = (size) => {
+    const isPremium = premiumEntrees.includes(currentItem);
+    const selectedItemType = isPremium
+      ? `Premium ${size} Entree`
+      : `${size} Entree`;
+  
+    const newItem = {
+      itemType: selectedItemType,
+      name: currentItem,
+    };
+  
+    // Add the A La Carte item with its size to selectedOtherItems
+    setSelectedOtherItems([...selectedOtherItems, newItem]);
+    setShowSizeModal(false); // Close modal
+    setCurrentItem(null); // Reset current item
+  };
+
   const handleOtherItemSelect = (other) => {
     if (selectedOtherItems.includes(other)){
       setSelectedOtherItems(selectedOtherItems.filter((o) => o !== other));
-    } else{
+    } else if (itemType == 'A La Carte'){
+      setCurrentItem(other);
+      setShowSizeModal(true);
+    }else{
       setSelectedOtherItems([...selectedOtherItems, other]);
     }
   };
@@ -143,6 +167,10 @@ const MenuSelection = () => {
         entrees: selectedEntrees,
       };
       addToCart(order);
+    } else if (itemType == 'A La Carte'){
+      selectedOtherItems.forEach((item) => addToCart(item)); // Add all selected items to the cart
+      setSelectedOtherItems([]); // Clear the temporary selection
+      setShowDialog(true); // 
     } else {
       const order = selectedOtherItems.map((item) => ({
         itemType, // Add the menu type (e.g., Drinks, A La Carte, etc.)
@@ -228,25 +256,60 @@ const MenuSelection = () => {
   // Render logic for other item types ("Drinks," "Appetizers and More," etc.)
   return (
     <div className="menu-selection">
-      <h2>{itemType}</h2>
-      <div className="kiosk-page">
-        {Object.entries(categoryItems).map(([name, imgPath]) => (
-          <div
-            key={name}
-            onClick={() => handleOtherItemSelect(name)}
-            className={selectedOtherItems.includes(name) ? 'selected' : ''}
-          >
-            <KioskMenuItem image={imgPath} name={name} />
-          </div>
-        ))}
+    <h2>{itemType}</h2>
+    <div className="kiosk-page">
+      {Object.entries(categoryItems).map(([name, imgPath]) => (
+        <div
+          key={name}
+          onClick={() => {
+            if (itemType === 'A La Carte') {
+              setCurrentItem(name); // Set the current item for size selection
+              setShowSizeModal(true); // Show size selection modal
+            } else {
+              handleOtherItemSelect(name); // Handle regular item selection
+            }
+          }}
+          className={selectedOtherItems.includes(name) ? 'selected' : ''}
+        >
+          <KioskMenuItem image={imgPath} name={name} />
+        </div>
+      ))}
+    </div>
+    <button
+      className="confirm-button"
+      disabled={selectedOtherItems.length === 0}
+      onClick={handleConfirmSelection}
+    >
+      Confirm Selection
+    </button>
+
+    {showSizeModal && currentItem && (
+  <div className="modal-overlay">
+    <div className="modal">
+      <h3>Select a Size for {currentItem}</h3>
+      <div className="modal-buttons">
+        <button className="size-button" onClick={() => handleSizeSelect('Small')}>
+          Small
+        </button>
+        <button className="size-button" onClick={() => handleSizeSelect('Medium')}>
+          Medium
+        </button>
+        <button className="size-button" onClick={() => handleSizeSelect('Large')}>
+          Large
+        </button>
       </div>
       <button
-        className="confirm-button"
-        disabled={selectedOtherItems.length === 0}
-        onClick={handleConfirmSelection}
+        className="cancel-button"
+        onClick={() => {
+          setShowSizeModal(false);
+          setCurrentItem(null); // Reset current item
+        }}
       >
-        Confirm Selection
+        Cancel
       </button>
+    </div>
+  </div>
+)}
 
       {showDialog && (
         <div className="modal-overlay">
