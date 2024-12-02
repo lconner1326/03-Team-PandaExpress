@@ -258,61 +258,74 @@ const MenuSelection = () => {
   // Render logic for other item types ("Drinks," "Appetizers and More," etc.)
   return (
     <div className="menu-selection">
-    <h2>{itemType}</h2>
-    <div className="kiosk-page">
-      {Object.entries(categoryItems).map(([name, imgPath]) => (
-        <div
-          key={name}
-          onClick={() => {
-            if (itemType === 'A La Carte') {
-              setCurrentItem(name); // Set the current item for size selection
-              setShowSizeModal(true); // Show size selection modal
-            } else {
-              handleOtherItemSelect(name); // Handle regular item selection
+      <h2>{itemType}</h2>
+      <div className="kiosk-page">
+        {Object.entries(categoryItems).map(([name, imgPath]) => (
+          <div
+            key={name}
+            onClick={() => {
+              if (itemType === 'A La Carte') {
+                setCurrentItem(name); // Set the current item for size selection
+                setShowSizeModal(true); // Show size selection modal
+              } else {
+                handleOtherItemSelect(name); // Handle regular item selection
+              }
+            }}
+            className={
+              selectedOtherItems.some((item) => item.name === name)
+                ? 'selected'
+                : ''
             }
-          }}
-          className={selectedOtherItems.includes(name) ? 'selected' : ''}
-        >
-          <KioskMenuItem image={imgPath} name={name} />
-        </div>
-      ))}
-    </div>
-    <button
-      className="confirm-button"
-      disabled={selectedOtherItems.length === 0}
-      onClick={handleConfirmSelection}
-    >
-      Confirm Selection
-    </button>
-
-    {showSizeModal && currentItem && (
-  <div className="modal-overlay">
-    <div className="modal">
-      <h3>Select a Size for {currentItem}</h3>
-      <div className="modal-buttons">
-        <button className="size-button" onClick={() => handleSizeSelect('Small')}>
-          Small
-        </button>
-        <button className="size-button" onClick={() => handleSizeSelect('Medium')}>
-          Medium
-        </button>
-        <button className="size-button" onClick={() => handleSizeSelect('Large')}>
-          Large
-        </button>
+          >
+            <KioskMenuItem image={imgPath} name={name} />
+          </div>
+        ))}
       </div>
       <button
-        className="cancel-button"
-        onClick={() => {
-          setShowSizeModal(false);
-          setCurrentItem(null); // Reset current item
-        }}
+        className="confirm-button"
+        disabled={selectedOtherItems.length === 0}
+        onClick={handleConfirmSelection}
       >
-        Cancel
+        Confirm Selection
       </button>
-    </div>
-  </div>
-)}
-
+  
+      {showSizeModal && currentItem && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Select a Size for {currentItem}</h3>
+            <div className="modal-buttons">
+              <button
+                className="size-button"
+                onClick={() => handleSizeSelect('Small')}
+              >
+                Small
+              </button>
+              <button
+                className="size-button"
+                onClick={() => handleSizeSelect('Medium')}
+              >
+                Medium
+              </button>
+              <button
+                className="size-button"
+                onClick={() => handleSizeSelect('Large')}
+              >
+                Large
+              </button>
+            </div>
+            <button
+              className="cancel-button"
+              onClick={() => {
+                setShowSizeModal(false);
+                setCurrentItem(null); // Reset current item
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+  
       {showDialog && (
         <div className="modal-overlay">
           <div className="modal">
@@ -326,6 +339,7 @@ const MenuSelection = () => {
       )}
     </div>
   );
+  
 };
 
 export default MenuSelection;

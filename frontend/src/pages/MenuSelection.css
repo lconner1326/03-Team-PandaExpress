@@ -92,3 +92,16 @@
   margin-top: 10px; /* Add some spacing above the buttons */
 }
 
+.cancel-button {
+  margin-top: 15px; /* Add space between size buttons and cancel */
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #e2e6ea;
+}
+

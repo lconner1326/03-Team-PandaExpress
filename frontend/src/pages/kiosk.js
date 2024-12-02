@@ -8,6 +8,7 @@ import appetizerImage from '../imgs/appetizers.avif';
 import drinksImage from '../imgs/drinks.avif';
 import aLaCarteImage from '../imgs/alacarte.avif';
 import WeatherWidget from '../components/weatherWidget';
+import cartIcon from '../imgs/checkoutCart.png';
 
 export const Kiosk = () => {
   const menuItems = [
@@ -22,6 +23,9 @@ export const Kiosk = () => {
   return (
     <div className="kiosk-page-wrapper">
       <WeatherWidget />
+      <Link to="/checkout" className="checkout-icon">
+                  <img src={cartIcon} alt="Checkout" />
+                </Link>
     <div className="kiosk-page">
       {menuItems.map((item, index) => (
         <Link to={item.link} key={index}>
@@ -29,6 +33,7 @@ export const Kiosk = () => {
         </Link>
       ))}
     </div>
+    
     </div>
   );
 };

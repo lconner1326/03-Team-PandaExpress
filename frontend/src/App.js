@@ -67,9 +67,6 @@ function App() {
                 <Link className='home-nav-button' to="/kitchen">Kitchen</Link>
                 <Link className='home-nav-button' to="/kiosk">Kiosk</Link>
                 <Link className='home-nav-button' to="/menu">Menu</Link>
-                <Link to="/checkout" className="checkout-icon">
-                  <img src={cartIcon} alt="Checkout" />
-                </Link>
               </div>
               }/>
 
