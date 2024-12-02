@@ -7,7 +7,7 @@ function MenuItemsTable () {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://project-3-03-team-2xy5.onrender.com/api/OrderHistoryData')
+    fetch('https://project-3-03-team-2xy5.onrender.com/api/menuItems')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -24,10 +24,10 @@ function MenuItemsTable () {
 
 
   return (
-      <div>
-          <h1>Menu Items Table</h1>
+      <div className="page-wrapper">
+          <h1 className="page-header">Menu Items Table</h1>
           <div className="staff-table-wrapper">
-              <ItemTable columns={["id","week","day","hour","priceditem","side","entree1","entree2","entree3","cost","premium",'item_id']} rows={data} />
+              <ItemTable columns={["menuid",'item_name','category','premium' , 'ingredientsused']} rows={data} />
           </div>
       </div>
   )

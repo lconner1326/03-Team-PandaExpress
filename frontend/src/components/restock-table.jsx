@@ -24,11 +24,10 @@ function RestockTable(){
 
 
     return (
-        <div>
-            <h1>Restock Table</h1>
+        <div className="page-wrapper">
+            <h1 className="page-header">Restock Table</h1>
             <div className="staff-table-wrapper">
                 <ItemTable columns={["ingredientid", "ingredient_name", "restock_level","units"]} rows={data.filter(item => item.units < item.restock_level)} />
-
             </div>
         </div>
     )

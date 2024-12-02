@@ -7,6 +7,7 @@ import biggerPlateImage from '../imgs/biggerplate.avif';
 import appetizerImage from '../imgs/appetizers.avif';
 import drinksImage from '../imgs/drinks.avif';
 import aLaCarteImage from '../imgs/alacarte.avif';
+import WeatherWidget from '../components/weatherWidget';
 
 export const Kiosk = () => {
   const menuItems = [
@@ -19,13 +20,15 @@ export const Kiosk = () => {
   ];
 
   return (
-    
+    <div className="kiosk-page-wrapper">
+      <WeatherWidget />
     <div className="kiosk-page">
       {menuItems.map((item, index) => (
         <Link to={item.link} key={index}>
           <KioskMenuItem image={item.image} name={item.name} />
         </Link>
       ))}
+    </div>
     </div>
   );
 };
