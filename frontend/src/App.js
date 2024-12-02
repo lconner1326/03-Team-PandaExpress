@@ -93,7 +93,7 @@ function App() {
                 </>
               ) : (
                 <button onClick={handleLogin} >
-                  Login With Google
+                  Login with Google
                 </button>
               )}
             </div>
