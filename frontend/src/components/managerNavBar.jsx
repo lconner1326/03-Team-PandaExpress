@@ -13,6 +13,7 @@ function ManagerNavBar() {
             <Link to="/manager/ingredients-table" className="manager-nav-bar-button">Ingredients Table</Link>
             <Link to="/manager/staff-table" className="manager-nav-bar-button">Staff Table</Link>
             <Link to="/manager/order-history-table" className="manager-nav-bar-button">Order History Table</Link>
+            <Link to="/manager/product-usage" className="manager-nav-bar-button">Product Usage Chart</Link>
         </div>
     );
 }
