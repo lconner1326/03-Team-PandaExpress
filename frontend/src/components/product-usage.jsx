@@ -27,7 +27,7 @@ function ProductUsage() {
         const endCompositeTime = (formData.endWeek * 10000) + (formData.endDay * 100) + formData.endHour;
         console.log({startCompositeTime, endCompositeTime});
         
-        fetch('http://localhost:3000/api/ProductUsageData', {
+        fetch('https://project-3-03-team-2xy5.onrender.com/api/ProductUsageData', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
