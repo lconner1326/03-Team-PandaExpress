@@ -30,7 +30,7 @@
   }
   
   .checkout-page button {
-    background-color: #4caf50;
+    background-color: #d9363e;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -40,6 +40,6 @@
   }
   
   .checkout-page button:hover {
-    background-color: #45a049;
+    background-color: #a27577;
   }
   
