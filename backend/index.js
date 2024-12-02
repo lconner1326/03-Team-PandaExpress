@@ -434,14 +434,28 @@ app.listen(PORT, () => {
   // Middleware for sessions
   // const session = require('express-session');
 
+// app.use(
+//   session({
+//     secret: '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',
+//     resave: false, // Prevents unnecessary session saving
+//     saveUninitialized: false, // Ensures no empty sessions are stored
+//     cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24-hour session
+//   })
+// );
 app.use(
   session({
-    secret: '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', // Replace with a secure secret
+    secret: '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',
     resave: false, // Prevents unnecessary session saving
-    saveUninitialized: false, // Ensures no empty sessions are stored
-    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24-hour session
+    saveUninitialized: false, // Prevents storing empty sessions
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      secure: true, // Ensures cookies are sent only over HTTPS
+      httpOnly: true, // Prevents client-side JavaScript access to cookies
+      sameSite: 'none', // Allows cross-origin requests
+    },
   })
 );
+
   // app.use(
   //   cookieSession({
   //     name: 'session',
