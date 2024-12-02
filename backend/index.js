@@ -31,7 +31,8 @@ const pool = new Pool({
 
 // app.use(cors());
 app.use(cors({
-    origin: 'http://localhost:3001', // Frontend URL
+    // origin: 'http://localhost:3001', // Frontend URL- local host
+    origin: 'https://project-3-03-team-1.onrender.com', // Frontend URL- deployed
     credentials: true, // Allow sending cookies (if using sessions)
   }));
 
@@ -458,7 +459,8 @@ app.use(
       {
         clientID: '903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com',
         clientSecret: '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',
-        callbackURL: 'http://localhost:3000/auth/callback',
+        // callbackURL: 'http://localhost:3000/auth/callback', // local host
+        callbackURL: 'https://project-3-03-team-2xy5.onrender.com/auth/callback', // deplyed
       },
       (accessToken, refreshToken, profile, done) => {
         // Save user profile (or handle user creation here)
@@ -487,7 +489,8 @@ app.use(
       failureRedirect: '/',
     }),
     (req, res) => {
-      res.redirect('http://localhost:3001/'); // Redirect after login
+      // res.redirect('http://localhost:3001/'); // Redirect to the homepage or login page- local
+      res.redirect('https://project-3-03-team-1.onrender.com');
     }
   );
   
@@ -498,7 +501,8 @@ app.use(
         return res.status(500).send('Failed to log out');
       }
       req.session = null; // Clear the session if using cookie-session
-      res.redirect('http://localhost:3001/'); // Redirect to the homepage or login page
+      // res.redirect('http://localhost:3001/'); // Redirect to the homepage or login page- local
+      res.redirect('https://project-3-03-team-1.onrender.com');
       console.log("Redirected?");
     });
   });

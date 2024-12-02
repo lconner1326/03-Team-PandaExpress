@@ -17,7 +17,8 @@ function App() {
   const [user, setUser] = useState(null); // To track the logged-in user
 
   const handleLogin = () => {
-    window.location.href = 'http://localhost:3000/auth/google';  // This will redirect directly to backend
+    // window.location.href = 'http://localhost:3000/auth/google';  // This will redirect directly to backend
+    window.location.href = 'https://project-3-03-team-2xy5.onrender.com/auth/google';
   };
 
   // Logout function
@@ -26,7 +27,8 @@ function App() {
     try {
       console.log("Logging out");
       setUser(null); // Clear user state
-      await axios.get('http://localhost:3000/auth/logout'); // Replace with your backend logout endpoint
+      // await axios.get('http://localhost:3000/auth/logout'); // Replace with your backend logout endpoint
+      await axios.get('https://project-3-03-team-2xy5.onrender.com/auth/logout');
       console.log("Reached after axios");
     } catch (error) {
       console.error('Logout error:', error);
@@ -38,7 +40,8 @@ function App() {
   const fetchUser = async () => {
     try {
       console.log('Fetching user status...');
-      const response = await axios.get('http://localhost:3000/auth/status', { withCredentials: true });
+      // const response = await axios.get('http://localhost:3000/auth/status', { withCredentials: true });
+      const response = await axios.get('https://project-3-03-team-2xy5.onrender.com/auth/status', { withCredentials: true });
       console.log('User data:', response.data.user);
       setUser(response.data.user); // Update state
     } catch (error) {
