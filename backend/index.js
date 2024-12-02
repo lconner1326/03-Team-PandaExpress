@@ -533,7 +533,7 @@ app.use(
   const client = new OAuth2Client('903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com'); // Replace with your Google client ID
   
   app.get('/auth/status', async (req, res) => {
-    const token = req.cookies.token;  // or use whatever method you store the token
+    const token = req.session.token;  // or use whatever method you store the token
     if (!token) {
       return res.status(401).json({ error: 'No token provided' });
     }
