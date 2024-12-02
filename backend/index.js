@@ -505,6 +505,7 @@ app.use(
     }),
     (req, res) => {
       // res.redirect('http://localhost:3001/'); // Redirect to the homepage or login page- local
+      console.log(req);
       res.redirect('https://project-3-03-team-1.onrender.com');
     }
   );
