@@ -3,6 +3,11 @@ import express from 'express';
 import pkg from 'pg';
 import cors from 'cors';
 import dotenv from 'dotenv';
+// Stuff for OAuth
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+// import cookieSession from 'cookie-session';
+import session from 'express-session';
 
 const { Pool } = pkg; 
 
@@ -24,7 +29,11 @@ const pool = new Pool({
 
 // Middleware to parse JSON bodies
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3001', // Frontend URL
+    credentials: true, // Allow sending cookies (if using sessions)
+  }));
 
 // Test database connection
 pool.connect()
@@ -419,3 +428,198 @@ app.get('/api/ZReportData/request', async(req,res) =>{
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+//Stuff for OAuth  
+  // Middleware for sessions
+  // const session = require('express-session');
+
+app.use(
+  session({
+    secret: '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', // Replace with a secure secret
+    resave: false, // Prevents unnecessary session saving
+    saveUninitialized: false, // Ensures no empty sessions are stored
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24-hour session
+  })
+);
+  // app.use(
+  //   cookieSession({
+  //     name: 'session',
+  //     keys: ['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'], // Replace with your secret key
+  //     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  //   })
+  // );
+  
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
+  // Passport Google OAuth Strategy
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: '903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com',
+        clientSecret: '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',
+        callbackURL: 'http://localhost:3000/auth/callback',
+      },
+      (accessToken, refreshToken, profile, done) => {
+        // Save user profile (or handle user creation here)
+        done(null, profile);
+      }
+    )
+  );
+  
+  passport.serializeUser((user, done) => {
+    done(null, user);
+  });
+  
+  passport.deserializeUser((user, done) => {
+    done(null, user);
+  });
+  
+  // Google Auth Routes
+  app.get(
+    '/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+  );
+  
+  app.get(
+    '/auth/callback',
+    passport.authenticate('google', {
+      failureRedirect: '/',
+    }),
+    (req, res) => {
+      res.redirect('http://localhost:3001/'); // Redirect after login
+    }
+  );
+  
+  app.get('/auth/logout', (req, res) => {
+    req.logout((err) => {
+      if (err) {
+        console.error('Logout error:', err);
+        return res.status(500).send('Failed to log out');
+      }
+      req.session = null; // Clear the session if using cookie-session
+      res.redirect('http://localhost:3001/'); // Redirect to the homepage or login page
+      console.log("Redirected?");
+    });
+  });
+  
+  app.get('/auth/status', (req, res) => {
+    if (req.isAuthenticated()) {
+      res.json({ user: req.user });
+    } else {
+      res.json({ user: null });
+    }
+  });
+
+
+
+// // Import dependencies
+// import express from 'express';
+// import pkg from 'pg';
+// import cors from 'cors';
+// import dotenv from 'dotenv';
+// // Stuff for OAuth
+// import passport from 'passport';
+// import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+// import cookieSession from 'cookie-session';
+
+// const { Pool } = pkg; 
+
+// // Initialize Express app
+// const app = express();
+// app.use(express.json());
+// const PORT = 3000;
+
+// // Set up PostgreSQL connection
+// dotenv.config();
+
+// const pool = new Pool({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_NAME,
+//   password: process.env.DB_PASSWORD,
+//   port: process.env.DB_PORT, // Default PostgreSQL port
+// });
+
+// // Middleware to parse JSON bodies
+
+// // app.use(cors());
+
+// // const cors = require('cors');
+// app.use(cors({
+//   origin: 'http://localhost:3001', // Frontend URL
+//   credentials: true, // Allow sending cookies (if using sessions)
+// }));
+
+
+// //Stuff for OAuth  
+//   // Middleware for sessions
+//   app.use(
+//     cookieSession({
+//       name: 'session',
+//       keys: ['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'], // Replace with your secret key
+//       maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//     })
+//   );
+  
+//   app.use(passport.initialize());
+//   app.use(passport.session());
+  
+//   // Passport Google OAuth Strategy
+//   passport.use(
+//     new GoogleStrategy(
+//       {
+//         clientID: '903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com',
+//         clientSecret: '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',
+//         callbackURL: 'http://localhost:3000/auth/callback',
+//       },
+//       (accessToken, refreshToken, profile, done) => {
+//         // Save user profile (or handle user creation here)
+//         done(null, profile);
+//       }
+//     )
+//   );
+  
+//   passport.serializeUser((user, done) => {
+//     done(null, user);
+//   });
+  
+//   passport.deserializeUser((user, done) => {
+//     done(null, user);
+//   });
+  
+//   // Google Auth Routes
+//   app.get(
+//     '/auth/google',
+//     passport.authenticate('google', { scope: ['profile', 'email'] })
+//   );
+  
+//   app.get(
+//     '/auth/callback',
+//     passport.authenticate('google', {
+//       failureRedirect: '/',
+//     }),
+//     (req, res) => {
+//       res.redirect('http://localhost:3001/'); // Redirect after login
+//     }
+//   );
+  
+//   app.get('/auth/logout', (req, res) => {
+//     req.logout((err) => {
+//       if (err) {
+//         console.error('Logout error:', err);
+//         return res.status(500).send('Failed to log out');
+//       }
+//       req.session = null; // Clear the session if using cookie-session
+//       res.redirect('http://localhost:3001/'); // Redirect to the homepage or login page
+//       console.log("Redirected?");
+//     });
+//   });
+  
+//   app.get('/auth/status', (req, res) => {
+//     if (req.isAuthenticated()) {
+//       res.json({ user: req.user });
+//     } else {
+//       res.json({ user: null });
+//     }
+//   });
