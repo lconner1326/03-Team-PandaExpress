@@ -158,6 +158,56 @@ app.get('/api/RestockData', async(req,res) =>{
   }
 });
 
+app.post('/api/ProductUsageData', async(req,res) =>{
+    const startCompositeTime = req.body.startCompositeTime;
+    const endCompositeTime = req.body.endCompositeTime;
+    try {
+        const result = await pool.query(
+         ` WITH OrderItems AS (
+            SELECT priceditem AS item_id, COUNT(DISTINCT id) AS item_count
+            FROM neworderhistory
+            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
+            GROUP BY priceditem
+            UNION ALL
+            SELECT side AS item_id, COUNT(DISTINCT id) AS item_count
+            FROM neworderhistory
+            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
+            GROUP BY side
+            UNION ALL
+            SELECT entree1 AS item_id, COUNT(DISTINCT id) AS item_count
+            FROM neworderhistory
+            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
+            GROUP BY entree1
+            UNION ALL
+            SELECT entree2 AS item_id, COUNT(DISTINCT id) AS item_count
+            FROM neworderhistory
+            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
+            GROUP BY entree2
+            UNION ALL
+            SELECT entree3 AS item_id, COUNT(DISTINCT id) AS item_count
+            FROM neworderhistory
+            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
+            GROUP BY entree3
+          )
+          SELECT ing.ingredient_name,
+                 SUM(oi.item_count) AS total_items_used
+          FROM OrderItems oi
+          JOIN menuitems mi ON oi.item_id = mi.menuid
+          JOIN LATERAL unnest(mi.ingredientsused) AS u(ingredientid) ON TRUE
+          JOIN ingredients ing ON ing.ingredientid = u.ingredientid
+          GROUP BY ing.ingredient_name
+          ORDER BY total_items_used DESC;
+        `,
+          [startCompositeTime, endCompositeTime]
+        );
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error executing query', error.stack);
+        res.status(500).json({ error: 'Error fetching sales data' });
+    }
+});
+
+
 app.get('/api/ingredients', async(req,res) =>{
   try{
     const result = await pool.query("SELECT * FROM ingredients");
@@ -172,7 +222,6 @@ app.get('/api/ingredients', async(req,res) =>{
 app.get('/api/OrderHistoryData', async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM neworderhistory ORDER BY id DESC LIMIT 100");
-    console.log(result.rows);
     res.status(200).json(result.rows);
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -402,7 +451,6 @@ app.get('/api/ZReportData/generate', async(req,res) =>{
     DELETE FROM xreport;`);
 
     const result = await pool.query("SELECT * FROM zreport")
-    console.log(result.rows)
     res.status(200).json(result.rows);
   }
   catch(err){
