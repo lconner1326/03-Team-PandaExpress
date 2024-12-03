@@ -101,32 +101,32 @@ app.post('/api/SalesData', async (req, res) => {
       const result = await pool.query(
         "SELECT pi.item_name, SUM(item_count) AS total_sales " +
         "FROM (" +
-        "    SELECT priceditem AS item_id, COUNT(*) AS item_count " +
+        "    SELECT priceditem AS itemid, COUNT(*) AS item_count " +
         "    FROM neworderhistory " +
         "    WHERE (week * 10000 + day * 100 + hour) BETWEEN $1 AND $2 " +
         "    GROUP BY priceditem " +
         "    UNION ALL " +
-        "    SELECT side AS item_id, COUNT(*) AS item_count " +
+        "    SELECT side AS itemid, COUNT(*) AS item_count " +
         "    FROM neworderhistory " +
         "    WHERE (week * 10000 + day * 100 + hour) BETWEEN $1 AND $2 " +
         "    GROUP BY side " +
         "    UNION ALL " +
-        "    SELECT entree1 AS item_id, COUNT(*) AS item_count " +
+        "    SELECT entree1 AS itemid, COUNT(*) AS item_count " +
         "    FROM neworderhistory " +
         "    WHERE (week * 10000 + day * 100 + hour) BETWEEN $1 AND $2 " +
         "    GROUP BY entree1 " +
         "    UNION ALL " +
-        "    SELECT entree2 AS item_id, COUNT(*) AS item_count " +
+        "    SELECT entree2 AS itemid, COUNT(*) AS item_count " +
         "    FROM neworderhistory " +
         "    WHERE (week * 10000 + day * 100 + hour) BETWEEN $1 AND $2 " +
         "    GROUP BY entree2 " +
         "    UNION ALL " +
-        "    SELECT entree3 AS item_id, COUNT(*) AS item_count " +
+        "    SELECT entree3 AS itemid, COUNT(*) AS item_count " +
         "    FROM neworderhistory " +
         "    WHERE (week * 10000 + day * 100 + hour) BETWEEN $1 AND $2 " +
         "    GROUP BY entree3 " +
         ") AS combined_items " +
-        "JOIN priceditems pi ON combined_items.item_id = pi.itemid " +
+        "JOIN priceditems pi ON combined_items.itemid = pi.itemid " +
         "GROUP BY pi.item_name " +
         "ORDER BY total_sales DESC;",
         [startCompositeTime, endCompositeTime]
@@ -165,27 +165,27 @@ app.post('/api/ProductUsageData', async(req,res) =>{
     try {
         const result = await pool.query(
          ` WITH OrderItems AS (
-            SELECT priceditem AS item_id, COUNT(DISTINCT id) AS item_count
+            SELECT priceditem AS itemid, COUNT(DISTINCT id) AS item_count
             FROM neworderhistory
             WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
             GROUP BY priceditem
             UNION ALL
-            SELECT side AS item_id, COUNT(DISTINCT id) AS item_count
+            SELECT side AS itemid, COUNT(DISTINCT id) AS item_count
             FROM neworderhistory
             WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
             GROUP BY side
             UNION ALL
-            SELECT entree1 AS item_id, COUNT(DISTINCT id) AS item_count
+            SELECT entree1 AS itemid, COUNT(DISTINCT id) AS item_count
             FROM neworderhistory
             WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
             GROUP BY entree1
             UNION ALL
-            SELECT entree2 AS item_id, COUNT(DISTINCT id) AS item_count
+            SELECT entree2 AS itemid, COUNT(DISTINCT id) AS item_count
             FROM neworderhistory
             WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
             GROUP BY entree2
             UNION ALL
-            SELECT entree3 AS item_id, COUNT(DISTINCT id) AS item_count
+            SELECT entree3 AS itemid, COUNT(DISTINCT id) AS item_count
             FROM neworderhistory
             WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
             GROUP BY entree3
@@ -193,7 +193,7 @@ app.post('/api/ProductUsageData', async(req,res) =>{
           SELECT ing.ingredient_name,
                  SUM(oi.item_count) AS total_items_used
           FROM OrderItems oi
-          JOIN menuitems mi ON oi.item_id = mi.menuid
+          JOIN menuitems mi ON oi.itemid = mi.menuid
           JOIN LATERAL unnest(mi.ingredientsused) AS u(ingredientid) ON TRUE
           JOIN ingredients ing ON ing.ingredientid = u.ingredientid
           GROUP BY ing.ingredient_name
@@ -291,7 +291,8 @@ app.post('/api/placeOrder', async (req, res) => {
     const latestOrderId = latestOrderResult.rows[0]?.latestorder || 0; // Extract the integer value
     const newOrderId = latestOrderId + 1; // Increment the ID correctly
     let itemId = 0;
-    
+    let totalPrice = 0;
+    let currentHour = new Date().getHours();
     
     console.log("New Order ID:", newOrderId);
 
@@ -320,6 +321,7 @@ app.post('/api/placeOrder', async (req, res) => {
         });
 
         price += premium;
+        totalPrice += price;
 
         // Map sides and entrees to their corresponding IDs from the dictionary
         const sideID = menu_dictionary[sides[0]] || -1;
@@ -360,6 +362,8 @@ app.post('/api/placeOrder', async (req, res) => {
         console.log("Inserting standalone item: ${name}", name);
         const itemCostResult = await pool.query("SELECT price FROM priceditems WHERE item_name = ($1)", [name]);
         const itemCost = itemCostResult.rows[0]?.price || 0;
+        totalPrice += itemCost;
+
         console.log("Price of item: ", itemCost);
         await pool.query(
           "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
@@ -371,6 +375,7 @@ app.post('/api/placeOrder', async (req, res) => {
             -1,
             -1,
             itemCost,
+            0,
             itemId,
           ]
         );
@@ -383,7 +388,6 @@ app.post('/api/placeOrder', async (req, res) => {
             -1,
             -1,
             -1,
-            itemCost,
             itemId,
           ]
         );
@@ -392,10 +396,18 @@ app.post('/api/placeOrder', async (req, res) => {
         console.warn("Skipping invalid order:", order);
       }
     }
+    await pool.query(
+      "INSERT INTO xreport (hour, id, cost) VALUES ($1, $2, $3)",
+      [
+        currentHour,
+        newOrderId,
+        totalPrice,
+      ]
+    );
     // Commit transaction
     await pool.query("COMMIT");
     console.log("Transaction committed successfully");
-    res.status(200).json({ success: true, message: "Orders processed successfully", orderId: newOrderId, itemId: 0 });
+    res.status(200).json({ success: true, message: "Orders processed successfully", orderId: newOrderId, itemId: 0, totalPrice: 0, currentHour: new Date().getHours() });
   } catch (err) {
     // Rollback transaction on error
     await pool.query("ROLLBACK");
