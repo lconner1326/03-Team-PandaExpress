@@ -295,7 +295,14 @@ app.post('/api/placeOrder', async (req, res) => {
     const newOrderId = latestOrderId + 1; // Increment the ID correctly
     let itemId = 0;
     let totalPrice = 0;
-    let currentHour = new Date().getHours();
+    let date = new Date();
+    let currentHour = date.getHours();
+    let currentDay = date.getDay() + 1;
+    let startOfYear = new Date(date.getFullYear(), 0, 1);
+    let daysSinceStartOfYear = Math.floor((date - startOfYear) / (24 * 60 * 60 * 1000));
+    let jan1Day = startOfYear.getDay();
+    let adjustedDays = daysSinceStartOfYear + jan1Day;
+    let currentWeek = Math.ceil(adjustedDays / 7);
     
     console.log("New Order ID:", newOrderId);
 
@@ -341,7 +348,7 @@ app.post('/api/placeOrder', async (req, res) => {
 
         console.log(`Inserting order with itemType ${itemType}`);
         await pool.query(
-          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
           [
             newOrderId,
             priced_dictionary[itemType],
@@ -352,6 +359,9 @@ app.post('/api/placeOrder', async (req, res) => {
             price,
             premium,
             itemId,
+            currentHour,
+            currentDay,
+            currentWeek,
           ]
         );
         await pool.query(
@@ -376,7 +386,7 @@ app.post('/api/placeOrder', async (req, res) => {
 
         console.log("Price of item: ", itemCost);
         await pool.query(
-          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
           [
             newOrderId,
             priced_dictionary[name] || -1,
@@ -387,6 +397,9 @@ app.post('/api/placeOrder', async (req, res) => {
             itemCost,
             0,
             itemId,
+            currentHour,
+            currentDay,
+            currentWeek,
           ]
         );
         await pool.query(
@@ -417,7 +430,7 @@ app.post('/api/placeOrder', async (req, res) => {
     // Commit transaction
     await pool.query("COMMIT");
     console.log("Transaction committed successfully");
-    res.status(200).json({ success: true, message: "Orders processed successfully", orderId: newOrderId, itemId: 0, totalPrice: 0, currentHour: new Date().getHours() });
+    res.status(200).json({ success: true, message: "Orders processed successfully" });
   } catch (err) {
     // Rollback transaction on error
     await pool.query("ROLLBACK");
