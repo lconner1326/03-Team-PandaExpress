@@ -12,6 +12,7 @@ import cartIcon from './imgs/checkoutCart.png';
 import BackButton from './components/backButton';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import TranslationWidget from "./components/translationWidget";
 
 function App() {
   const [user, setUser] = useState(null); // To track the logged-in user
@@ -59,6 +60,7 @@ function App() {
       <Router>
         <div className="App">
           <BackButton className='back-button' />
+          <TranslationWidget className='translation-widget' />
           <Routes>
             <Route path="/" element={
                 <div className="home-nav-bar">
