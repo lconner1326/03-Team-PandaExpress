@@ -40,9 +40,6 @@ const Checkout = () => {
       });
   };
   
-  
-  
-
   return (
     <div className="checkout-page">
       {console.log(cart)}

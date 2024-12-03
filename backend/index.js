@@ -8,7 +8,6 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 // import cookieSession from 'cookie-session';
 import session from 'express-session';
-import { OAuth2Client } from 'google-auth-library';
 
 const { Pool } = pkg; 
 
@@ -159,56 +158,6 @@ app.get('/api/RestockData', async(req,res) =>{
   }
 });
 
-app.post('/api/ProductUsageData', async(req,res) =>{
-    const startCompositeTime = req.body.startCompositeTime;
-    const endCompositeTime = req.body.endCompositeTime;
-    try {
-        const result = await pool.query(
-         ` WITH OrderItems AS (
-            SELECT priceditem AS item_id, COUNT(DISTINCT id) AS item_count
-            FROM neworderhistory
-            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
-            GROUP BY priceditem
-            UNION ALL
-            SELECT side AS item_id, COUNT(DISTINCT id) AS item_count
-            FROM neworderhistory
-            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
-            GROUP BY side
-            UNION ALL
-            SELECT entree1 AS item_id, COUNT(DISTINCT id) AS item_count
-            FROM neworderhistory
-            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
-            GROUP BY entree1
-            UNION ALL
-            SELECT entree2 AS item_id, COUNT(DISTINCT id) AS item_count
-            FROM neworderhistory
-            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
-            GROUP BY entree2
-            UNION ALL
-            SELECT entree3 AS item_id, COUNT(DISTINCT id) AS item_count
-            FROM neworderhistory
-            WHERE ((week * 10000) + (day * 100) + hour) BETWEEN $1 AND $2
-            GROUP BY entree3
-          )
-          SELECT ing.ingredient_name,
-                 SUM(oi.item_count) AS total_items_used
-          FROM OrderItems oi
-          JOIN menuitems mi ON oi.item_id = mi.menuid
-          JOIN LATERAL unnest(mi.ingredientsused) AS u(ingredientid) ON TRUE
-          JOIN ingredients ing ON ing.ingredientid = u.ingredientid
-          GROUP BY ing.ingredient_name
-          ORDER BY total_items_used DESC;
-        `,
-          [startCompositeTime, endCompositeTime]
-        );
-        res.status(200).json(result.rows);
-    } catch (error) {
-        console.error('Error executing query', error.stack);
-        res.status(500).json({ error: 'Error fetching sales data' });
-    }
-});
-
-
 app.get('/api/ingredients', async(req,res) =>{
   try{
     const result = await pool.query("SELECT * FROM ingredients");
@@ -223,6 +172,7 @@ app.get('/api/ingredients', async(req,res) =>{
 app.get('/api/OrderHistoryData', async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM neworderhistory ORDER BY id DESC LIMIT 100");
+    console.log(result.rows);
     res.status(200).json(result.rows);
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -240,13 +190,15 @@ app.post('/api/placeOrder', async (req, res) => {
     return res.status(400).json({ error: 'Invalid orders format' });
   }
   
-
   const priced_dictionary = { 
     "Bowl": 0, 
     "Plate": 1, 
     "Bigger Plate": 2,
     "Medium Side": 6,
     "Large Side": 7,
+    "Small Entree" : 8,
+    "Medium Entree" : 9,
+    "Large Entree" : 10,
     "Premium Small Entree": 11,
     "Premium Medium Entree": 12,
     "Premium Large Entree": 13,
@@ -281,7 +233,7 @@ app.post('/api/placeOrder', async (req, res) => {
     'Black Pepper Chicken': 16,
   };
 
-  const validItemTypes = ["Bowl", "Plate", "Bigger Plate"]; // Valid priced item types
+  const validItemTypes = ["Bowl", "Plate", "Bigger Plate", 'Small Entree', "Medium Entree", "Large Entree", "Premium Small Entree", "Premium Medium Entree", "Premium Large Entree"]; // Valid priced item types
 
   try {
     // Get the latest order ID
@@ -301,7 +253,7 @@ app.post('/api/placeOrder', async (req, res) => {
       const { itemType, sides = [], entrees = [], name } = order;
 
       console.log("Processing Order:", order);
-
+      console.log("Valid item types: ", validItemTypes);
 
       if (validItemTypes.includes(itemType)) {
         let premium = 0;
@@ -311,21 +263,27 @@ app.post('/api/placeOrder', async (req, res) => {
         let price = costResult.rows[0]?.price || 0;
         console.log("Price Retrieved:", price);
 
-
+        let entree1ID = menu_dictionary[entrees[0]] || -1;
         // Calculate premium for premium entrees
-        entrees.forEach((entree) => {
-          if (["Black Pepper Sirloin Steak", "Honey Walnut Shrimp"].includes(entree)) {
-            premium += 1.5;
-          }
-        });
-
+        if (!["Small Entree", "Medium Entree", "Large Entree", "Premium Small Entree", "Premium Medium Entree", "Premium Large Entree"].includes(itemType)) {       
+          entrees.forEach((entree) => {
+            if (["Black Pepper Sirloin Steak", "Honey Walnut Shrimp"].includes(entree)) {
+              premium += 1.5;
+            }
+            });
+        }
+        else{
+          entree1ID = menu_dictionary[name] || -1;
+          console.log("Entree ID: ", entree1ID);
+        }
+        console.log(sides);
+        const sideID = Array.isArray(sides) ? menu_dictionary[sides[0]] || -1 : menu_dictionary[sides] || -1;
+        const entree2ID = entrees[1] ? menu_dictionary[entrees[1]] || -1 : -1;
+        const entree3ID = entrees[2] ? menu_dictionary[entrees[2]] || -1 : -1;
         price += premium;
 
         // Map sides and entrees to their corresponding IDs from the dictionary
-        const sideID = menu_dictionary[sides[0]] || -1;
-        const entree1ID = menu_dictionary[entrees[0]] || -1;
-        const entree2ID = entrees[1] ? menu_dictionary[entrees[1]] || -1 : -1;
-        const entree3ID = entrees[2] ? menu_dictionary[entrees[2]] || -1 : -1;
+        
 
         console.log(`Inserting order with itemType ${itemType}`);
         await pool.query(
@@ -354,10 +312,18 @@ app.post('/api/placeOrder', async (req, res) => {
             itemId,
           ]
         );
+      
+        /*const entree2inventory = entrees[1] ? menu_dictionary[entrees[1]] || -1 : -1;
+        const entree3inventory = entrees[2] ? menu_dictionary[entrees[2]] || -1 : -1;
+        let entree1inventory = await pool.query("SELECT ingredients FROM menuitems WHERE item_name = ($1)", [entree1ID]) || -1;
+        console.log("entree1 inventory: ", entree1inventory);
+        await pool.query(
+          
+        )*/
         itemId += 1;
       } else if (name) {
         // Handle standalone items like drinks
-        console.log("Inserting standalone item: ${name}", name);
+        console.log("Inserting standalone item: ", name);
         const itemCostResult = await pool.query("SELECT price FROM priceditems WHERE item_name = ($1)", [name]);
         const itemCost = itemCostResult.rows[0]?.price || 0;
         console.log("Price of item: ", itemCost);
@@ -371,6 +337,7 @@ app.post('/api/placeOrder', async (req, res) => {
             -1,
             -1,
             itemCost,
+            0,
             itemId,
           ]
         );
@@ -383,7 +350,6 @@ app.post('/api/placeOrder', async (req, res) => {
             -1,
             -1,
             -1,
-            itemCost,
             itemId,
           ]
         );
@@ -395,7 +361,12 @@ app.post('/api/placeOrder', async (req, res) => {
     // Commit transaction
     await pool.query("COMMIT");
     console.log("Transaction committed successfully");
-    res.status(200).json({ success: true, message: "Orders processed successfully", orderId: newOrderId, itemId: 0 });
+    res.status(200).json({ success: true, message: "Orders processed successfully", orderId: newOrderId, itemId: 0 });4
+    //change inventory
+
+    //add to xreport
+    //add to zreport
+
   } catch (err) {
     // Rollback transaction on error
     await pool.query("ROLLBACK");
@@ -452,6 +423,7 @@ app.get('/api/ZReportData/generate', async(req,res) =>{
     DELETE FROM xreport;`);
 
     const result = await pool.query("SELECT * FROM zreport")
+    console.log(result.rows)
     res.status(200).json(result.rows);
   }
   catch(err){
@@ -578,29 +550,4 @@ app.use(
     }
   });
 
-  // const client = new OAuth2Client('903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com'); // Replace with your Google client ID
-  
-  // app.get('/auth/status', async (req, res) => {
-  //   const token = req.session.token;  // or use whatever method you store the token
-  //   if (!token) {
-  //     return res.status(401).json({ error: 'No token provided' });
-  //   }
-  
-  //   try {
-  //     // Verify the token
-  //     const ticket = await client.verifyIdToken({
-  //       idToken: token,
-  //       audience: '903918584895-96ghg3tevp05m8r3ouior1j2ufbhq5dg.apps.googleusercontent.com',  // Ensure this matches the client ID
-  //     });
-      
-  //     const payload = ticket.getPayload();
-  //     console.log('User data:', payload);  // Contains the user's profile information
-      
-  //     // Respond with user data
-  //     res.json({ user: payload });
-  //   } catch (error) {
-  //     console.error('Error verifying token:', error);
-  //     res.status(500).json({ error: 'Failed to verify token' });
-  //   }
-  // });
-  
+
