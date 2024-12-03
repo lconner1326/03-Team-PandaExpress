@@ -247,6 +247,9 @@ app.post('/api/placeOrder', async (req, res) => {
     "Bigger Plate": 2,
     "Medium Side": 6,
     "Large Side": 7,
+    "Small Entree" : 8,
+    "Medium Entree" : 9,
+    "Large Entree" : 10,
     "Premium Small Entree": 11,
     "Premium Medium Entree": 12,
     "Premium Large Entree": 13,
@@ -281,7 +284,7 @@ app.post('/api/placeOrder', async (req, res) => {
     'Black Pepper Chicken': 16,
   };
 
-  const validItemTypes = ["Bowl", "Plate", "Bigger Plate"]; // Valid priced item types
+  const validItemTypes = ["Bowl", "Plate", "Bigger Plate", 'Small Entree', "Medium Entree", "Large Entree", "Premium Small Entree", "Premium Medium Entree", "Premium Large Entree"]; // Valid priced item types
 
   try {
     // Get the latest order ID
@@ -314,18 +317,25 @@ app.post('/api/placeOrder', async (req, res) => {
 
 
         // Calculate premium for premium entrees
-        entrees.forEach((entree) => {
-          if (["Black Pepper Sirloin Steak", "Honey Walnut Shrimp"].includes(entree)) {
-            premium += 1.5;
-          }
-        });
+        let entree1ID = menu_dictionary[entrees[0]] || -1;
+        // Calculate premium for premium entrees
+        if (!["Small Entree", "Medium Entree", "Large Entree", "Premium Small Entree", "Premium Medium Entree", "Premium Large Entree"].includes(itemType)) {      
+          entrees.forEach((entree) => {
+            if (["Black Pepper Sirloin Steak", "Honey Walnut Shrimp"].includes(entree)) {
+              premium += 1.5;
+            }
+            });
+        }
+        else{
+          entree1ID = menu_dictionary[name] || -1;
+          console.log("Entree ID: ", entree1ID);
+        }
 
         price += premium;
         totalPrice += price;
 
         // Map sides and entrees to their corresponding IDs from the dictionary
-        const sideID = menu_dictionary[sides[0]] || -1;
-        const entree1ID = menu_dictionary[entrees[0]] || -1;
+        const sideID = Array.isArray(sides) ? menu_dictionary[sides[0]] || -1 : menu_dictionary[sides] || -1;
         const entree2ID = entrees[1] ? menu_dictionary[entrees[1]] || -1 : -1;
         const entree3ID = entrees[2] ? menu_dictionary[entrees[2]] || -1 : -1;
 
