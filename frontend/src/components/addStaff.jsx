@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function AddStaff(){
     const [showForm, setShowForm] = useState(false);
-    const [employeeName, setEmployeeName] = useState('');
+    const [staff_name, setStaff_name] = useState('');
     const [position, setPosition] = useState('Employee');
 
     const handleButtonClick = () => {
@@ -44,7 +44,7 @@ function AddStaff(){
                             <input
                                 type="text"
                                 value={employeeName}
-                                onChange={(e) => setEmployeeName(e.target.value)}
+                                onChange={(e) => setStaff_name(e.target.value)}
                             />
                         </label>
                         <label className="form-label">
