@@ -27,7 +27,7 @@ function IngredientsTable () {
       <div className="page-wrapper">
           <h1 className="page-header">Ingredients Table</h1>
           <div className="staff-table-wrapper">
-              <ItemTable columns={["ingredientid",'ingredient_name','units','restock_level']} rows={data} />
+              <ItemTable columns={["ingredientid",'ingredient_name','units','restock_level']} rows={data} table={"ingredients"}/>
           </div>
       </div>
   )

@@ -27,7 +27,7 @@ function PricedItemsTable () {
       <div className="page-wrapper">
           <h1 className="page-header">Priced Items Table</h1>
           <div className="staff-table-wrapper">
-              <ItemTable columns={["itemid",'item_name','category','price' ]} rows={data} />
+              <ItemTable columns={["itemid",'item_name','category','price' ]} rows={data} table={"priceditems"} />
           </div>
       </div>
   )

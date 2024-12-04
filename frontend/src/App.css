@@ -208,4 +208,63 @@
   transition: transform 0.2s ease-in-out;
 }
 
+/* modal styles */
+.modal {
+  position: fixed;
+  top: 18vh;
+  left: 2vw;
+  width: 60vw;
+  height: 80%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
+.modal-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 5px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+button {
+  border-radius: 12px;
+  padding: 8px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button[type="button"] {
+  border-radius: 12px;
+  background-color: #f44336;
+}
