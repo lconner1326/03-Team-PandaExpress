@@ -272,7 +272,8 @@ const MenuSelection = () => {
               }
             }}
             className={
-              selectedOtherItems.some((item) => item.name === name)
+              selectedOtherItems.some((item) => item.name === name) ||
+              selectedOtherItems.includes(name)
                 ? 'selected'
                 : ''
             }
