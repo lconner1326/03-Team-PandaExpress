@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ItemTable from './table';
+import AddStaff from './addStaff';
 import '../App.css';
 
 function StaffTable(){
@@ -26,9 +27,10 @@ function StaffTable(){
 
     return (
         <div className='page-wrapper'>
+            <AddStaff />
             <h1 className='page-header'>Staff Table</h1>
             <div className="staff-table-wrapper">
-                <ItemTable columns={["employee_id", "staff_name","position","active"]} rows={data} />
+                <ItemTable columns={["employee_id", "staff_name","position","active"]} rows={data} table={"staff"}/>
             </div>
         </div>
     )

@@ -27,7 +27,7 @@ function MenuItemsTable () {
       <div className="page-wrapper">
           <h1 className="page-header">Menu Items Table</h1>
           <div className="staff-table-wrapper">
-              <ItemTable columns={["menuid",'item_name','category','premium' , 'ingredientsused']} rows={data} />
+              <ItemTable columns={["menuid",'item_name','category','premium' , 'ingredientsused']} rows={data} table={"menuitems"}/>
           </div>
       </div>
   )

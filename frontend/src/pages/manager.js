@@ -10,6 +10,7 @@ import MenuItemsTable from "../components/MenuItemsTable"
 import BackButton from "../components/backButton"
 import PricedItemsTable from "../components/pricedItemsTable"
 import IngredientsTable from "../components/ingredientsTable"
+import ProductUsage from "../components/product-usage"
 
 export const Manager = () => {
 
@@ -29,6 +30,7 @@ export const Manager = () => {
                     <Route path="menuitems-table" element={<MenuItemsTable/>}/>
                     <Route path="priceditems-table" element={<PricedItemsTable/>} />
                     <Route path="ingredients-table" element={<IngredientsTable/>} />
+                    <Route path="product-usage" element={<ProductUsage/>} />
                 </Routes>
         </div>
         </>

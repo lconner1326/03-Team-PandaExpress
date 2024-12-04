@@ -1,17 +1,21 @@
 // import React from 'react';
 import { Link, BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Cashier } from "./pages/cashier";
 import { Manager } from "./pages/manager";
 import { Kiosk } from "./pages/kiosk";
 import { Menu } from "./pages/menu";
 import { Kitchen } from "./pages/kitchen";
 import MenuSelection from './pages/MenuSelection';
 import Checkout from './pages/checkout';
+import CashierCheckout from './pages/cashierCheckout';
 import { CartProvider } from './cartContext'; // Import CartProvider
 import './App.css';
 import cartIcon from './imgs/checkoutCart.png';
 import BackButton from './components/backButton';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import TranslationWidget from "./components/translationWidget";
+import CashierMenuSelection from "./pages/cashierMenuSelection";
 
 function App() {
   const [user, setUser] = useState(null); // To track the logged-in user
@@ -59,27 +63,28 @@ function App() {
       <Router>
         <div className="App">
           <BackButton className='back-button' />
+          <TranslationWidget className='translation-widget' />
           <Routes>
             <Route path="/" element={
                 <div className="home-nav-bar">
-                <Link className='home-nav-button' to="/kiosk">CASHIER</Link>
+                <Link className='home-nav-button' to="/cashier">Cashier</Link>
                 <Link className='home-nav-button' to="/manager">Manager</Link>
                 <Link className='home-nav-button' to="/kitchen">Kitchen</Link>
                 <Link className='home-nav-button' to="/kiosk">Kiosk</Link>
                 <Link className='home-nav-button' to="/menu">Menu</Link>
-                <Link to="/checkout" className="checkout-icon">
-                  <img src={cartIcon} alt="Checkout" />
-                </Link>
               </div>
               }/>
 
+              <Route path="/cashier"  element={<Cashier />} />
               <Route path="/kiosk"  element={<Kiosk />} />
               <Route path="/manager/*" className='manager' element={<Manager />} />
               <Route path="/kitchen" element={<Kitchen />} />
               <Route path="/kiosk" element={<Kiosk />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/item/:itemType" element={<MenuSelection />} />
+              <Route path="/item/:itemType" element={<CashierMenuSelection />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/cashierCheckout" element={<CashierCheckout />} />
             
             </Routes>
         </div>
@@ -93,7 +98,7 @@ function App() {
                 </>
               ) : (
                 <button onClick={handleLogin} >
-                  Login with Google
+                  Login With Google
                 </button>
               )}
             </div>

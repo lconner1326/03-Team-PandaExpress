@@ -26,7 +26,7 @@ function OrderHistoryTable(){
         <div className="page-wrapper">
             <h1 className="page-header">Order History Table</h1>
             <div className="staff-table-wrapper">
-                <ItemTable columns={["id","week","day","hour","priceditem","side","entree1","entree2","entree3","cost","premium",'item_id']} rows={data} />
+                <ItemTable columns={["id","week","day","hour","priceditem","side","entree1","entree2","entree3","cost","premium",'item_id']} rows={data} table={"neworderhistory"}/>
             </div>
         </div>
     )
