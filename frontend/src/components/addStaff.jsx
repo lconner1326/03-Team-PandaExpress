@@ -11,7 +11,7 @@ function AddStaff(){
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log(employeeName, position);
+        console.log(staff_name, position);
         // Handle form submission logic here
         fetch('https://project-3-03-team-2xy5.onrender.com/api/addStaffData', {
             method: 'POST',
@@ -43,7 +43,7 @@ function AddStaff(){
                             Employee Name:
                             <input
                                 type="text"
-                                value={employeeName}
+                                value={staff_name}
                                 onChange={(e) => setStaff_name(e.target.value)}
                             />
                         </label>
