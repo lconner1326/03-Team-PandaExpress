@@ -1,3 +1,11 @@
+/*
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import "../components/menuDisplaystyle.css";
+*/
+
+
+
 import menuDisplay from "../components/menuDisplay"
 import "../components/menuDisplaystyle.css"
 import React, { useState } from 'react';
@@ -36,9 +44,9 @@ import biggerPlateImg from '../components/images/biggerPlate.png';
 export const Menu = () => {
     const [displayedSection, setDisplayedSection] = useState('meals');
     const meals = [
-        { name: 'Bowl', description: 'Serving of 1 of our Entrees and 1 side', price: '$8.3', image: bowlImg},
-        { name: 'Plate', description: 'Serving of 2 of our Entrees and 1 side', price: '$9.8', image: plateImg},
-        { name: 'Bigger Plate', description: 'Serving of 3 of our Entrees and 1 side', price: '$11.3', image: biggerPlateImg},
+        { name: 'Bowl', description: '1 serving of our Entrees and 1 side', price: '$8.3', image: bowlImg},
+        { name: 'Plate', description: '2 servings of our Entrees and 1 side', price: '$9.8', image: plateImg},
+        { name: 'Bigger Plate', description: '3 servings of our Entrees and 1 side', price: '$11.3', image: biggerPlateImg},
     ];
 
     const sides = [
@@ -55,13 +63,10 @@ export const Menu = () => {
     const entrees = [
         { name: 'Bourbon Chicken', image: bourbonChickenImg },
         { name: 'Orange Chicken', image: orangeChickenImg },
-        { name: 'Angus Steak', image: angusSteakImg },
-        { name: 'Honey Shrimp', image: honeyShrimpImg },
         { name: 'Teriyaki Chicken', image: teriyakiChickenImg },
         { name: 'Beijing Beef', image: beijingBeefImg},
         { name: 'Black Pepper Chicken', image: blackPepperChickenImg},
         { name: 'Black Pepper Sirloin Steak', image: blackPepperSirloinSteakImg},
-        { name: 'Beijing Beef', image: beijingBeefImg},
         { name: 'Broccoli Beef', image: broccoliBeefImg},
         { name: 'Honey Sesame Chicken', image: honeySesameChickenImg},
         { name: 'Honey Wallnut Shrimp', image: honeyWallnutShrimpImg},
@@ -99,20 +104,33 @@ export const Menu = () => {
             <h1>
             Menu Display
             </h1>
-        </div>
+        
     <div>
+
+    
+
+
+
+
     {/* Navigation Links */}
+    
     <div className="navigation-links">
         <button onClick={() => handleSectionChange('meals & sides')}>Meals & Sides</button>
         <button onClick={() => handleSectionChange('entrees')}>Entrees</button>
         <button onClick={() => handleSectionChange('appetizers & drinks')}>Appetizers, A La Carte, & Drinks</button>
-    </div>
+   
+    
+
+
 
     <div className="menu-container">  
     {/* Meal Options Section */}
+
+    
+
     {displayedSection === 'meals & sides' && (
     <div className="section">
-        <h3>Pick A Meal</h3>
+        <h3>Pick A Meal Size</h3>
         {meals.map((meal, index) => (
             <div className="meal-option" key={index}>
                 <div className="meal-header">
@@ -127,7 +145,11 @@ export const Menu = () => {
         ))}
     </div>
 )}
+    
+
             {/* Sides Section */}
+
+            
             {displayedSection === 'meals & sides' && (
             <div className="section sides-section">
                 <h3>Sides</h3>
@@ -143,7 +165,12 @@ export const Menu = () => {
             </div>
             )}
 
+
+    
             {/* Entrees Section */}
+
+    
+
             {displayedSection === 'entrees' && (
             <div className="section">
                 <h3>Entrees</h3>
@@ -160,12 +187,19 @@ export const Menu = () => {
         </div>
     </div>
 
+    
 
  {/*starting the section of the third page*/ }
+ 
 
- <div className="menu-container">
+    
 
+<div className="menu-container">
+
+    
             {/* Appetizers/Desserts Section */}
+
+    
             {displayedSection === 'appetizers & drinks' && (
             <div className="section appetizers">
                 <h3>Appetizers/Desserts</h3>
@@ -181,10 +215,15 @@ export const Menu = () => {
             </div>
             )}
 
+    
+
             {/* Right Section Container */}
+
+
             {displayedSection === 'appetizers & drinks' && (
             <div className="right-sections">
                 {/* A La Carte Section */}
+    
                 <div className="section ala-carte">
                     <h3>A La Carte</h3>
                     <div className="option-row">
@@ -199,8 +238,12 @@ export const Menu = () => {
                         
                     </div>
                 </div>
+    
                 
                 {/* Drinks Section */}
+
+               
+                
                 <div className="section drinks">
                     <h3>Drinks</h3>
                     <div className="option-row">
@@ -214,11 +257,205 @@ export const Menu = () => {
                         ))}
                     
                     </div>
+                    
                 </div>
+                
             </div>
             )}
+            
         </div>
-        
+        </div>
+        </div>
 </>
     )
 }
+
+
+
+
+
+/*THis is the new section of tesing code */
+
+
+
+/*
+export const Menu = () => {
+    const [menuItems, setMenuItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [displayedSection, setDisplayedSection] = useState('meals');
+
+    // Fetch menu items from the backend
+    useEffect(() => {
+        
+        axios.get('http://localhost:3000/api/menuitems') // Replace with the correct backend endpoint
+            .then((response) => {
+                setMenuItems(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error fetching menu items:', error);
+                setLoading(false);
+            });
+    }, []);
+
+    // Handle section changes for navigation links
+    const handleSectionChange = (section) => {
+        setDisplayedSection(section);
+    };
+
+    return (
+        <div>
+            <h1>Menu Display</h1>
+
+    *///       {/* Navigation Links */ }
+
+/*           
+            <div className="navigation-links">
+                <button onClick={() => handleSectionChange('meals')}>Meals & Sides</button>
+                <button onClick={() => handleSectionChange('entrees')}>Entrees</button>
+                <button onClick={() => handleSectionChange('drinks')}>Appetizers, A La Carte, & Drinks</button>
+            </div>
+
+*/
+//          {/* Menu Sections */}
+
+            
+/*            {loading ? (
+                <p>Loading menu...</p>
+            ) : (
+                <div className="menu-container">
+       
+*/       
+//                {/* Meals Section */ }
+
+                    
+/*                    {displayedSection === 'meals' && (
+                        <>
+                            <div className="section">
+                                <h3>Pick A Meal Size</h3>
+                                <div className="grid-container">
+                                    {menuItems
+                                        .filter(item => item.category === 'meal')
+                                        .map((meal, index) => (
+                                            <div className="meal-option" key={index}>
+                                                <img src={meal.image} alt={meal.name} />
+                                                <h4>{meal.name}</h4>
+                                                <p>{meal.description}</p>
+                                                <span>{meal.price}</span>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+
+                            <div className="section">
+                                <h3>Sides</h3>
+                                <div className="grid-container grid-2">
+                                    {menuItems
+                                        .filter(item => item.category === 'side')
+                                        .map((side, index) => (
+                                            <div className="grid-item" key={index}>
+                                                <img src={side.image} alt={side.name} />
+                                                <p>{side.name}</p>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+*/
+
+//                   {/* Sides Section */}
+
+                    
+/*                    {displayedSection === 'sides' && (
+                        <div className="section">
+                            <h3>Sides</h3>
+                            <div className="grid-container grid-2">
+                                {menuItems.filter(item => item.category === 'side').map((side, index) => (
+                                    <div className="grid-item" key={index}>
+                                        <img src={side.image} alt={side.name} />
+                                        <p>{side.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+
+*/                    
+//                    {/* Entrees Section */}
+
+
+/*
+                    {displayedSection === 'entrees' && (
+                        <div className="section">
+                            <h3>Entrees</h3>
+                            <div className="grid-container grid-3">
+                                {menuItems
+                                    .filter(item => item.category === 'entree')
+                                    .map((entree, index) => (
+                                        <div className="grid-item" key={index}>
+                                            <img src={entree.image} alt={entree.name} />
+                                            <p>{entree.name}</p>
+                                        </div>
+                                    ))}
+                            </div>
+                        </div>
+                    )}
+*/
+
+//                   {/* Appetizers, A La Carte, & Drinks Section */}
+/*                   {displayedSection === 'drinks' && (
+                        <>
+                            <div className="section">
+                                <h3>Appetizers/Desserts</h3>
+                                <div className="grid-container grid-2">
+                                    {menuItems
+                                        .filter(item => item.category === 'appetizer')
+                                        .map((appetizer, index) => (
+                                            <div className="grid-item" key={index}>
+                                                <img src={appetizer.image} alt={appetizer.name} />
+                                                <p>{appetizer.name}</p>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+
+                            <div className="section">
+                                <h3>A La Carte</h3>
+                                <div className="grid-container">
+                                    {menuItems
+                                        .filter(item => item.category === 'alaCarte')
+                                        .map((alaCarte, index) => (
+                                            <div className="meal-option" key={index}>
+                                                <h4>{alaCarte.name}</h4>
+                                                <p>{alaCarte.description}</p>
+                                                <span>{alaCarte.price}</span>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+
+                            <div className="section">
+                                <h3>Drinks</h3>
+                                <div className="grid-container grid-2">
+                                    {menuItems
+                                        .filter(item => item.category === 'drink')
+                                        .map((drink, index) => (
+                                            <div className="grid-item" key={index}>
+                                                <img src={drink.image} alt={drink.name} />
+                                                <p>{drink.name}</p>
+                                                <span>{drink.price}</span>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+};
+*/

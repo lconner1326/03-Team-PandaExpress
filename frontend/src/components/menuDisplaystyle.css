@@ -10,11 +10,11 @@ body {
 /* Container for the menu sections */
 .menu-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    align-items: center;
+    gap: 30px;
     max-width: 1250px;
     margin: auto;
+    min-height: 775 px;
 }
 
 /* Section Styling */
@@ -72,6 +72,7 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .meal-option span {
     background-color: #cccccc;
     color: black;
@@ -86,6 +87,7 @@ body {
     border-radius: 5px;
     object-fit: cover;
 }
+
 /* Side and Entree Grid */
 .grid-container {
     display: grid;
@@ -96,16 +98,17 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+    padding: 20px;
 }
-
 
 .section.entrees-section{
     max-width:100%;
 }
+
 .grid-3 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40 px;
 }
 
 .grid-item {
@@ -115,6 +118,7 @@ body {
     border-radius: 5px;
     width: 240px;
     height: 160px;
+    gap: 40 px;
 }
 
 .grid-item img {
@@ -126,10 +130,11 @@ body {
 
 /* A La Carte and Drink Options */
 .option-grid {
-    display: grid;
+    display: flex;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    text-align: center;
+    padding: 5px 10px;
+    
 }
 
 .option {
@@ -152,23 +157,32 @@ body {
 
 .appetizers{
     flex: 1;
-    max-width: 50%;
+    max-width: 90%;
+
 }
+
 .right-sections{
     display: flex;
+    flex-wrap: wrap;
     flex-direction:row;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
     gap: 20px;
     flex: 1;
     max-width: 50%;
+    text-align: left;
 }
+
 .ala-carte,  .drinks {
-    flex: 1;
-    flex-direction:column;
-    max-width: 50%;
+    flex: 1 ;
+    flex-direction:row;
+    max-width: 80%;
 }
 
 .ala-carte{
-    margin-bottom: 20px;
+    margin-bottom: 20 px;
+    max-height: 90 px;
     
 }
 
@@ -194,6 +208,8 @@ body {
     .menu-container {
         flex-direction: column;
         align-items: center;
+        justify-content: center;
+        flex: 1 1 300px;
     }
     
     .section {
@@ -222,7 +238,27 @@ body {
     }
 }
 
+.navigation-links {
+    
+    justify-content: center; 
+    gap: 40 px; 
+    margin: 0 auto; 
+    padding: 15px; 
+    width: 100%; 
+}
 
+.navigation-links button {
+    padding: 20px 20px; /* Add padding to buttons */
+    border: none; /* Remove default borders */
+    background-color: #f4f4f4; /* Set a neutral background */
+    cursor: pointer; /* Add a pointer cursor */
+    font-size: 20px; /* Make text consistent */
+    border-radius: 7px; /* Optional: Add rounded corners */
+}
+
+.navigation-links button:hover {
+    background-color: #ddd; /* Add hover effect */
+}
 
 /*Start of: 
     logo information*/
