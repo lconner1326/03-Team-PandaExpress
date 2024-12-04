@@ -148,6 +148,17 @@ app.get('/api/StaffData', async (req, res) => {
   }
 });
 
+app.post('/api/addStaffData', async (req, res) => {
+  const { staff_name, position } = req.body;
+  try {
+    await pool.query('INSERT INTO staff (employee_id, staff_name, position, active) VALUES ((SELECT MAX(employee_id) from staff) + 1, $1, $2, true )', [staff_name, position]);
+    res.status(201).json({ message: 'Staff member added successfully' });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to add staff member' });
+  }
+});
+
 app.get('/api/RestockData', async(req,res) =>{
   try{
     const result = await pool.query("SELECT * FROM ingredients ORDER BY units ASC");
