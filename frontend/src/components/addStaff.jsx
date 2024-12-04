@@ -3,7 +3,7 @@ import { useState } from "react";
 function AddStaff(){
     const [showForm, setShowForm] = useState(false);
     const [employeeName, setEmployeeName] = useState('');
-    const [position, setPosition] = useState('employee');
+    const [position, setPosition] = useState('Employee');
 
     const handleButtonClick = () => {
         setShowForm(true);
@@ -19,7 +19,7 @@ function AddStaff(){
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                name: employeeName,
+                staff_name,
                 position,
             }),
         })
