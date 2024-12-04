@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function AddStaff(){
     const [showForm, setShowForm] = useState(false);
-    const [employeeName, setEmployeeName] = useState('');
+    const [staff_name, setStaff_name] = useState('');
     const [position, setPosition] = useState('Employee');
 
     const handleButtonClick = () => {
@@ -11,7 +11,7 @@ function AddStaff(){
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log(employeeName, position);
+        console.log(staff_name, position);
         // Handle form submission logic here
         fetch('https://project-3-03-team-2xy5.onrender.com/api/addStaffData', {
             method: 'POST',
@@ -43,8 +43,8 @@ function AddStaff(){
                             Employee Name:
                             <input
                                 type="text"
-                                value={employeeName}
-                                onChange={(e) => setEmployeeName(e.target.value)}
+                                value={staff_name}
+                                onChange={(e) => setStaff_name(e.target.value)}
                             />
                         </label>
                         <label className="form-label">
