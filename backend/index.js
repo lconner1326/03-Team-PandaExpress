@@ -450,7 +450,190 @@ app.post('/api/placeOrder', async (req, res) => {
   }
 });
 
+app.post('/api/cashierPlaceOrder', async (req, res) => {
+  const orders = req.body.orders; // Expecting an array of orders
+  console.log("Route hit: /api/placeOrder");
+  console.log("Incoming orders:", JSON.stringify(orders, null, 2));
 
+  if (!orders || !Array.isArray(orders)) {
+    console.warn("Invalid orders format");
+    return res.status(400).json({ error: 'Invalid orders format' });
+  }
+  
+
+  const priced_dictionary = { 
+    "Bowl": 0, 
+    "Plate": 1, 
+    "Bigger Plate": 2,
+    "Medium Side": 6,
+    "Large Side": 7,
+    "Small Entree" : 8,
+    "Medium Entree" : 9,
+    "Large Entree" : 10,
+    "Premium Small Entree": 11,
+    "Premium Medium Entree": 12,
+    "Premium Large Entree": 13,
+    "Small Fountain Drink": 14,
+    "Medium Fountain Drink": 15,
+    "Large Fountain Drink": 16,
+    "Bottled Water": 17,
+    'Gatorade': 18,
+    "Crab Rangoon": 19,
+    "Apple Pie Roll": 20,
+    "Egg Rolls": 21,
+    "Spring Rolls": 22,
+  };
+
+  const menu_dictionary = {
+    'Chow Mein': 0,
+    'Fried Rice': 1,
+    'White Rice': 2,
+    'Super Greens': 3,
+    'Bourbon Chicken': 4,
+    'Orange Chicken': 5,
+    'Black Pepper Sirloin Steak': 6,
+    'Honey Walnut Shrimp': 7,
+    'Teriyaki Chicken': 8,
+    'Broccoli Beef': 9,
+    'Kung Pao Chicken': 10,
+    'Honey Sesame Chicken Breast': 11,
+    'Beijing Beef': 12,
+    'Mushroom Chicken': 13,
+    'Sweet Fire Chicken Breast': 14,
+    'String Bean Chicken Breast': 15,
+    'Black Pepper Chicken': 16,
+  };
+
+  const validItemTypes = ["Bowl", "Plate", "Bigger Plate", 'Small Entree', "Medium Entree", "Large Entree", "Premium Small Entree", "Premium Medium Entree", "Premium Large Entree"]; // Valid priced item types
+
+  try {
+    // Get the latest order ID
+    await pool.query("BEGIN");
+    const latestOrderResult = await pool.query("SELECT MAX(id) as latestOrder FROM neworderhistory");
+    console.log("Latest Order Query Result:", latestOrderResult.rows);
+    const latestOrderId = latestOrderResult.rows[0]?.latestorder || 0; // Extract the integer value
+    const newOrderId = latestOrderId + 1; // Increment the ID correctly
+    let itemId = 0;
+    let totalPrice = 0;
+    let date = new Date();
+    let currentHour = date.getHours();
+    let currentDay = date.getDay() + 1;
+    let startOfYear = new Date(date.getFullYear(), 0, 1);
+    let daysSinceStartOfYear = Math.floor((date - startOfYear) / (24 * 60 * 60 * 1000));
+    let jan1Day = startOfYear.getDay();
+    let adjustedDays = daysSinceStartOfYear + jan1Day;
+    let currentWeek = Math.ceil(adjustedDays / 7);
+    
+    console.log("New Order ID:", newOrderId);
+
+    // Start transaction
+
+    for (const order of orders) {
+      const { itemType, sides = [], entrees = [], name } = order;
+
+      console.log("Processing Order:", order);
+
+
+      if (validItemTypes.includes(itemType)) {
+        let premium = 0;
+        let costResult = await pool.query("SELECT price FROM priceditems WHERE item_name = ($1)", [itemType]);
+        console.log("Price Query Result for itemType:", itemType, costResult.rows);
+
+        let price = costResult.rows[0]?.price || 0;
+        console.log("Price Retrieved:", price);
+
+
+        // Calculate premium for premium entrees
+        let entree1ID = menu_dictionary[entrees[0]] || -1;
+        // Calculate premium for premium entrees
+        if (!["Small Entree", "Medium Entree", "Large Entree", "Premium Small Entree", "Premium Medium Entree", "Premium Large Entree"].includes(itemType)) {      
+          entrees.forEach((entree) => {
+            if (["Black Pepper Sirloin Steak", "Honey Walnut Shrimp"].includes(entree)) {
+              premium += 1.5;
+            }
+            });
+        }
+        else{
+          entree1ID = menu_dictionary[name] || -1;
+          console.log("Entree ID: ", entree1ID);
+        }
+
+        price += premium;
+        totalPrice += price;
+
+        // Map sides and entrees to their corresponding IDs from the dictionary
+        const sideID = Array.isArray(sides) ? menu_dictionary[sides[0]] || -1 : menu_dictionary[sides] || -1;
+        const entree2ID = entrees[1] ? menu_dictionary[entrees[1]] || -1 : -1;
+        const entree3ID = entrees[2] ? menu_dictionary[entrees[2]] || -1 : -1;
+
+        console.log(`Inserting order with itemType ${itemType}`);
+        await pool.query(
+          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
+          [
+            newOrderId,
+            priced_dictionary[itemType],
+            sideID,
+            entree1ID,
+            entree2ID,
+            entree3ID,
+            price,
+            premium,
+            itemId,
+            currentHour,
+            currentDay,
+            currentWeek,
+          ]
+        );
+        itemId += 1;
+      } else if (name) {
+        // Handle standalone items like drinks
+        console.log("Inserting standalone item: ${name}", name);
+        const itemCostResult = await pool.query("SELECT price FROM priceditems WHERE item_name = ($1)", [name]);
+        const itemCost = itemCostResult.rows[0]?.price || 0;
+        totalPrice += itemCost;
+
+        console.log("Price of item: ", itemCost);
+        await pool.query(
+          "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
+          [
+            newOrderId,
+            priced_dictionary[name] || -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            itemCost,
+            0,
+            itemId,
+            currentHour,
+            currentDay,
+            currentWeek,
+          ]
+        );
+        itemId += 1;
+      } else {
+        console.warn("Skipping invalid order:", order);
+      }
+    }
+    await pool.query(
+      "INSERT INTO xreport (hour, id, cost) VALUES ($1, $2, $3)",
+      [
+        currentHour,
+        newOrderId,
+        totalPrice,
+      ]
+    );
+    // Commit transaction
+    await pool.query("COMMIT");
+    console.log("Transaction committed successfully");
+    res.status(200).json({ success: true, message: "Orders processed successfully" });
+  } catch (err) {
+    // Rollback transaction on error
+    await pool.query("ROLLBACK");
+    console.error("Error processing orders:", err);
+    res.status(500).json({ error: "Failed to process orders" });
+  }
+});
 
 /*app.post('/api/placeOrder', async (req, res) => {
   console.log("Request received:", req.body);
