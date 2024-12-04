@@ -517,8 +517,70 @@ app.get('/api/ZReportData/request', async(req,res) =>{
   }
 });
 
+app.post('/api/modify/neworderhistory', async(req,res) =>{
+  try{
+    const { id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week } = req.body;
+    const result = await pool.query("UPDATE neworderhistory SET priceditem = $1, side = $2, entree1 = $3, entree2 = $4, entree3 = $5, cost = $6, premium = $7, itemid = $8, hour = $9, day = $10, week = $11 WHERE id = $12",
+    [priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week, id]);
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to modify data' });
+  }
+});
 
+app.post('/api/modify/staff', async(req,res) =>{
+  try{
+    const { employee_id, staff_name, position, active } = req.body;
+    const result = await pool.query("UPDATE staff SET staff_name = $1, position = $2, active = $3 WHERE employee_id = $4",
+    [staff_name, position, active, employee_id]);
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to modify data' });
+  }
+});
 
+app.post('/api/modify/ingredients', async(req,res) =>{
+  try{
+    const { ingredientid, ingredient_name, units, restock_level } = req.body;
+    const result = await pool.query("UPDATE ingredients SET ingredient_name = $1, units = $2, restock_level = $3 WHERE ingredientid = $4",
+    [ingredient_name, units, restock_level, ingredientid]);
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to modify data' });
+  }
+});
+
+app.post('/api/modify/priceditems', async(req,res) =>{
+  try{
+    const { itemid, item_name, category, price } = req.body;
+    const result = await pool.query("UPDATE priceditems SET item_name = $1, category = $2, price = $3 WHERE itemid = $4",
+    [item_name, category, price, itemid]);
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to modify data' });
+  }
+});
+
+app.post('/api/modify/menuitems', async(req,res) =>{
+  try{
+    const { menuid, item_name, ingredientsused } = req.body;
+    const result = await pool.query("UPDATE menuitems SET item_name = $1, ingredientsused = $2 WHERE menuid = $3",
+    [item_name, ingredientsused, menuid]);
+    res.status(200).json(result.rows);
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to modify data' });
+  }
+});
 
 // Start the server
 app.listen(PORT, () => {
@@ -551,14 +613,14 @@ app.use(
   })
 );
 
-  // app.use(
+// app.use(
   //   cookieSession({
   //     name: 'session',
   //     keys: ['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'], // Replace with your secret key
   //     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-  //   })
-  // );
-  
+//   })
+// );
+
   app.use(passport.initialize());
   app.use(passport.session());
   
