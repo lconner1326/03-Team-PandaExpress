@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../cartContext'; // Import useCart from CartContext
 import KioskMenuItem from '../components/kioskMenuItem'; // Reusing the KioskMenuItem component
+import TranslationWidget from "../components/translationWidget";
 import './MenuSelection.css';
 
 // Import images
@@ -102,6 +103,8 @@ const MenuSelection = () => {
   const { itemType } = useParams(); // Dynamically get item type from URL
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [fontSize, setFontSize] = useState(16);
 
   const limits = {
     Bowl: { sides: 1, entrees: 1 },
@@ -141,6 +144,15 @@ const MenuSelection = () => {
     setCurrentItem(null); // Reset current item
     //setSelectedSize(null); // Reset size selection
   };
+
+  const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.1, 2));
+    const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
+    const resetZoom = () => setZoomLevel(1);
+
+    const increaseFontSize = () => setFontSize((prev) => Math.min(prev + 2, 24));
+    const decreaseFontSize = () => setFontSize((prev) => Math.max(prev - 2, 12));
+    const resetFontSize = () => setFontSize(16);
+
   /**
    * Handles selection of other items (e.g., drinks, appetizers).
    * If the item type is "A La Carte", triggers the size selection modal.
@@ -219,7 +231,8 @@ const MenuSelection = () => {
   // Render logic for "Bowl," "Plate," and "Bigger Plate"
   if (!categoryItems && (itemType === 'Bowl' || itemType === 'Plate' || itemType === 'Bigger Plate')) {
     return (
-      <div className="menu-selection">
+      <div className="menu-selection" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center', fontSize: `${fontSize}px` }}>
+        <TranslationWidget className='translation-widget' />
         <h2>{itemType}</h2>
 
         <h3>Select Up to {maxSides} Sides</h3>
@@ -271,13 +284,23 @@ const MenuSelection = () => {
             </div>
           </div>
         )}
+
+        <div className="font-controls">
+          <button onClick={handleZoomIn}>Zoom In</button>
+          <button onClick={handleZoomOut}>Zoom Out</button>
+          <button onClick={resetZoom}>Reset Zoom</button>
+          <button onClick={increaseFontSize}>Increase Font Size</button>
+          <button onClick={decreaseFontSize}>Decrease Font Size</button>
+          <button onClick={resetFontSize}>Reset Font Size</button>
+        </div>
       </div>
     );
   }
 
   // Render logic for other item types ("Drinks," "Appetizers and More," etc.)
   return (
-    <div className="menu-selection">
+    <div className="menu-selection" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center', fontSize: `${fontSize}px` }}>
+      <TranslationWidget className='translation-widget' />
       <h2>{itemType}</h2>
       <div className="kiosk-page">
         {Object.entries(categoryItems).map(([name, imgPath]) => (
@@ -358,6 +381,15 @@ const MenuSelection = () => {
           </div>
         </div>
       )}
+
+        <div className="font-controls">
+          <button onClick={handleZoomIn}>Zoom In</button>
+          <button onClick={handleZoomOut}>Zoom Out</button>
+          <button onClick={resetZoom}>Reset Zoom</button>
+          <button onClick={increaseFontSize}>Increase Font Size</button>
+          <button onClick={decreaseFontSize}>Decrease Font Size</button>
+          <button onClick={resetFontSize}>Reset Font Size</button>
+        </div>
     </div>
   );
   
