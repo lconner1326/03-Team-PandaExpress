@@ -50,7 +50,7 @@ const Checkout = () => {
       basePrice += premiumCount * 1.5;
     }
   
-    return basePrice.toFixed(2); // Format as a 2-decimal string
+    return basePrice.toFixed(2); 
   };
   
 
