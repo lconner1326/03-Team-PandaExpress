@@ -14,6 +14,7 @@ import cartIcon from './imgs/checkoutCart.png';
 import BackButton from './components/backButton';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import TranslationWidget from "./components/translationWidget";
 import CashierMenuSelection from "./pages/cashierMenuSelection";
 /**
  * @module App
@@ -24,7 +25,6 @@ import CashierMenuSelection from "./pages/cashierMenuSelection";
  */
 function App() {
   const [user, setUser] = useState(null); // To track the logged-in user
-  const [isHighContrast, setIsHighContrast] = useState(false);
 
   const handleLogin = () => {
     // window.location.href = 'http://localhost:3000/auth/google';  // This will redirect directly to backend
@@ -63,18 +63,13 @@ function App() {
     fetchUser();
   }, []);
 
-  const toggleHighContrast = () => {
-    setIsHighContrast(prev => !prev);
-  };
-
   console.log('Current user state:', user);
   return (
     <CartProvider> {/* Wrap the app in CartProvider */}
       <Router>
-        <div 
-          className={`App ${isHighContrast ? 'high-contrast' : ''}`}
-        >
+        <div className="App">
           <BackButton className='back-button' />
+          <TranslationWidget className='translation-widget' />
           <Routes>
             <Route path="/" element={
                 <div className="home-nav-bar">
@@ -113,13 +108,7 @@ function App() {
                 </button>
               )}
             </div>
-            
-            <div className="contrast-controls">
-              <button onClick={toggleHighContrast}>
-                {isHighContrast ? 'Disable High Contrast' : 'Enable High Contrast'}
-              </button>
-            </div>
-      </Router>
+    </Router>
     </CartProvider>
   );
 }
