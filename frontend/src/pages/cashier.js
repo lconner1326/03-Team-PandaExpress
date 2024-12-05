@@ -7,7 +7,7 @@ import biggerPlateImage from '../imgs/biggerplate.avif';
 import appetizerImage from '../imgs/appetizers.avif';
 import drinksImage from '../imgs/drinks.avif';
 import aLaCarteImage from '../imgs/alacarte.avif';
-import WeatherWidget from '../components/weatherWidget';
+import TimeWidget from '../components/timeWidget';
 import cartIcon from '../imgs/checkoutCart.png';
 /**
  * Cashier Component
@@ -30,9 +30,10 @@ export const Cashier = () => {
     { name: 'A La Carte', image: aLaCarteImage, link: '/item/A La Carte' },
   ];
 
+
   return (
     <div className="kiosk-page-wrapper">
-      <WeatherWidget />
+      <TimeWidget />
       <Link to="/cashierCheckout" className="checkout-icon">
                   <img src={cartIcon} alt="Checkout" />
                 </Link>
@@ -43,9 +44,10 @@ export const Cashier = () => {
         </Link>
       ))}
     </div>
-    
+   
     </div>
   );
 };
+
 
 export default Cashier;
