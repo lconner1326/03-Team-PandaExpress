@@ -9,7 +9,13 @@ import drinksImage from '../imgs/drinks.avif';
 import aLaCarteImage from '../imgs/alacarte.avif';
 import WeatherWidget from '../components/weatherWidget';
 import cartIcon from '../imgs/checkoutCart.png';
-
+/**
+ * @module Kiosk
+ * @description Displays the main menu for the ordering kiosk, including categories like Bowls, Plates, and Drinks. 
+ * Provides access to checkout and integrates a weather widget.
+ * 
+ * @returns {JSX.Element} The kiosk page layout with menu options.
+ */
 export const Kiosk = () => {
   const menuItems = [
     { name: 'Bowl', image: bowlImage, link: '/item/Bowl' },

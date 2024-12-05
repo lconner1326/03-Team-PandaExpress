@@ -1,7 +1,18 @@
 import React from "react";
 import ItemTable from "./table";
 import { useState,useEffect } from "react";
-
+/**
+ * MenuItemsTable Component
+ *
+ * A functional React component that fetches menu items data from an API and displays it
+ * in a table format using the `ItemTable` component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <MenuItemsTable />
+ * )
+ */
 function MenuItemsTable () {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);

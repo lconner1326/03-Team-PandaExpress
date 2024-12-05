@@ -2,7 +2,17 @@ import React from 'react';
 import { useCart } from '../cartContext';
 import { useNavigate } from 'react-router-dom';
 import './checkout.css';
-
+/**
+ * CashierCheckout Component
+ *
+ * Displays the items in the cart and provides functionality to remove items and confirm orders.
+ *
+ * @component
+ * @example
+ * return (
+ *   <CashierCheckout />
+ * )
+ */
 const CashierCheckout = () => {
   const { cart, removeFromCart, clearCart } = useCart(
     

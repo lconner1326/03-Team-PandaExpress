@@ -1,5 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+/**
+ * BackButton Component
+ *
+ * A simple React component that conditionally renders a "Back" button to navigate
+ * back to the home page (`/`). The button is hidden when the user is already on the home page.
+ *
+ * @component
+ * @example
+ * return (
+ *   <BackButton />
+ * )
+ */
 function BackButton() {
     const location = useLocation();
   

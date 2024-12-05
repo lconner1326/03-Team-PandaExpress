@@ -91,7 +91,18 @@ const items = {
 };
 
 const premiumEntrees = ['Black Pepper Sirloin Steak', 'Honey Walnut Shrimp'];
-
+/**
+ * CashierMenuSelection Component
+ *
+ * Displays a dynamic menu based on the selected item type. Supports selection of sides, entrees, and other items.
+ * Integrates with cart functionality to add selected items.
+ *
+ * @component
+ * @example
+ * return (
+ *   <CashierMenuSelection />
+ * )
+ */
 const CashierMenuSelection = () => {
   const { itemType } = useParams(); // Dynamically get item type from URL
   const navigate = useNavigate();

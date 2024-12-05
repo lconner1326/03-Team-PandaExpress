@@ -1,7 +1,18 @@
 import React from "react";
 import ItemTable from "./table";
 import { useState,useEffect } from "react";
-
+/**
+ * IngredientsTable Component
+ *
+ * A React component that fetches ingredients data from an API and displays it in a table format.
+ * The data is passed to the `ItemTable` component for rendering. Handles API errors gracefully.
+ *
+ * @component
+ * @example
+ * return (
+ *   <IngredientsTable />
+ * )
+ */
 function IngredientsTable () {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
