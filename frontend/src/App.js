@@ -25,6 +25,9 @@ import CashierMenuSelection from "./pages/cashierMenuSelection";
  */
 function App() {
   const [user, setUser] = useState(null); // To track the logged-in user
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [isHighContrast, setIsHighContrast] = useState(false);
+  const [fontSize, setFontSize] = useState(16);
 
   const handleLogin = () => {
     // window.location.href = 'http://localhost:3000/auth/google';  // This will redirect directly to backend
@@ -63,11 +66,26 @@ function App() {
     fetchUser();
   }, []);
 
+  const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.1, 2));
+  const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
+  const resetZoom = () => setZoomLevel(1);
+
+  const increaseFontSize = () => setFontSize((prev) => Math.min(prev + 2, 24));
+  const decreaseFontSize = () => setFontSize((prev) => Math.max(prev - 2, 12));
+  const resetFontSize = () => setFontSize(16);
+
+  const toggleHighContrast = () => {
+    setIsHighContrast(prev => !prev);
+  };
+
   console.log('Current user state:', user);
   return (
     <CartProvider> {/* Wrap the app in CartProvider */}
       <Router>
-        <div className="App">
+        <div 
+          className={`App ${isHighContrast ? 'high-contrast' : ''}`} 
+          style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center', fontSize: `${fontSize}px` }}
+        >
           <BackButton className='back-button' />
           <TranslationWidget className='translation-widget' />
           <Routes>
@@ -108,7 +126,25 @@ function App() {
                 </button>
               )}
             </div>
-    </Router>
+
+            <div className="zoom-controls">
+              <button onClick={handleZoomIn}>Zoom In</button>
+              <button onClick={handleZoomOut}>Zoom Out</button>
+              <button onClick={resetZoom}>Reset Zoom</button>
+            </div>
+
+            <div className="font-controls">
+              <button onClick={increaseFontSize}>Increase Font Size</button>
+              <button onClick={decreaseFontSize}>Decrease Font Size</button>
+              <button onClick={resetFontSize}>Reset Font Size</button>
+            </div>
+
+            <div className="contrast-controls">
+              <button onClick={toggleHighContrast}>
+                {isHighContrast ? 'Disable High Contrast' : 'Enable High Contrast'}
+              </button>
+            </div>
+      </Router>
     </CartProvider>
   );
 }
