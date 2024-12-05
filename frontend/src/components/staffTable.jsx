@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import ItemTable from './table';
 import AddStaff from './addStaff';
 import '../App.css';
-
+/**
+ * StaffTable Component
+ *
+ * Fetches and displays staff data in a table format. Includes functionality to add new staff using the `AddStaff` component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <StaffTable />
+ * )
+ */
 function StaffTable(){
 
     const [data, setData] = useState([]);

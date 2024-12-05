@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
 import ItemTable from "./table";
-
+/**
+ * ProductUsage Component
+ *
+ * Allows the user to input a time range and generates product usage data from the API.
+ * Displays the fetched data in a table format using the `ItemTable` component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ProductUsage />
+ * )
+ */
 function ProductUsage() {
     const [productData, setProductData] = useState([]);
     const [error, setError] = useState(null);

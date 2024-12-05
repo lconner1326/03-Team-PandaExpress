@@ -123,7 +123,19 @@
 
 import React, { useEffect, useState } from 'react';
 import './kitchen.css';
-
+/**
+ * KitchenItems Component
+ *
+ * Displays a list of orders for the kitchen staff with real-time updates. Orders are fetched
+ * from the backend and displayed with timers to track preparation times. Provides functionality
+ * to delete orders when completed.
+ *
+ * @component
+ * @example
+ * return (
+ *   <KitchenItems />
+ * )
+ */
 function KitchenItems() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
@@ -179,7 +191,13 @@ function KitchenItems() {
     return () => clearInterval(intervalId);
   }, [data]);
 
-  // Deletes item from the database when you click "Done"
+    /**
+   * Deletes an order from the kitchen.
+   *
+   * Sends a DELETE request to the API and removes the order from the local state.
+   *
+   * @param {number} id - ID of the order to delete.
+   */
   const deleteItem = (id) => {
     fetch(`https://project-3-03-team-2xy5.onrender.com/api/kitchen/${id}`, { method: 'DELETE' })
       .then(response => {
@@ -199,7 +217,12 @@ function KitchenItems() {
       .catch(err => setError(err.message));
   };
 
-  // Determine background color based on elapsed time
+    /**
+   * Calculates the background color based on elapsed time for an order.
+   *
+   * @param {number} startTime - Start time of the order timer.
+   * @returns {string} - The background color (`red`, `yellow`, or `green`) based on the elapsed time.
+   */
   const getTimerBackgroundColor = (startTime) => {
     const timeElapsed = Date.now() - startTime;
     const minutes = Math.floor((timeElapsed / (1000 * 60)) % 60);

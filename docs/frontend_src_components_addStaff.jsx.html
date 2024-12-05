@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/components/addStaff.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/components/addStaff.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState } from "react";
+
+
+/**
+ * AddStaff Component
+ *
+ * A React component that allows the manager to add a new staff member by entering their
+ * name and selecting their position. On form submission, the data is sent to the backend
+ * API for storage.
+ *
+ * @component
+ * @example
+ * return (
+ *   &lt;AddStaff />
+ * )
+ */
+function AddStaff(){
+    
+    const [showForm, setShowForm] = useState(false);
+    
+    const [staff_name, setStaff_name] = useState('');
+     
+    const [position, setPosition] = useState('Employee');
+
+    const handleButtonClick = () => {
+        setShowForm(true);
+    };
+  /**
+   * Handles form submission.
+   * Prevents default form behavior, sends staff data to the backend API, and
+   * hides the form after successful submission.
+   *
+   * @param {Object} e - The form submission event.
+   */
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        console.log(staff_name, position);
+        // Handle form submission logic here
+        fetch('https://project-3-03-team-2xy5.onrender.com/api/addStaffData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                staff_name,
+                position,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        setShowForm(false);
+    };
+
+    return (
+        &lt;div>
+            &lt;button  className="manager-nav-bar-button" onClick={handleButtonClick}>Add Staff&lt;/button>
+            {showForm &amp;&amp; (
+                &lt;div className="form">
+                    &lt;form onSubmit={handleFormSubmit} className="employee-form">
+                        &lt;label>
+                            Employee Name:
+                            &lt;input
+                                type="text"
+                                value={staff_name}
+                                onChange={(e) => setStaff_name(e.target.value)}
+                            />
+                        &lt;/label>
+                        &lt;label className="form-label">
+                            Position:
+                            &lt;select
+                                value={position}
+                                onChange={(e) => setPosition(e.target.value)}
+                            >
+                                &lt;option value="manager">Manager&lt;/option>
+                                &lt;option value="employee">Employee&lt;/option>
+                            &lt;/select>
+                        &lt;/label>
+                        &lt;button type="submit" className="manager-nav-bar-button" id="submit">Submit&lt;/button>
+                    &lt;/form>
+                &lt;/div>
+            )}
+        &lt;/div>
+    );
+}
+
+export default AddStaff;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Kiosk.html">Kiosk</a></li><li><a href="module-Kitchen.html">Kitchen</a></li><li><a href="module-Manager.html">Manager</a></li><li><a href="module-Menu.html">Menu</a></li><li><a href="module-MenuItemRouter.html">MenuItemRouter</a></li><li><a href="module-MenuSelection.html">MenuSelection</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddStaff">AddStaff</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#CartProvider">CartProvider</a></li><li><a href="global.html#Cashier">Cashier</a></li><li><a href="global.html#CashierCheckout">CashierCheckout</a></li><li><a href="global.html#CashierMenuSelection">CashierMenuSelection</a></li><li><a href="global.html#Checkout">Checkout</a></li><li><a href="global.html#IngredientsTable">IngredientsTable</a></li><li><a href="global.html#ItemTable">ItemTable</a></li><li><a href="global.html#KitchenItems">KitchenItems</a></li><li><a href="global.html#ManagerNavBar">ManagerNavBar</a></li><li><a href="global.html#MenuCard">MenuCard</a></li><li><a href="global.html#MenuItemsTable">MenuItemsTable</a></li><li><a href="global.html#MenuPage">MenuPage</a></li><li><a href="global.html#OrderHistoryTable">OrderHistoryTable</a></li><li><a href="global.html#PORT">PORT</a></li><li><a href="global.html#PricedItemsTable">PricedItemsTable</a></li><li><a href="global.html#ProductUsage">ProductUsage</a></li><li><a href="global.html#RestockTable">RestockTable</a></li><li><a href="global.html#SalesReport">SalesReport</a></li><li><a href="global.html#StaffTable">StaffTable</a></li><li><a href="global.html#TranslationWidget">TranslationWidget</a></li><li><a href="global.html#WeatherWidget">WeatherWidget</a></li><li><a href="global.html#XReport">XReport</a></li><li><a href="global.html#ZReport">ZReport</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#kioskMenuItem">kioskMenuItem</a></li><li><a href="global.html#useCart">useCart</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Dec 04 2024 22:05:29 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

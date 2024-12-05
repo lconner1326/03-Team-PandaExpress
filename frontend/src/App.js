@@ -14,11 +14,17 @@ import cartIcon from './imgs/checkoutCart.png';
 import BackButton from './components/backButton';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import TranslationWidget from "./components/translationWidget";
 import CashierMenuSelection from "./pages/cashierMenuSelection";
-
+/**
+ * @module App
+ * @description The main application component that defines routes and global state for the application.
+ * Includes user authentication, language translation, and navigation between various pages such as Cashier, Manager, Kitchen, Kiosk, and Menu.
+ * 
+ * @returns {JSX.Element} The main application structure with routing and authentication.
+ */
 function App() {
   const [user, setUser] = useState(null); // To track the logged-in user
+  const [isHighContrast, setIsHighContrast] = useState(false);
 
   const handleLogin = () => {
     // window.location.href = 'http://localhost:3000/auth/google';  // This will redirect directly to backend
@@ -57,13 +63,18 @@ function App() {
     fetchUser();
   }, []);
 
+  const toggleHighContrast = () => {
+    setIsHighContrast(prev => !prev);
+  };
+
   console.log('Current user state:', user);
   return (
     <CartProvider> {/* Wrap the app in CartProvider */}
       <Router>
-        <div className="App">
+        <div 
+          className={`App ${isHighContrast ? 'high-contrast' : ''}`}
+        >
           <BackButton className='back-button' />
-          <TranslationWidget className='translation-widget' />
           <Routes>
             <Route path="/" element={
                 <div className="home-nav-bar">
@@ -102,7 +113,13 @@ function App() {
                 </button>
               )}
             </div>
-    </Router>
+            
+            <div className="contrast-controls">
+              <button onClick={toggleHighContrast}>
+                {isHighContrast ? 'Disable High Contrast' : 'Enable High Contrast'}
+              </button>
+            </div>
+      </Router>
     </CartProvider>
   );
 }

@@ -1,5 +1,16 @@
 import { useEffect } from "react";
-
+/**
+ * TranslationWidget Component
+ *
+ * Dynamically loads the Google Translate script and initializes the translation widget.
+ * Provides a UI element for translating the page.
+ *
+ * @component
+ * @example
+ * return (
+ *   <TranslationWidget />
+ * )
+ */
 function TranslationWidget(){
 
     useEffect(() => {

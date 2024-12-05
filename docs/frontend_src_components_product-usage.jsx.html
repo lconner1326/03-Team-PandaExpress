@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/components/product-usage.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/components/product-usage.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from "react";
+import ItemTable from "./table";
+/**
+ * ProductUsage Component
+ *
+ * Allows the user to input a time range and generates product usage data from the API.
+ * Displays the fetched data in a table format using the `ItemTable` component.
+ *
+ * @component
+ * @example
+ * return (
+ *   &lt;ProductUsage />
+ * )
+ */
+function ProductUsage() {
+    const [productData, setProductData] = useState([]);
+    const [error, setError] = useState(null);
+    const [formData, setFormData] = useState({
+        startWeek: '',
+        endWeek: '',
+        startHour: '',
+        endHour: '',
+        startDay: '',
+        endDay: ''
+    });
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const startCompositeTime = (formData.startWeek * 10000) + (formData.startDay * 100) + formData.startHour;
+        const endCompositeTime = (formData.endWeek * 10000) + (formData.endDay * 100) + formData.endHour;
+        console.log({startCompositeTime, endCompositeTime});
+        
+        fetch('https://project-3-03-team-2xy5.onrender.com/api/ProductUsageData', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ startCompositeTime, endCompositeTime }),
+        })
+            .then(response => {
+            if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+            })
+            .then(fetchedData => setProductData(fetchedData))
+            .catch(err => setError(err.message));
+    };
+
+    if (error) {
+        return &lt;div>Error: {error}&lt;/div>;
+    }
+
+    return (
+        &lt;>
+        &lt;h1 className='page-header'>Product Usage&lt;/h1>
+        &lt;div className="sales-report">
+        {productData.length === 0 &amp;&amp; (
+            &lt;form onSubmit={handleSubmit} className='form'>
+                &lt;div>
+                    &lt;label htmlFor="startWeek">Start Week:&lt;/label>
+                    &lt;input type="text" id="startWeek" name="startWeek" value={formData.startWeek} onChange={handleChange} />
+                &lt;/div>
+                &lt;div>
+                    &lt;label htmlFor="endWeek">End Week:&lt;/label>
+                    &lt;input type="text" id="endWeek" name="endWeek" value={formData.endWeek} onChange={handleChange} />
+                &lt;/div>
+                &lt;div>
+                    &lt;label htmlFor="startHour">Start Hour:&lt;/label>
+                    &lt;input type="text" id="startHour" name="startHour" value={formData.startHour} onChange={handleChange} />
+                &lt;/div>
+                &lt;div>
+                    &lt;label htmlFor="endHour">End Hour:&lt;/label>
+                    &lt;input type="text" id="endHour" name="endHour" value={formData.endHour} onChange={handleChange} />
+                &lt;/div>
+                &lt;div>
+                    &lt;label htmlFor="startDay">Start Day:&lt;/label>
+                    &lt;input type="text" id="startDay" name="startDay" value={formData.startDay} onChange={handleChange} />
+                &lt;/div>
+                &lt;div>
+                    &lt;label htmlFor="endDay">End Day:&lt;/label>
+                    &lt;input type="text" id="endDay" name="endDay" value={formData.endDay} onChange={handleChange} />
+                &lt;/div>
+                &lt;button type="submit" className='manager-nav-bar-button'>Run Product Usage Report&lt;/button>
+            &lt;/form>)}
+            
+            {/* Display sales data after form submission */}
+            {productData.length > 0 &amp;&amp; (
+            &lt;div className='page-wrapper'>
+                &lt;h2 className='page-header'>Product Usage Data:&lt;/h2>
+                &lt;ItemTable columns={["ingredient_name", "total_items_used"]} rows={productData} />
+                {/* {salesData.map((item, index) => (
+                    &lt;div key={index}>{item.item_name} {item.total_sales}&lt;/div>
+                ))} */}
+            &lt;/div>
+            )}
+        &lt;/div>
+        &lt;/>
+    );
+}
+
+export default ProductUsage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Kiosk.html">Kiosk</a></li><li><a href="module-Kitchen.html">Kitchen</a></li><li><a href="module-Manager.html">Manager</a></li><li><a href="module-Menu.html">Menu</a></li><li><a href="module-MenuItemRouter.html">MenuItemRouter</a></li><li><a href="module-MenuSelection.html">MenuSelection</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddStaff">AddStaff</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#CartProvider">CartProvider</a></li><li><a href="global.html#Cashier">Cashier</a></li><li><a href="global.html#CashierCheckout">CashierCheckout</a></li><li><a href="global.html#CashierMenuSelection">CashierMenuSelection</a></li><li><a href="global.html#Checkout">Checkout</a></li><li><a href="global.html#IngredientsTable">IngredientsTable</a></li><li><a href="global.html#ItemTable">ItemTable</a></li><li><a href="global.html#KitchenItems">KitchenItems</a></li><li><a href="global.html#ManagerNavBar">ManagerNavBar</a></li><li><a href="global.html#MenuCard">MenuCard</a></li><li><a href="global.html#MenuItemsTable">MenuItemsTable</a></li><li><a href="global.html#MenuPage">MenuPage</a></li><li><a href="global.html#OrderHistoryTable">OrderHistoryTable</a></li><li><a href="global.html#PORT">PORT</a></li><li><a href="global.html#PricedItemsTable">PricedItemsTable</a></li><li><a href="global.html#ProductUsage">ProductUsage</a></li><li><a href="global.html#RestockTable">RestockTable</a></li><li><a href="global.html#SalesReport">SalesReport</a></li><li><a href="global.html#StaffTable">StaffTable</a></li><li><a href="global.html#TranslationWidget">TranslationWidget</a></li><li><a href="global.html#WeatherWidget">WeatherWidget</a></li><li><a href="global.html#XReport">XReport</a></li><li><a href="global.html#ZReport">ZReport</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#kioskMenuItem">kioskMenuItem</a></li><li><a href="global.html#useCart">useCart</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Dec 04 2024 22:05:29 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

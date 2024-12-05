@@ -1,6 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+/**
+ * ManagerNavBar Component
+ *
+ * A functional React component that renders a navigation bar for managers. 
+ * The navigation bar provides links to various management-related reports, tables, and charts.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ManagerNavBar />
+ * )
+ */
 function ManagerNavBar() {
     return (
         <div className="manager-nav-bar">

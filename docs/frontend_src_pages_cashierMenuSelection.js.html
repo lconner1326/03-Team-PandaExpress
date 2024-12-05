@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/pages/cashierMenuSelection.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/pages/cashierMenuSelection.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useCart } from '../cartContext'; // Import useCart from CartContext
+import CashierMenuItem from '../components/cashierMenuItem'; // Reusing the KioskMenuItem component
+import './MenuSelection.css';
+
+// Import images
+import chowMeinImg from '../imgs/chowMein.png';
+import friedRiceImg from '../imgs/friedRice.png';
+import superGreensImg from '../imgs/superGreens.png';
+import whiteRiceImg from '../imgs/whiteRice.png';
+
+import orangeChickenImg from '../imgs/orangeChicken.png';
+import bourbonChickenImg from '../imgs/bourbonChicken.png';
+import honeyShrimpImg from '../imgs/honeyWalnutShrimp.png';
+import teriyakiChickenImg from '../imgs/teriyakiChicken.png';
+import kungPaoChickenImg from '../imgs/kungPaoChicken.png';
+
+import beijingBeefImg from '../imgs/beijingBeef.png';
+import blackPepperChickenImg from '../imgs/blackPepperChicken.png';
+import blackPepperSirloinSteakImg from '../imgs/blackPepperSteak.png';
+import broccoliBeefImg from '../imgs/broccoliBeef.png';
+import honeySesameChickenImg from '../imgs/honeySesameChickenBreast.png';
+import mushroomChickenImg from '../imgs/mushroomChicken.png';
+import stringBeanChickenBreastImg from '../imgs/stringBeanChicken.png';
+import sweetFireChickenBreastImg from '../imgs/sweetFireChicken.png';
+
+import eggRollsImg from '../imgs/chickenEggRoll.avif';
+import springRollsImg from '../imgs/springRoll.avif';
+import crabRangoonsImg from '../imgs/crabRangoon.avif';
+
+import fountainDrinkImg from '../imgs/fountainDrink.png';
+import gatoradeImg from '../imgs/gatorade.avif';
+import bottledWaterImg from '../imgs/bottledWater.avif';
+
+// Define all items
+const items = {
+  MainEntrees: {
+    'Orange Chicken': orangeChickenImg,
+    'Bourbon Chicken': bourbonChickenImg,
+    'Honey Walnut Shrimp': honeyShrimpImg,
+    'Teriyaki Chicken': teriyakiChickenImg,
+    'Kung Pao Chicken': kungPaoChickenImg,
+    'Beijing Beef': beijingBeefImg,
+    'Black Pepper Chicken': blackPepperChickenImg,
+    'Black Pepper Sirloin Steak': blackPepperSirloinSteakImg,
+    'Broccoli Beef': broccoliBeefImg,
+    'Honey Sesame Chicken Breast': honeySesameChickenImg,
+    'Mushroom Chicken': mushroomChickenImg,
+    'String Bean Chicken Breast': stringBeanChickenBreastImg,
+    'Sweet Fire Chicken Breast': sweetFireChickenBreastImg,
+  },
+  Sides: {
+    'White Rice': whiteRiceImg,
+    'Fried Rice': friedRiceImg,
+    'Super Greens': superGreensImg,
+    'Chow Mein': chowMeinImg,
+  },
+  'Appetizers and More': {
+    'Egg Rolls': eggRollsImg,
+    'Spring Rolls': springRollsImg,
+    'Crab Rangoons': crabRangoonsImg,
+  },
+  Drinks: {
+    'Small Fountain Drink': fountainDrinkImg,
+    'Medium Fountain Drink': fountainDrinkImg,
+    'Large Fountain Drink': fountainDrinkImg,
+    'Gatorade': gatoradeImg,
+    'Bottled Water': bottledWaterImg,
+
+  },
+  'A La Carte': {
+    'White Rice': whiteRiceImg,
+    'Fried Rice': friedRiceImg,
+    'Chow Mein': chowMeinImg,
+    'Super Greens': superGreensImg,
+    'Orange Chicken': orangeChickenImg,
+    'Bourbon Chicken': bourbonChickenImg,
+    'Honey Walnut Shrimp': honeyShrimpImg,
+    'Teriyaki Chicken': teriyakiChickenImg,
+    'Kung Pao Chicken': kungPaoChickenImg,
+    'Beijing Beef': beijingBeefImg,
+    'Black Pepper Chicken': blackPepperChickenImg,
+    'Black Pepper Sirloin Steak': blackPepperSirloinSteakImg,
+    'Broccoli Beef': broccoliBeefImg,
+    'Honey Sesame Chicken Breast': honeySesameChickenImg,
+    'Mushroom Chicken': mushroomChickenImg,
+    'String Bean Chicken Breast': stringBeanChickenBreastImg,
+    'Sweet Fire Chicken Breast': sweetFireChickenBreastImg,
+  },
+};
+
+const premiumEntrees = ['Black Pepper Sirloin Steak', 'Honey Walnut Shrimp'];
+/**
+ * CashierMenuSelection Component
+ *
+ * Displays a dynamic menu based on the selected item type. Supports selection of sides, entrees, and other items.
+ * Integrates with cart functionality to add selected items.
+ *
+ * @component
+ * @example
+ * return (
+ *   &lt;CashierMenuSelection />
+ * )
+ */
+const CashierMenuSelection = () => {
+  const { itemType } = useParams(); // Dynamically get item type from URL
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  const limits = {
+    Bowl: { sides: 1, entrees: 1 },
+    Plate: { sides: 1, entrees: 2 },
+    'Bigger Plate': { sides: 1, entrees: 3 },
+  };
+
+  const [selectedSides, setSelectedSides] = useState([]);
+  const [selectedEntrees, setSelectedEntrees] = useState([]);
+  const [selectedOtherItems, setSelectedOtherItems] = useState([]);
+  const [showDialog, setShowDialog] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
+  
+
+  const maxSides = limits[itemType]?.sides || 0;
+  const maxEntrees = limits[itemType]?.entrees || 0;
+
+  const handleSizeSelect = (size) => {
+    const isPremium = premiumEntrees.includes(currentItem);
+    const selectedItemType = isPremium
+      ? `Premium ${size} Entree`
+      : `${size} Entree`;
+  
+    const newItem = {
+      itemType: selectedItemType,
+      name: currentItem,
+    };
+  
+    // Add the A La Carte item with its size to selectedOtherItems
+    setSelectedOtherItems([...selectedOtherItems.filter((item) => item.name !== currentItem), newItem]); // Update the selection
+    setShowSizeModal(false); // Close modal
+    setCurrentItem(null); // Reset current item
+    //setSelectedSize(null); // Reset size selection
+  };
+
+  const handleOtherItemSelect = (other) => {
+    if (selectedOtherItems.includes(other)){
+      setSelectedOtherItems(selectedOtherItems.filter((o) => o !== other));
+    } else if (itemType === 'A La Carte'){
+      setCurrentItem(other);
+      setShowSizeModal(true);
+    }else{
+      setSelectedOtherItems([...selectedOtherItems, other]);
+    }
+  };
+
+  // Handle side selection
+  const handleSideSelect = (side) => {
+    if (selectedSides.includes(side)) {
+      setSelectedSides(selectedSides.filter((s) => s !== side));
+    } else if (selectedSides.length &lt; maxSides) {
+      setSelectedSides([...selectedSides, side]);
+    }
+  };
+
+  // Handle entree selection
+  const handleEntreeSelect = (entree) => {
+    if (selectedEntrees.includes(entree)) {
+      setSelectedEntrees(selectedEntrees.filter((e) => e !== entree));
+    } else if (selectedEntrees.length &lt; maxEntrees) {
+      setSelectedEntrees([...selectedEntrees, entree]);
+    }
+  };
+
+  const handleConfirmSelection = () => {
+    if (itemType === 'Bowl' || itemType === 'Plate' || itemType === 'Bigger Plate') {
+      const order = {
+        itemType, // Include the type (Bowl, Plate, Bigger Plate)
+        sides: selectedSides,
+        entrees: selectedEntrees,
+      };
+      addToCart(order);
+    } else if (itemType === 'A La Carte'){
+      selectedOtherItems.forEach((item) => addToCart(item)); // Add all selected items to the cart
+      setSelectedOtherItems([]); // Clear the temporary selection
+      setShowDialog(true); // 
+    } else {
+      const order = selectedOtherItems.map((item) => ({
+        itemType, // Add the menu type (e.g., Drinks, A La Carte, etc.)
+        name: item, // Include the specific item selected
+      }));
+      order.forEach((o) => addToCart(o)); // Add each item separately to the cart
+    }
+    setShowDialog(true);
+  };
+  
+
+  const handleOrderMore = () => {
+    setShowDialog(false);
+    navigate('/cashier');
+  };
+
+  const handleCheckout = () => {
+    setShowDialog(false);
+    navigate('/cashierCheckout');
+  };
+
+  const categoryItems = items[itemType] || null;
+
+  // Render logic for "Bowl," "Plate," and "Bigger Plate"
+  if (!categoryItems &amp;&amp; (itemType === 'Bowl' || itemType === 'Plate' || itemType === 'Bigger Plate')) {
+    return (
+      &lt;div className="menu-selection">
+        &lt;h2>{itemType}&lt;/h2>
+
+        &lt;h3>Select Up to {maxSides} Sides&lt;/h3>
+        &lt;div className="kiosk-page">
+          {Object.entries(items.Sides).map(([name, imgPath]) => (
+            &lt;div
+              key={name}
+              onClick={() => handleSideSelect(name)}
+              className={selectedSides.includes(name) ? 'selected' : ''}
+            >
+              &lt;CashierMenuItem image={imgPath} name={name} />
+            &lt;/div>
+          ))}
+        &lt;/div>
+
+        {selectedSides.length === maxSides &amp;&amp; (
+          &lt;>
+            &lt;h3>Select Up to {maxEntrees} Entrees&lt;/h3>
+            &lt;div className="kiosk-page">
+              {Object.entries(items.MainEntrees).map(([name, imgPath]) => (
+                &lt;div
+                  key={name}
+                  onClick={() => handleEntreeSelect(name)}
+                  className={selectedEntrees.includes(name) ? 'selected' : ''}
+                >
+                  &lt;CashierMenuItem image={imgPath} name={name} />
+                &lt;/div>
+              ))}
+            &lt;/div>
+          &lt;/>
+        )}
+
+        &lt;button
+          className="confirm-button"
+          disabled={selectedSides.length !== maxSides || selectedEntrees.length !== maxEntrees}
+          onClick={handleConfirmSelection}
+        >
+          Confirm Selection
+        &lt;/button>
+
+        {showDialog &amp;&amp; (
+          &lt;div className="modal-overlay">
+            &lt;div className="modal">
+              &lt;p>Your order has been added. What would you like to do?&lt;/p>
+              &lt;div className="modal-buttons">
+                &lt;button onClick={handleOrderMore}>Order More&lt;/button>
+                &lt;button onClick={handleCheckout}>Checkout&lt;/button>
+              &lt;/div>
+            &lt;/div>
+          &lt;/div>
+        )}
+      &lt;/div>
+    );
+  }
+
+  // Render logic for other item types ("Drinks," "Appetizers and More," etc.)
+  return (
+    &lt;div className="menu-selection">
+      &lt;h2>{itemType}&lt;/h2>
+      &lt;div className="kiosk-page">
+        {Object.entries(categoryItems).map(([name, imgPath]) => (
+          &lt;div
+            key={name}
+            onClick={() => {
+              if (itemType === 'A La Carte') {
+                setCurrentItem(name); // Set the current item for size selection
+                setShowSizeModal(true); // Show size selection modal
+              } else {
+                handleOtherItemSelect(name); // Handle regular item selection
+              }
+            }}
+            className={
+              selectedOtherItems.some((item) => item.name === name)
+                ? 'selected'
+                : ''
+            }
+          >
+            &lt;CashierMenuItem image={imgPath} name={name} />
+          &lt;/div>
+        ))}
+      &lt;/div>
+      &lt;button
+        className="confirm-button"
+        disabled={selectedOtherItems.length === 0}
+        onClick={handleConfirmSelection}
+      >
+        Confirm Selection
+      &lt;/button>
+  
+      {showSizeModal &amp;&amp; currentItem &amp;&amp; (
+        &lt;div className="modal-overlay">
+          &lt;div className="modal">
+            &lt;h3>Select a Size for {currentItem}&lt;/h3>
+            &lt;div className="modal-buttons">
+              &lt;button
+                className="size-button"
+                onClick={() => handleSizeSelect('Small')}
+              >
+                Small
+              &lt;/button>
+              &lt;button
+                className="size-button"
+                onClick={() => handleSizeSelect('Medium')}
+              >
+                Medium
+              &lt;/button>
+              &lt;button
+                className="size-button"
+                onClick={() => handleSizeSelect('Large')}
+              >
+                Large
+              &lt;/button>
+            &lt;/div>
+            &lt;button
+              className="cancel-button"
+              onClick={() => {
+                setShowSizeModal(false);
+                setCurrentItem(null); // Reset current item
+              }}
+            >
+              Cancel
+            &lt;/button>
+          &lt;/div>
+        &lt;/div>
+      )}
+  
+      {showDialog &amp;&amp; (
+        &lt;div className="modal-overlay">
+          &lt;div className="modal">
+            &lt;p>Your order has been added. What would you like to do?&lt;/p>
+            &lt;div className="modal-buttons">
+              &lt;button onClick={handleOrderMore}>Order More&lt;/button>
+              &lt;button onClick={handleCheckout}>Checkout&lt;/button>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+      )}
+    &lt;/div>
+  );
+  
+};
+
+export default CashierMenuSelection;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Kiosk.html">Kiosk</a></li><li><a href="module-Kitchen.html">Kitchen</a></li><li><a href="module-Manager.html">Manager</a></li><li><a href="module-Menu.html">Menu</a></li><li><a href="module-MenuItemRouter.html">MenuItemRouter</a></li><li><a href="module-MenuSelection.html">MenuSelection</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddStaff">AddStaff</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#CartProvider">CartProvider</a></li><li><a href="global.html#Cashier">Cashier</a></li><li><a href="global.html#CashierCheckout">CashierCheckout</a></li><li><a href="global.html#CashierMenuSelection">CashierMenuSelection</a></li><li><a href="global.html#Checkout">Checkout</a></li><li><a href="global.html#IngredientsTable">IngredientsTable</a></li><li><a href="global.html#ItemTable">ItemTable</a></li><li><a href="global.html#KitchenItems">KitchenItems</a></li><li><a href="global.html#ManagerNavBar">ManagerNavBar</a></li><li><a href="global.html#MenuCard">MenuCard</a></li><li><a href="global.html#MenuItemsTable">MenuItemsTable</a></li><li><a href="global.html#MenuPage">MenuPage</a></li><li><a href="global.html#OrderHistoryTable">OrderHistoryTable</a></li><li><a href="global.html#PORT">PORT</a></li><li><a href="global.html#PricedItemsTable">PricedItemsTable</a></li><li><a href="global.html#ProductUsage">ProductUsage</a></li><li><a href="global.html#RestockTable">RestockTable</a></li><li><a href="global.html#SalesReport">SalesReport</a></li><li><a href="global.html#StaffTable">StaffTable</a></li><li><a href="global.html#TranslationWidget">TranslationWidget</a></li><li><a href="global.html#WeatherWidget">WeatherWidget</a></li><li><a href="global.html#XReport">XReport</a></li><li><a href="global.html#ZReport">ZReport</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#kioskMenuItem">kioskMenuItem</a></li><li><a href="global.html#useCart">useCart</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Dec 04 2024 22:05:29 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

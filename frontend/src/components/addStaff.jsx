@@ -1,14 +1,37 @@
 import { useState } from "react";
 
+
+/**
+ * AddStaff Component
+ *
+ * A React component that allows the manager to add a new staff member by entering their
+ * name and selecting their position. On form submission, the data is sent to the backend
+ * API for storage.
+ *
+ * @component
+ * @example
+ * return (
+ *   <AddStaff />
+ * )
+ */
 function AddStaff(){
+    
     const [showForm, setShowForm] = useState(false);
+    
     const [staff_name, setStaff_name] = useState('');
+     
     const [position, setPosition] = useState('Employee');
 
     const handleButtonClick = () => {
         setShowForm(true);
     };
-
+  /**
+   * Handles form submission.
+   * Prevents default form behavior, sends staff data to the backend API, and
+   * hides the form after successful submission.
+   *
+   * @param {Object} e - The form submission event.
+   */
     const handleFormSubmit = (e) => {
         e.preventDefault();
         console.log(staff_name, position);

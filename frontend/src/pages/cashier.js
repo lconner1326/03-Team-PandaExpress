@@ -7,9 +7,19 @@ import biggerPlateImage from '../imgs/biggerplate.avif';
 import appetizerImage from '../imgs/appetizers.avif';
 import drinksImage from '../imgs/drinks.avif';
 import aLaCarteImage from '../imgs/alacarte.avif';
-import WeatherWidget from '../components/weatherWidget';
+import TimeWidget from '../components/timeWidget';
 import cartIcon from '../imgs/checkoutCart.png';
-
+/**
+ * Cashier Component
+ *
+ * Displays menu categories as clickable items and includes a weather widget and checkout link.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Cashier />
+ * )
+ */
 export const Cashier = () => {
   const menuItems = [
     { name: 'Bowl', image: bowlImage, link: '/item/Bowl' },
@@ -22,7 +32,7 @@ export const Cashier = () => {
 
   return (
     <div className="kiosk-page-wrapper">
-      <WeatherWidget />
+      <TimeWidget />
       <Link to="/cashierCheckout" className="checkout-icon">
                   <img src={cartIcon} alt="Checkout" />
                 </Link>

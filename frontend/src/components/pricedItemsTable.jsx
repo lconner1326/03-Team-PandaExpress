@@ -1,7 +1,17 @@
 import React from "react";
 import ItemTable from "./table";
 import { useState,useEffect } from "react";
-
+/**
+ * PricedItemsTable Component
+ *
+ * Fetches and displays priced items data from an API in a table format using the `ItemTable` component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <PricedItemsTable />
+ * )
+ */
 function PricedItemsTable () {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);

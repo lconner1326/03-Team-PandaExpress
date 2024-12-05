@@ -1,5 +1,16 @@
 {
   "dependencies": {
-    "dotenv": "^16.4.5"
-  }
+    "dotenv": "^16.4.5",
+    "pg": "^8.13.1"
+  },
+  "name": "project-3-03-team",
+  "version": "1.0.0",
+  "description": "project-3-03-team created by GitHub Classroom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

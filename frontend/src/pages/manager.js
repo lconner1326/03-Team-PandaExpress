@@ -11,7 +11,13 @@ import BackButton from "../components/backButton"
 import PricedItemsTable from "../components/pricedItemsTable"
 import IngredientsTable from "../components/ingredientsTable"
 import ProductUsage from "../components/product-usage"
-
+/**
+ * @module Manager
+ * @description Displays the manager dashboard with links to various reports and tables. 
+ * Integrates navigation and dynamic routes for managerial tasks.
+ * 
+ * @returns {JSX.Element} The manager page layout with navigation and content routes.
+ */
 export const Manager = () => {
 
     return (

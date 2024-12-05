@@ -1,7 +1,17 @@
 import { useState,useEffect } from "react";
 import ItemTable from "./table";
 import '../App.css';
-
+/**
+ * RestockTable Component
+ *
+ * Fetches ingredient data from an API and displays a table of items needing restocking.
+ *
+ * @component
+ * @example
+ * return (
+ *   <RestockTable />
+ * )
+ */
 function RestockTable(){
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);

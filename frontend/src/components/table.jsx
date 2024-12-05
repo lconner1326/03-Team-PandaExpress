@@ -1,7 +1,28 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './table.css';
-
+/**
+ * ItemTable Component
+ *
+ * Displays a table of items with an option to modify individual rows.
+ * Supports inline editing using a modal form and updates via API calls.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Array<string>} props.columns - Array of column names for the table.
+ * @param {Array<Object>} props.rows - Array of row objects containing the table data.
+ * @param {string} props.table - Name of the table for API modification requests.
+ * @returns {JSX.Element} A table with editing functionality.
+ *
+ * @example
+ * return (
+ *   <ItemTable
+ *     columns={['id', 'name', 'price']}
+ *     rows={[{ id: 1, name: 'Item A', price: 10.0 }]}
+ *     table="items"
+ *   />
+ * )
+ */
 const ItemTable = ({ columns, rows, table }) => {
     const [data, setData] = useState({});
     const [isFormVisible, setIsFormVisible] = useState(false);

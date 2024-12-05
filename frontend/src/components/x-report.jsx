@@ -1,6 +1,17 @@
 import { useState,useEffect } from "react";
 import ItemTable from "./table";
-
+/**
+ * XReport Component
+ *
+ * Fetches and displays the X-Report data from the API. 
+ * The report includes hourly data, order IDs, and costs.
+ *
+ * @component
+ * @example
+ * return (
+ *   <XReport />
+ * )
+ */
 function XReport(){
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
