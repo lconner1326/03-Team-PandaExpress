@@ -7,7 +7,7 @@ import biggerPlateImage from '../imgs/biggerplate.avif';
 import appetizerImage from '../imgs/appetizers.avif';
 import drinksImage from '../imgs/drinks.avif';
 import aLaCarteImage from '../imgs/alacarte.avif';
-import TimeWidget from '../components/timeWidget';
+import WeatherWidget from '../components/weatherWidget';
 import cartIcon from '../imgs/checkoutCart.png';
 /**
  * Cashier Component
@@ -32,7 +32,7 @@ export const Cashier = () => {
 
   return (
     <div className="kiosk-page-wrapper">
-      <TimeWidget />
+      <WeatherWidget />
       <Link to="/cashierCheckout" className="checkout-icon">
                   <img src={cartIcon} alt="Checkout" />
                 </Link>
