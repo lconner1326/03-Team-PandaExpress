@@ -40,7 +40,7 @@ const pool = new Pool({
 });
 
 // Middleware to parse JSON bodies
-app.use('/docs', express.static(path.join(__dirname, '../docs')));
+
 // app.use(cors());
 app.use(cors({
     // origin: 'http://localhost:3001', // Frontend URL- local host
