@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react'; // Added useEffect and useSt
 import { useCart } from '../cartContext';
 import { useNavigate } from 'react-router-dom';
 import './checkout.css';
-
+/**
+ * Checkout Component
+ *
+ * Displays items in the cart with their prices and provides functionality to confirm the order or remove items.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Checkout />
+ * )
+ */
 const Checkout = () => {
   const { cart, removeFromCart, clearCart } = useCart();
   const navigate = useNavigate();

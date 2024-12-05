@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import "./weatherWidget.css";
-
+/**
+ * WeatherWidget Component
+ *
+ * Fetches and displays the current weather information for College Station, including temperature and wind speed.
+ *
+ * @component
+ * @example
+ * return (
+ *   <WeatherWidget />
+ * )
+ */
 function WeatherWidget() {
     const [weather, setWeather] = useState(null);
 

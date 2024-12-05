@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import ItemTable from "./table";
-
+/**
+ * OrderHistoryTable Component
+ *
+ * Fetches and displays order history data from an API in a table format using the `ItemTable` component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <OrderHistoryTable />
+ * )
+ */
 function OrderHistoryTable(){
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);

@@ -1,0 +1,12 @@
+{
+    "source": {
+      "include": ["frontend/src", "backend/index.js", "backend/routes/MenuItemRouter.js"],
+      "includePattern": ".+\\.jsx?$",
+      "excludePattern": "(node_modules|docs)"
+    },
+    "opts": {
+      "destination": "./docs",
+      "recurse": true
+    }
+  }
+  

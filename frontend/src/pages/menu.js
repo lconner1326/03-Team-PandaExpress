@@ -40,8 +40,15 @@ import plateImg from '../components/images/plate.png';
 import biggerPlateImg from '../components/images/biggerPlate.png';
 
 
-
+/**
+ * @module Menu
+ * @description A dynamic menu display for customers to view meal options, sides, entrees, appetizers, a la carte items, and drinks.
+ * The menu is categorized into sections and allows navigation between different sections.
+ * 
+ * @returns {JSX.Element} The menu display with interactive navigation and categorized sections.
+ */
 export const Menu = () => {
+    
     const [displayedSection, setDisplayedSection] = useState('meals');
     const meals = [
         { name: 'Bowl', description: '1 serving of our Entrees and 1 side', price: '$8.3', image: bowlImg},

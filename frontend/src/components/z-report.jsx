@@ -1,6 +1,18 @@
 import ItemTable from "./table";
 import { useEffect, useState } from "react";
 
+/**
+ * ZReport Component
+ *
+ * Displays the Z-Report data, which includes summarized order information.
+ * Allows the user to generate a new report, fetching the updated data from the API.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ZReport />
+ * )
+ */
 function ZReport(){
     const [error, setError] = useState(null);
     const [zreportdata, setZReportData] = useState([]);

@@ -16,7 +16,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TranslationWidget from "./components/translationWidget";
 import CashierMenuSelection from "./pages/cashierMenuSelection";
-
+/**
+ * @module App
+ * @description The main application component that defines routes and global state for the application.
+ * Includes user authentication, language translation, and navigation between various pages such as Cashier, Manager, Kitchen, Kiosk, and Menu.
+ * 
+ * @returns {JSX.Element} The main application structure with routing and authentication.
+ */
 function App() {
   const [user, setUser] = useState(null); // To track the logged-in user
 

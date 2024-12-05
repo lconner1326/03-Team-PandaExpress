@@ -12,9 +12,20 @@ import { OAuth2Client } from 'google-auth-library';
 
 const { Pool } = pkg; 
 
-// Initialize Express app
+/**
+ * Initialize the Express application.
+ * @constant
+ * @type {Object}
+ */
 const app = express();
+
 app.use(express.json());
+
+/**
+ * Port number for the server.
+ * @constant
+ * @type {number}
+ */
 const PORT = 3000;
 
 // Set up PostgreSQL connection
@@ -43,6 +54,10 @@ pool.connect()
   .catch((err) => console.error('Database connection error', err.stack));
 
 // Define a route the frontend can call
+/**
+ * GET /api/menuItems
+ * Fetches all menu items from the database.
+ */
 app.get('/api/menuItems', async (req, res) => {
   try {
     // Example query to get data from a table called "your_table"
@@ -54,7 +69,10 @@ app.get('/api/menuItems', async (req, res) => {
   }
 });
 
-// Define another route for kitchenpage that frontend can call
+/**
+ * GET /api/kitchen
+ * Fetches all data from the kitchen table.
+ */
 app.get('/api/kitchen', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM kitchentable');
@@ -65,6 +83,10 @@ app.get('/api/kitchen', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/priceditems
+ * Fetches all items from the `priceditems` table.
+ */
 app.get('/api/priceditems', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM priceditems');
@@ -75,7 +97,11 @@ app.get('/api/priceditems', async (req, res) => {
   }
 });
 
-
+/**
+ * DELETE /api/kitchen/:id
+ * Deletes a kitchen item by ID.
+ * @param {string} id - ID of the kitchen item to delete.
+ */
 app.delete('/api/kitchen/:id', async (req, res) => {
   const { id } = req.params;  // Get the ID from the URL parameter
   try {
@@ -94,6 +120,13 @@ app.delete('/api/kitchen/:id', async (req, res) => {
   }
 });
 
+
+/**
+ * POST /api/SalesData
+ * Fetches sales data between specified composite times.
+ * @param {number} startCompositeTime - Start time.
+ * @param {number} endCompositeTime - End time.
+ */
 app.post('/api/SalesData', async (req, res) => {
   const startCompositeTime = req.body.startCompositeTime;
   const endCompositeTime = req.body.endCompositeTime;
@@ -138,6 +171,10 @@ app.post('/api/SalesData', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/StaffData
+ * Fetches all staff data from the `staff` table.
+ */
 app.get('/api/StaffData', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM staff');
@@ -148,6 +185,13 @@ app.get('/api/StaffData', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/addStaffData
+ * Adds a new staff member to the `staff` table.
+ * @param {Object} req.body - Request body containing staff details.
+ * @param {string} req.body.staff_name - Name of the staff member.
+ * @param {string} req.body.position - Position of the staff member.
+ */
 app.post('/api/addStaffData', async (req, res) => {
   const { staff_name, position } = req.body;
   try {
@@ -159,6 +203,10 @@ app.post('/api/addStaffData', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/RestockData
+ * Fetches ingredient restock data, sorted by units.
+ */
 app.get('/api/RestockData', async(req,res) =>{
   try{
     const result = await pool.query("SELECT * FROM ingredients ORDER BY units ASC");
@@ -170,6 +218,13 @@ app.get('/api/RestockData', async(req,res) =>{
   }
 });
 
+/**
+ * POST /api/ProductUsageData
+ * Fetches product usage data for a given time range.
+ * @param {Object} req.body - Request body containing time range details.
+ * @param {number} req.body.startCompositeTime - Start time.
+ * @param {number} req.body.endCompositeTime - End time.
+ */
 app.post('/api/ProductUsageData', async(req,res) =>{
     const startCompositeTime = req.body.startCompositeTime;
     const endCompositeTime = req.body.endCompositeTime;
@@ -219,6 +274,10 @@ app.post('/api/ProductUsageData', async(req,res) =>{
     }
 });
 
+/**
+ * GET /api/ingredients
+ * Fetches all ingredients from the `ingredients` table.
+ */
 
 app.get('/api/ingredients', async(req,res) =>{
   try{
@@ -231,6 +290,10 @@ app.get('/api/ingredients', async(req,res) =>{
   }
 });
 
+/**
+ * GET /api/OrderHistoryData
+ * Fetches recent order history data from the `neworderhistory` table.
+ */
 app.get('/api/OrderHistoryData', async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM neworderhistory ORDER BY id DESC LIMIT 100");
@@ -241,6 +304,12 @@ app.get('/api/OrderHistoryData', async (req, res) => {
   }
 });
 
+
+/**
+ * POST /api/placeOrder
+ * Places a new order in the database.
+ * @param {Object} req.body - Order details.
+ */
 app.post('/api/placeOrder', async (req, res) => {
   const orders = req.body.orders; // Expecting an array of orders
   console.log("Route hit: /api/placeOrder");
@@ -450,6 +519,11 @@ app.post('/api/placeOrder', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/cashierPlaceOrder
+ * Places a new order in the database from cashier page
+ * @param {Object} req.body - Order details.
+ */
 app.post('/api/cashierPlaceOrder', async (req, res) => {
   const orders = req.body.orders; // Expecting an array of orders
   console.log("Route hit: /api/placeOrder");
@@ -659,7 +733,10 @@ app.post('/api/cashierPlaceOrder', async (req, res) => {
 
 
 
-
+/**
+ * POST /api/XReportData
+ * Fetches data from Xreport table
+ */
 app.get('/api/XReportData/', async(req,res) =>{
   try{
     const result = await pool.query("SELECT * FROM xreport");
@@ -671,6 +748,10 @@ app.get('/api/XReportData/', async(req,res) =>{
   }
 });
 
+/**
+ * GET /api/ZReportData/generate
+ * Generates the Z Report by moving data from `xreport` to `zreport`.
+ */
 app.get('/api/ZReportData/generate', async(req,res) =>{
   try{
     await pool.query(`TRUNCATE TABLE zreport;
@@ -689,6 +770,10 @@ app.get('/api/ZReportData/generate', async(req,res) =>{
   }
 });
 
+/**
+ * GET /api/ZReportData/request
+ * Fetches all data from the `zreport` table.
+ */
 app.get('/api/ZReportData/request', async(req,res) =>{
   try{
     const result = await pool.query("SELECT * FROM zreport");
@@ -700,6 +785,11 @@ app.get('/api/ZReportData/request', async(req,res) =>{
   }
 });
 
+/**
+ * POST /api/modify/neworderhistory
+ * Modifies data in the `neworderhistory` table.
+ * @param {Object} req.body - Data to be updated in the table.
+ */
 app.post('/api/modify/neworderhistory', async(req,res) =>{
   try{
     const { id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week } = req.body;
@@ -713,6 +803,11 @@ app.post('/api/modify/neworderhistory', async(req,res) =>{
   }
 });
 
+/**
+ * POST /api/modify/staff
+ * Modifies data in the `staff` table.
+ * @param {Object} req.body - Staff details to be updated.
+ */
 app.post('/api/modify/staff', async(req,res) =>{
   try{
     const { employee_id, staff_name, position, active } = req.body;
@@ -726,6 +821,11 @@ app.post('/api/modify/staff', async(req,res) =>{
   }
 });
 
+/**
+ * POST /api/modify/ingredients
+ * Modifies data in the `ingredients` table.
+ * @param {Object} req.body - Ingredient details to be updated.
+ */
 app.post('/api/modify/ingredients', async(req,res) =>{
   try{
     const { ingredientid, ingredient_name, units, restock_level } = req.body;
@@ -739,6 +839,11 @@ app.post('/api/modify/ingredients', async(req,res) =>{
   }
 });
 
+/**
+ * POST /api/modify/priceditems
+ * Modifies data in the `priceditems` table.
+ * @param {Object} req.body - Priced item details to be updated.
+ */
 app.post('/api/modify/priceditems', async(req,res) =>{
   try{
     const { itemid, item_name, category, price } = req.body;
@@ -752,6 +857,11 @@ app.post('/api/modify/priceditems', async(req,res) =>{
   }
 });
 
+/**
+ * POST /api/modify/menuitems
+ * Modifies data in the `menuitems` table.
+ * @param {Object} req.body - Menu item details to be updated.
+ */
 app.post('/api/modify/menuitems', async(req,res) =>{
   try{
     const { menuid, item_name, ingredientsused } = req.body;

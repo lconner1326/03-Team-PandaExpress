@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import ItemTable from './table';
 
+/**
+ * SalesReport Component
+ *
+ * Provides a form for specifying a time range and generates a sales report
+ * by fetching data from the API. Displays the fetched data in a table format.
+ *
+ * @component
+ * @example
+ * return (
+ *   <SalesReport />
+ * )
+ */
+
 function SalesReport() {
     const [salesData, setSalesData] = useState([]);
     const [error, setError] = useState(null);
