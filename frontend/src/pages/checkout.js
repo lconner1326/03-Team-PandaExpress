@@ -26,13 +26,33 @@ const Checkout = () => {
         console.log('Priced Items Response:', data); // Debug log
         const priceMap = {};
         data.forEach((item) => {
-          console.log("item name: ", item.item_name);
           priceMap[item.item_name.trim()] = item.price; // Trim to avoid whitespace issues
         });
         setPrices(priceMap);
       })
       .catch((error) => console.error('Error fetching prices:', error));
   }, []);
+  
+  const calculatePrice = (order) => {
+    const premiumEntrees = ["Black Pepper Sirloin Steak", "Honey Walnut Shrimp"];
+    let basePrice = prices[order.itemType] || 0;
+  
+    // If itemType is Drinks or Appetizers and More, use the name for the price
+    if (["Drinks", "Appetizers and More"].includes(order.itemType)) {
+      basePrice = prices[order.name] || 0;
+    }
+  
+    // Add premium surcharge for Bowl, Plate, or Bigger Plate
+    if (["Bowl", "Plate", "Bigger Plate"].includes(order.itemType)) {
+      const premiumCount = (order.entrees || []).filter((entree) =>
+        premiumEntrees.includes(entree)
+      ).length;
+      basePrice += premiumCount * 1.5;
+    }
+  
+    return basePrice.toFixed(2); 
+  };
+  
 
   const handleConfirmOrder = () => {
     if (cart.length === 0) {
@@ -98,10 +118,10 @@ const Checkout = () => {
                     <strong>Entrees:</strong> {order.entrees.join(', ')}
                   </p>
                 )}
-                <p>
-                  <strong>Price:</strong> $
-                  {prices[order.itemType?.trim()] || prices[order.name?.trim()] || 'N/A'}
-                </p>
+               <p>
+                  <strong>Price:</strong> ${calculatePrice(order)}
+              </p>
+
                 <button onClick={() => removeFromCart(index)}>Remove</button>
               </li>
             );
