@@ -3,14 +3,18 @@ import express from 'express';
 import pkg from 'pg';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
 // Stuff for OAuth
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 // import cookieSession from 'cookie-session';
 import session from 'express-session';
 import { OAuth2Client } from 'google-auth-library';
-
+import path from 'path';
 const { Pool } = pkg; 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * Initialize the Express application.
@@ -422,11 +426,17 @@ app.post('/api/placeOrder', async (req, res) => {
         totalPrice += price;
 
         // Map sides and entrees to their corresponding IDs from the dictionary
-        const sideID = Array.isArray(sides) ? menu_dictionary[sides[0]] || -1 : menu_dictionary[sides] || -1;
+        const sideID = Array.isArray(sides) 
+          ? (menu_dictionary.hasOwnProperty(sides[0]) ? menu_dictionary[sides[0]] : -1)
+          : (menu_dictionary.hasOwnProperty(sides) ? menu_dictionary[sides] : -1);
         const entree2ID = entrees[1] ? menu_dictionary[entrees[1]] || -1 : -1;
         const entree3ID = entrees[2] ? menu_dictionary[entrees[2]] || -1 : -1;
 
         console.log(`Inserting order with itemType ${itemType}`);
+        console.log('Sides received:', sides);
+        console.log('Mapped sideID:', sideID);
+        console.log("Menu dictionary for Chow Mein:", menu_dictionary["Chow Mein"]);
+
         await pool.query(
           "INSERT INTO neworderhistory (id, priceditem, side, entree1, entree2, entree3, cost, premium, itemid, hour, day, week) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
           [
