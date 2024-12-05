@@ -19,27 +19,30 @@ const Checkout = () => {
   const [prices, setPrices] = useState({});
 
   useEffect(() => {
-    // Fetch prices from the backend
     fetch('https://project-3-03-team-2xy5.onrender.com/api/priceditems')
       .then((response) => response.json())
       .then((data) => {
         console.log('Priced Items Response:', data); // Debug log
         const priceMap = {};
         data.forEach((item) => {
-          priceMap[item.item_name.trim()] = item.price; // Trim to avoid whitespace issues
+          console.log("Mapping price for:", item.item_name, "Price:", item.price);
+          priceMap[item.item_name.trim()] = item.price; // Ensure no whitespace issues
         });
         setPrices(priceMap);
       })
       .catch((error) => console.error('Error fetching prices:', error));
   }, []);
   
+  
   const calculatePrice = (order) => {
     const premiumEntrees = ["Black Pepper Sirloin Steak", "Honey Walnut Shrimp"];
-    let basePrice = prices[order.itemType] || 0;
+    let basePrice = prices[order.itemType?.trim()] || 0;
   
-    // If itemType is Drinks or Appetizers and More, use the name for the price
+    // Check if the itemType is Drinks or Appetizers and More
     if (["Drinks", "Appetizers and More"].includes(order.itemType)) {
-      basePrice = prices[order.name] || 0;
+      console.log("Checking Drinks/Appetizers price for:", order.name);
+      basePrice = prices[order.name?.trim()] || 0; // Use the order.name for price lookup
+      console.log("Price found:", basePrice); // Debug log
     }
   
     // Add premium surcharge for Bowl, Plate, or Bigger Plate
@@ -50,8 +53,9 @@ const Checkout = () => {
       basePrice += premiumCount * 1.5;
     }
   
-    return basePrice.toFixed(2); 
+    return basePrice ? basePrice.toFixed(2) : "N/A"; // Ensure proper formatting or return "N/A"
   };
+  
   
 
   const handleConfirmOrder = () => {
