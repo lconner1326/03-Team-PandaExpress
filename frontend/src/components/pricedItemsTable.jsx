@@ -1,6 +1,7 @@
 import React from "react";
 import ItemTable from "./table";
 import { useState,useEffect } from "react";
+import AddPricedItem from "./addPricedItem";
 /**
  * PricedItemsTable Component
  *
@@ -35,6 +36,7 @@ function PricedItemsTable () {
 
   return (
       <div className="page-wrapper">
+        <AddPricedItem/>
           <h1 className="page-header">Priced Items Table</h1>
           <div className="staff-table-wrapper">
               <ItemTable columns={["itemid",'item_name','category','price' ]} rows={data} table={"priceditems"} />

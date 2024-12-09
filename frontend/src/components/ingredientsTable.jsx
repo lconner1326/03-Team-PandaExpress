@@ -1,6 +1,7 @@
 import React from "react";
 import ItemTable from "./table";
 import { useState,useEffect } from "react";
+import AddIngredient from "./addIngredients";
 /**
  * IngredientsTable Component
  *
@@ -36,6 +37,7 @@ function IngredientsTable () {
 
   return (
       <div className="page-wrapper">
+        <AddIngredient/>
           <h1 className="page-header">Ingredients Table</h1>
           <div className="staff-table-wrapper">
               <ItemTable columns={["ingredientid",'ingredient_name','units','restock_level']} rows={data} table={"ingredients"}/>

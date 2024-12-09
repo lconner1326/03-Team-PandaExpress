@@ -207,6 +207,39 @@ app.post('/api/addStaffData', async (req, res) => {
   }
 });
 
+app.post('/api/addIngredientData', async (req, res) => {
+  const { ingredient_name, units, restock_level } = req.body;
+  try {
+    await pool.query('INSERT INTO ingredients (ingredientid, ingredient_name, units, restock_level) VALUES ((SELECT MAX(ingredientid) from ingredients) + 1, $1, $2, $3)', [ingredient_name, units, restock_level]);
+    res.status(201).json({ message: 'Ingredient added successfully' });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to add ingredient' });
+  }
+});
+
+app.post('/api/addMenuItemData', async (req, res) => {
+  const { item_name, ingredientsused, category, premium } = req.body;
+  try {
+    await pool.query('INSERT INTO menuitems (menuid, item_name, category, premium, ingredientsused) VALUES ((SELECT MAX(menuid) from menuitems) + 1, $1, $2, $3, $3)', [item_name,category,premium, ingredientsused]);
+    res.status(201).json({ message: 'Menu item added successfully' });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to add menu item' });
+  }
+});
+
+app.post('/api/addPricedItemData', async (req, res) => {
+  const { item_name, category, price } = req.body;
+  try {
+    await pool.query('INSERT INTO priceditems (itemid, item_name, category, price) VALUES ((SELECT MAX(itemid) from priceditems) + 1, $1, $2, $3)', [item_name, category, price]);
+    res.status(201).json({ message: 'Priced item added successfully' });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to add priced item' });
+  }
+});
+
 /**
  * GET /api/RestockData
  * Fetches ingredient restock data, sorted by units.
@@ -830,6 +863,68 @@ app.post('/api/modify/staff', async(req,res) =>{
     res.status(500).json({ error: 'Failed to modify data' });
   }
 });
+
+app.delete('/api/delete/staff', async(req,res) =>{
+  try{
+    const { employee_id } = req.body;
+    await pool.query(`DELETE FROM staff WHERE employee_id = $1`, [employee_id]);
+    res.status(200).json({ message: 'Staff deleted successfully' });
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to delete data' });
+  }
+});
+
+app.delete('/api/delete/ingredients', async(req,res) =>{
+  try{
+    const { ingredientid } = req.body;
+    await pool.query(`DELETE FROM ingredients WHERE ingredientid = $1`, [ingredientid]);
+    res.status(200).json({ message: 'Ingredient deleted successfully' });
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to delete data' });
+  }
+});
+
+app.delete('/api/delete/priceditems', async(req,res) =>{
+  try{
+    const { itemid } = req.body;
+    await pool.query(`DELETE FROM priceditems WHERE itemid = $1`, [itemid]);
+    res.status(200).json({ message: 'Priced item deleted successfully' });
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to delete data' });
+  }
+});
+
+app.delete('/api/delete/menuitems', async(req,res) =>{
+  try{
+    const { menuid } = req.body;
+    await pool.query(`DELETE FROM menuitems WHERE menuid = $1`, [menuid]);
+    res.status(200).json({ message: 'Menu item deleted successfully' });
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to delete data' });
+  }
+});
+
+app.delete('/api/delete/neworderhistory', async(req,res) =>{
+  try{
+    const { id } = req.body;
+    await pool.query(`DELETE FROM neworderhistory WHERE id = $1`, [id]);
+    res.status(200).json({ message: 'Order deleted successfully' });
+  }
+  catch(err){
+    console.error('Error executing query', err.stack);
+    res.status(500).json({ error: 'Failed to delete data' });
+  }
+});
+
+
 
 /**
  * POST /api/modify/ingredients

@@ -1,6 +1,7 @@
 import React from "react";
 import ItemTable from "./table";
 import { useState,useEffect } from "react";
+import AddMenuItem from "./addMenuItem";
 /**
  * MenuItemsTable Component
  *
@@ -36,6 +37,7 @@ function MenuItemsTable () {
 
   return (
       <div className="page-wrapper">
+        <AddMenuItem/>
           <h1 className="page-header">Menu Items Table</h1>
           <div className="staff-table-wrapper">
               <ItemTable columns={["menuid",'item_name','category','premium' , 'ingredientsused']} rows={data} table={"menuitems"}/>
