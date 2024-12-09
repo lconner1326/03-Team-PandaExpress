@@ -183,7 +183,7 @@ select{
 }
 
 .manager-nav-bar-button{
-  background-color: #d1282e;
+  background-color: #ff6865;
   color: black;
   padding: 10px;
   border-radius: 5px;
@@ -287,7 +287,7 @@ button {
   border-radius: 12px;
   padding: 8px 15px;
   background-color: #4CAF50;
-  color: white;
+  color: black;
   border: none;
   cursor: pointer;
 }
@@ -343,8 +343,8 @@ button[type="button"] {
 
 .font-controls button {
   padding: 10px;
-  background-color: #007bff;
-  color: white;
+  background-color: #6badce;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
