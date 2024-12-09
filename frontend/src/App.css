@@ -49,12 +49,16 @@ select{
   position: fixed;
   bottom: 10px;
   left: 10px;
+  width: 100px;
+  height: 50px;
 }
 
 .contrast-controls{
   position: fixed;
   bottom: 10px;
   left: 164px;
+  width: 100px;
+  height: 50px;
 }
 
 
@@ -353,6 +357,8 @@ button[type="button"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width: 100px;
+  height: 50px;
 }
 
 .font-controls button:hover {
