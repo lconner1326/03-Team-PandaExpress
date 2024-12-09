@@ -18,18 +18,18 @@ import cartIcon from '../imgs/checkoutCart.png';
  */
 export const Kiosk = () => {
   const menuItems = [
-    { name: 'Bowl', image: bowlImage, link: '/item/Bowl' },
-    { name: 'Plate', image: plateImage, link: '/item/Plate' },
-    { name: 'Bigger Plate', image: biggerPlateImage, link: '/item/Bigger Plate' },
-    { name: 'Appetizers and More', image: appetizerImage, link: '/item/Appetizers and More' },
-    { name: 'Drinks', image: drinksImage, link: '/item/Drinks' },
-    { name: 'A La Carte', image: aLaCarteImage, link: '/item/A La Carte' },
+    { name: 'Bowl', image: bowlImage, link: '/kiosk/item/Bowl' },
+    { name: 'Plate', image: plateImage, link: '/kiosk/item/Plate' },
+    { name: 'Bigger Plate', image: biggerPlateImage, link: '/kiosk/item/Bigger Plate' },
+    { name: 'Appetizers and More', image: appetizerImage, link: '/kiosk/item/Appetizers and More' },
+    { name: 'Drinks', image: drinksImage, link: '/kiosk/item/Drinks' },
+    { name: 'A La Carte', image: aLaCarteImage, link: '/kiosk/item/A La Carte' },
   ];
 
   return (
     <div className="kiosk-page-wrapper">
       <WeatherWidget />
-      <Link to="/checkout" className="checkout-icon">
+      <Link to="/kiosk/checkout" className="checkout-icon">
                   <img src={cartIcon} alt="Checkout" />
                 </Link>
     <div className="kiosk-page">
