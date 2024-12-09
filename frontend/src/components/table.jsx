@@ -66,32 +66,33 @@ const ItemTable = ({ columns, rows, table }) => {
     };
 
     const handleDelete = (rowIndex) => {
-        console.log(`Delete button clicked for row ${rowIndex}`, rows[rowIndex]);
-        fetch(`https://project-3-03-team-2xy5.onrender.com/api/delete/${table}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(rows[rowIndex]),
+      console.log(`Delete button clicked for row ${rowIndex}`, rows[rowIndex]);
+      fetch(`https://project-3-03-team-2xy5.onrender.com/api/delete/${table}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rows[rowIndex]),
+      })
+        .then((response) => { 
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
         })
-            .then((response) => { 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            }
-            )
-            .then(() => {
-                // Update the rows array by removing the deleted row
-                const newRows = rows.filter((_, index) => index !== rowIndex);
-                console.log('Rows updated:', newRows);
-                // Update the state with the new rows
-                setData({});
-                setIsFormVisible(false);
-            })
-            .catch((error) => {
-                console.error('Error during delete request:', error);
-            });
+        .then(() => {
+          // Update the rows array by removing the deleted row
+          const newRows = rows.filter((_, index) => index !== rowIndex);
+          console.log('Rows updated:', newRows);
+          // Update the state with the new rows
+          setData({});
+          setIsFormVisible(false);
+          alert('Item successfully deleted');
+        })
+        .catch((error) => {
+          console.error('Error during delete request:', error);
+          alert('Failed to delete item');
+        });
     }
 
     const handleSubmit = (e) => {
@@ -132,6 +133,7 @@ const ItemTable = ({ columns, rows, table }) => {
                 <th key={index}>{column}</th>
               ))}
               <th>Modify</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>

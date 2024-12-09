@@ -45,6 +45,20 @@ select{
   margin: 10px;
 }
 
+.auth-buttons{
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+}
+
+.contrast-controls{
+  position: fixed;
+  bottom: 10px;
+  left: 164px;
+}
+
+
+
 .employee-form{
   display: flex;
   flex-direction: column;
