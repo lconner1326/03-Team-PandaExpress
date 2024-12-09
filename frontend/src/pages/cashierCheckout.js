@@ -77,7 +77,7 @@ const Checkout = () => {
     }
 
     console.log('Sending orders to /api/placeOrder:', cart);
-    fetch('https://project-3-03-team-2xy5.onrender.com/api/placeOrder', {
+    fetch('https://project-3-03-team-2xy5.onrender.com/api/cashierPlaceOrder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ orders: cart }),

@@ -314,6 +314,8 @@ button[type="button"] {
   cursor: pointer;
   margin-right: 8px;
   margin-top: 8px;
+  width: 100px;
+  height: 50px;
 }
 
 .zoom-controls button:hover {
