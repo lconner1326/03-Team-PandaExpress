@@ -307,11 +307,13 @@ button[type="button"] {
 
 .zoom-controls button {
   padding: 10px;
-  background-color: #007bff;
-  color: white;
+  background-color: #6badce;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-right: 8px;
+  margin-top: 8px;
 }
 
 .zoom-controls button:hover {
@@ -339,6 +341,7 @@ button[type="button"] {
   right: 20px;
   display: flex;
   gap: 10px;
+  margin-right: 8px;
 }
 
 .font-controls button {
