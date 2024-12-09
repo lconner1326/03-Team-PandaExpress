@@ -211,7 +211,7 @@ const MenuSelection = () => {
 
   const handleCheckout = () => {
     setShowDialog(false);
-    navigate('/kiosk/checkout');
+    navigate('/checkout');
   };
 
   const categoryItems = items[itemType] || null;
