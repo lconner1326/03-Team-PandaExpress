@@ -253,7 +253,7 @@ const CashierMenuSelection = () => {
 
         {showDialog && (
           <div className="modal-overlay">
-            <div className="modal">
+            <div className="modalmenu">
               <p>Your order has been added. What would you like to do?</p>
               <div className="modal-buttons">
                 <button onClick={handleOrderMore}>Order More</button>
