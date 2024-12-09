@@ -202,7 +202,7 @@ const CashierMenuSelection = () => {
 
   const handleCheckout = () => {
     setShowDialog(false);
-    navigate('/cashierCheckout');
+    navigate('/cashier/checkout');
   };
 
   const categoryItems = items[itemType] || null;
