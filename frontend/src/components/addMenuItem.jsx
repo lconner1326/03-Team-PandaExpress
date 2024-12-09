@@ -92,14 +92,6 @@ function AddMenuItem(){
                                 onChange={(e) => setIngredientsused(e.target.value)}
                             />
                         </label>
-                        <label>
-                            Ingredients Used:
-                            <input
-                                type="text"
-                                value={ingredientsused.join(' ')}
-                                onChange={(e) => setIngredientsused(e.target.value.split(' '))}
-                            />
-                        </label>
                         <button type="submit" className="manager-nav-bar-button" id="submit">Submit</button>
                     </form>
                 </div>
