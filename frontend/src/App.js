@@ -102,7 +102,7 @@ function App() {
               <Route path="/kiosk" element={<Kiosk />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/item/:itemType" element={<MenuSelection />} />
-              <Route path="/item/:itemType" element={<CashierMenuSelection />} />
+              <Route path="/cashier/item/:itemType" element={<CashierMenuSelection />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/cashierCheckout" element={<CashierCheckout />} />
             
