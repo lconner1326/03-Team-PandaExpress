@@ -41,8 +41,20 @@ const Checkout = () => {
     // Check if the itemType is Drinks or Appetizers and More
     if (["Drinks", "Appetizers and More"].includes(order.itemType)) {
       console.log("Checking Drinks/Appetizers price for:", order.name);
-      basePrice = prices[order.name?.trim()] || 0; // Use the order.name for price lookup
-      console.log("Price found:", basePrice); // Debug log
+      if (["Drinks"].includes(order.itemType)){
+        const drinkNameMapping = {
+          "Small Fountain Drink": "Small Drink",
+          "Medium Fountain Drink": "Medium Drink",
+          "Large Fountain Drink": "Large Drink",
+        };
+        const normalizedDrinkName = drinkNameMapping[order.name?.trim()] || order.name?.trim();
+        basePrice = prices[normalizedDrinkName] || 0;
+      }
+      else{
+        basePrice = prices[order.name?.trim()] || 0;
+        console.log("Price found:", basePrice);
+      }
+      
     }
   
     // Add premium surcharge for Bowl, Plate, or Bigger Plate
