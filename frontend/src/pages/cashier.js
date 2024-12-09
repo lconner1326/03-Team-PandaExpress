@@ -22,12 +22,12 @@ import cartIcon from '../imgs/checkoutCart.png';
  */
 export const Cashier = () => {
   const menuItems = [
-    { name: 'Bowl', image: bowlImage, link: '/item/Bowl' },
-    { name: 'Plate', image: plateImage, link: '/item/Plate' },
-    { name: 'Bigger Plate', image: biggerPlateImage, link: '/item/Bigger Plate' },
-    { name: 'Appetizers and More', image: appetizerImage, link: '/item/Appetizers and More' },
-    { name: 'Drinks', image: drinksImage, link: '/item/Drinks' },
-    { name: 'A La Carte', image: aLaCarteImage, link: '/item/A La Carte' },
+    { name: 'Bowl', image: bowlImage, link: '/cashier/item/Bowl' },
+    { name: 'Plate', image: plateImage, link: '/cashier/item/Plate' },
+    { name: 'Bigger Plate', image: biggerPlateImage, link: '/cashier/item/Bigger Plate' },
+    { name: 'Appetizers and More', image: appetizerImage, link: '/cashier/item/Appetizers and More' },
+    { name: 'Drinks', image: drinksImage, link: '/cashier/item/Drinks' },
+    { name: 'A La Carte', image: aLaCarteImage, link: '/cashier/item/A La Carte' },
   ];
 
 
