@@ -65,6 +65,35 @@ const ItemTable = ({ columns, rows, table }) => {
         });
     };
 
+    const handleDelete = (rowIndex) => {
+        console.log(`Delete button clicked for row ${rowIndex}`, rows[rowIndex]);
+        fetch(`https://project-3-03-team-2xy5.onrender.com/api/delete/${table}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(rows[rowIndex]),
+        })
+            .then((response) => { 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            }
+            )
+            .then(() => {
+                // Update the rows array by removing the deleted row
+                const newRows = rows.filter((_, index) => index !== rowIndex);
+                console.log('Rows updated:', newRows);
+                // Update the state with the new rows
+                setData({});
+                setIsFormVisible(false);
+            })
+            .catch((error) => {
+                console.error('Error during delete request:', error);
+            });
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted with data:', data);
@@ -118,6 +147,14 @@ const ItemTable = ({ columns, rows, table }) => {
                   >
                     Edit
                   </button>
+                </td>
+                <td>
+                    <button
+                        className="manager-nav-bar-button"
+                        onClick={() => handleDelete(rowIndex)}
+                    >
+                        Delete
+                    </button>
                 </td>
               </tr>
             ))}
